@@ -56,14 +56,14 @@ async function ensureProfile(name: string | null) {
 }
 
 export async function signUp(_: AuthState, form: FormData): Promise<AuthState> {
-  if (!supabasePublicConfig())
-    return { error: "Sign-up isn't configured yet." };
   const parsed = signUpSchema.safeParse({
     name: form.get("name"),
     email: form.get("email"),
     password: form.get("password"),
   });
   if (!parsed.success) return { error: parsed.error.issues[0].message };
+  if (!supabasePublicConfig())
+    return { error: "Sign-up isn't configured yet." };
   const { name, email, password } = parsed.data;
 
   const supabase = await createSupabaseServerClient();
@@ -108,12 +108,12 @@ const logInSchema = z.object({
 });
 
 export async function logIn(_: AuthState, form: FormData): Promise<AuthState> {
-  if (!supabasePublicConfig()) return { error: "Log-in isn't configured yet." };
   const parsed = logInSchema.safeParse({
     email: form.get("email"),
     password: form.get("password"),
   });
   if (!parsed.success) return { error: parsed.error.issues[0].message };
+  if (!supabasePublicConfig()) return { error: "Log-in isn't configured yet." };
 
   const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
