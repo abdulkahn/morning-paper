@@ -16,7 +16,15 @@ export function getDb() {
     const url = getEnv().DATABASE_URL;
     if (!url) throw new Error("DATABASE_URL is not configured");
     // prepare:false keeps us compatible with Supabase's transaction pooler.
-    client = postgres(url, { max: 5, prepare: false });
+    // Serverless instances keep a single short-lived connection so many
+    // concurrent instances can't exhaust the pooler's client limit.
+    const serverless = !!process.env.VERCEL;
+    client = postgres(url, {
+      max: serverless ? 1 : 5,
+      idle_timeout: serverless ? 5 : 30,
+      connect_timeout: 10,
+      prepare: false,
+    });
     db = drizzle(client, { schema });
   }
   return db;

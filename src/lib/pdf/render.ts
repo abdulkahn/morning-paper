@@ -39,6 +39,8 @@ export async function renderPdfFromUrl(url: string): Promise<Uint8Array> {
         `print page returned HTTP ${response?.status() ?? "no response"}`,
       );
     }
+    // Never print an error page: the real print layout must be present.
+    await page.waitForSelector(".print-root", { timeout: 15_000 });
     await page.evaluate(() => document.fonts.ready);
     const pdf = await page.pdf({
       preferCSSPageSize: true,

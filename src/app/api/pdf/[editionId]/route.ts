@@ -9,7 +9,13 @@ export async function GET(
   ctx: RouteContext<"/api/pdf/[editionId]">,
 ) {
   const { editionId } = await ctx.params;
-  const edition = await loadEdition(editionId);
+  let edition: Awaited<ReturnType<typeof loadEdition>>;
+  try {
+    edition = await loadEdition(editionId);
+  } catch (error) {
+    console.error("[pdf] edition lookup failed", { editionId, error });
+    return Response.json({ error: "edition_unavailable" }, { status: 503 });
+  }
   if (!edition) {
     return Response.json({ error: "edition_not_found" }, { status: 404 });
   }
