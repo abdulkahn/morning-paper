@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@sparticuz/chromium", "playwright-core"],
   outputFileTracingIncludes: {
     // Tracing misses runtime data files (e.g. playwright-core/browsers.json).
-    "/api/pdf/[editionId]": [
+    "/api/pdf/*": [
       "./node_modules/@sparticuz/chromium/bin/**",
       "./node_modules/playwright-core/**",
     ],
