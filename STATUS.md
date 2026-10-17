@@ -35,3 +35,12 @@ _Last updated: 2026-10-17_
 ## Next action
 
 User adds `ANTHROPIC_API_KEY` and `VOYAGE_API_KEY` (.env.local + GitHub secrets). Then: run `npm run cluster` with Voyage, calibrate `THRESHOLDS["voyage-4-lite"]` on the labelled pairs (target ≥ 90%), then M4b LLM enrichment (adjudicator, topics, concepts, fact ledger, briefs).
+
+## Archive — requested M11 (PLAN.md M12)
+
+- **Interface and offline verification ready; production acceptance pending backend integration.** Editorial archive rows, edition metadata, historical banners, navigation, loading/empty/error/invalid-ID states, and responsive layouts. Saved sections/stories render in their stored order, including mixed tiers. No ranking or preference reconstruction.
+- Files: `src/app/archive/**`, `src/app/paper/page.tsx`, `src/components/archive/**`, archive changes in `src/components/paper/paper-view.tsx`, `src/lib/edition/archive{,-load,.test}.ts`, `src/fixtures/archive-preview.ts`, `e2e/archive.spec.ts`, `ARCHIVE-CONTRACT.md`, and this status note.
+- Verification: `npm run check` passed (58 unit tests in the latest shared checkout); production build passed; Chromium development suite (archive + existing paper/smoke, 2 workers) passed 12 tests with 1 production-only skip; production suite passed 9 with 4 development-preview skips. Opened two local historical snapshots, reloaded them without order changes, checked mobile width and empty/invalid states, and visually inspected desktop/mobile screenshots. No live reader history was fabricated or database writes performed by this task.
+- Local visual preview: `/archive/preview` (development only; production access rejected). Preview PDFs are disabled because their IDs cannot be served by the original PDF loader; `/paper/demo` and its real PDF remain working.
+- Integration: `ARCHIVE-CONTRACT.md` documents the `SavedEditionReader` seam and ownership requirements. Claude added a reader-scoped Supabase archive adapter and optional shared paper-reader props during verification; these archive-facing additions are preserved. Its schema, migrations, workers and other backend work remain separate. Re-verify real persisted history, RLS, current-edition identity/routing (`/today`), and authorized historical PDF access before marking the entire archive complete. The archive adapter keeps historical PDFs disabled pending that check. UUID secrecy is not authorization.
+- Scope stops at the requested archive work. Three Things recall (PLAN M11) and other milestones were not implemented by this archive task.
