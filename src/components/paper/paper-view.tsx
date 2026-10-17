@@ -1,3 +1,6 @@
+import Link from "next/link";
+import type { ReactNode } from "react";
+import { formatEditionDate } from "@/lib/edition/format";
 import type {
   EditionSnapshot,
   SectionSnapshot,
@@ -16,19 +19,80 @@ import {
 
 // Web rendering of a frozen edition snapshot.
 
-export function PaperView({ edition }: { edition: EditionSnapshot }) {
+export function PaperView({
+  edition,
+  context,
+  storyHref,
+  extra,
+}: {
+  edition: EditionSnapshot;
+  /** When set, headlines link to `${storyHref}/${clusterId}`. */
+  storyHref?: string;
+  /** Rendered after the stories, before the footer (e.g. Three Things). */
+  extra?: ReactNode;
+  context?: {
+    archived: boolean;
+    archiveHref: string;
+    todayHref: string;
+    pdfAvailable: boolean;
+  };
+}) {
   const stats = editionStats(edition);
+  const archiveHref = context?.archiveHref ?? "/archive";
+  const todayHref = context?.todayHref ?? "/paper";
+  const pdfAvailable = context?.pdfAvailable ?? edition.id === "demo";
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
+      <nav
+        aria-label="Edition navigation"
+        className="text-ink-muted mb-6 flex flex-wrap gap-x-6 gap-y-3 text-sm"
+      >
+        <Link
+          href={archiveHref}
+          className="hover:text-ink underline underline-offset-4"
+        >
+          Back to Archive
+        </Link>
+        <Link
+          href={todayHref}
+          className="hover:text-ink underline underline-offset-4"
+        >
+          Today&rsquo;s Paper
+        </Link>
+      </nav>
+      {context?.archived && (
+        <aside
+          aria-label="Historical edition"
+          className="border-rule bg-ink/5 mb-6 border-y px-4 py-4"
+        >
+          <p className="text-accent text-xs font-semibold tracking-[0.12em] uppercase">
+            Archived edition
+          </p>
+          <p className="mt-2 text-sm">
+            This is the edition you received on{" "}
+            {formatEditionDate(edition.date)}. Kept just as it was published.
+          </p>
+        </aside>
+      )}
       <Masthead
         edition={edition}
         actions={
-          <a
-            href={`/api/pdf/${edition.id}`}
-            className="border-rule hover:bg-ink hover:text-paper rounded-md border px-4 py-2 text-sm font-medium transition-colors"
-          >
-            Download PDF
-          </a>
+          pdfAvailable ? (
+            <a
+              href={`/api/pdf/${encodeURIComponent(edition.id)}`}
+              className="border-rule hover:bg-ink hover:text-paper rounded-md border px-4 py-2 text-sm font-medium transition-colors"
+            >
+              Download PDF
+            </a>
+          ) : (
+            <button
+              type="button"
+              disabled
+              className="text-ink-muted min-h-11 border border-current/30 px-4 py-2 text-sm"
+            >
+              PDF unavailable
+            </button>
+          )
         }
       />
 
@@ -36,26 +100,30 @@ export function PaperView({ edition }: { edition: EditionSnapshot }) {
         <EditorNote note={edition.editorNote} />
       </div>
 
-      <LeadStory story={edition.lead} />
+      <LeadStory story={edition.lead} href={storyHref} />
 
       {edition.sections.map((section) => (
-        <Section key={section.slug} section={section} />
+        <Section key={section.slug} section={section} href={storyHref} />
       ))}
+
+      {extra}
 
       <footer className="border-rule mt-16 border-t-4 border-double pt-8 pb-16 text-center">
         <p className="font-display text-3xl font-bold">
           You&rsquo;re caught up.
         </p>
         <p className="text-ink-muted mt-2 text-sm">
-          {stats.stories} stories from {stats.sources} sources. See you tomorrow
-          morning.
+          {stats.stories} stories from {stats.sources} sources.{" "}
+          {context?.archived
+            ? "An edition worth keeping."
+            : "See you tomorrow morning."}
         </p>
       </footer>
     </main>
   );
 }
 
-function LeadStory({ story }: { story: StorySnapshot }) {
+function LeadStory({ story, href }: { story: StorySnapshot; href?: string }) {
   return (
     <article
       aria-label="Lead story"
@@ -64,7 +132,7 @@ function LeadStory({ story }: { story: StorySnapshot }) {
       <div className="space-y-4 lg:col-span-2">
         <Kicker story={story} />
         <h2 className="font-display text-4xl leading-tight font-bold tracking-tight sm:text-5xl">
-          {story.headline}
+          <Headline story={story} href={href} />
         </h2>
         <p className="text-ink-muted text-lg leading-relaxed">{story.dek}</p>
         <WhyInPaper text={story.whyInPaper} />
@@ -84,11 +152,13 @@ function LeadStory({ story }: { story: StorySnapshot }) {
   );
 }
 
-function Section({ section }: { section: SectionSnapshot }) {
-  const major = section.stories.filter((s) => s.tier === "major");
-  const standard = section.stories.filter((s) => s.tier === "standard");
-  const briefs = section.stories.filter((s) => s.tier === "brief");
-
+function Section({
+  section,
+  href,
+}: {
+  section: SectionSnapshot;
+  href?: string;
+}) {
   return (
     <section aria-labelledby={`section-${section.slug}`} className="mt-16">
       <h2
@@ -98,47 +168,47 @@ function Section({ section }: { section: SectionSnapshot }) {
         {section.title}
       </h2>
 
-      {major.length > 0 ? (
-        <div className="mt-6 grid gap-8 md:grid-cols-2">
-          {major.map((s) => (
-            <MajorStory key={s.id} story={s} />
-          ))}
-        </div>
-      ) : null}
-
-      {standard.length > 0 ? (
-        <div className="border-rule mt-8 grid gap-8 border-t pt-6 md:grid-cols-3">
-          {standard.map((s) => (
-            <StandardStory key={s.id} story={s} />
-          ))}
-        </div>
-      ) : null}
-
-      {briefs.length > 0 ? (
-        <div className="border-rule mt-8 border-t pt-4">
-          <p className="text-ink-muted text-xs font-medium tracking-[0.04em] uppercase">
-            In brief
-          </p>
-          <ul className="mt-2 grid gap-x-8 gap-y-2 md:grid-cols-2">
-            {briefs.map((s) => (
-              <li key={s.id} className="text-sm">
-                <span className="font-semibold">{s.headline}.</span>{" "}
-                <span className="text-ink-muted">{s.dek}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      {/* Never regroup by tier: the stored order is the editor's frozen order. */}
+      <div className="mt-6 grid gap-8 md:grid-cols-6">
+        {section.stories.map((story) => (
+          <div
+            key={story.id}
+            data-story-id={story.id}
+            className={
+              story.tier === "standard"
+                ? "min-w-0 md:col-span-2"
+                : "min-w-0 md:col-span-3"
+            }
+          >
+            {story.tier === "major" ? (
+              <MajorStory story={story} href={href} />
+            ) : story.tier === "brief" ? (
+              <article className="space-y-2 text-sm">
+                <p className="text-ink-muted text-xs tracking-wide uppercase">
+                  In brief
+                </p>
+                <h3 className="font-display text-lg font-bold">
+                  <Headline story={story} href={href} />
+                </h3>
+                <p className="text-ink-muted">{story.dek}</p>
+                <SourceLine story={story} />
+              </article>
+            ) : (
+              <StandardStory story={story} href={href} />
+            )}
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
 
-function MajorStory({ story }: { story: StorySnapshot }) {
+function MajorStory({ story, href }: { story: StorySnapshot; href?: string }) {
   return (
     <article className="space-y-3">
       <Kicker story={story} />
       <h3 className="font-display text-2xl leading-tight font-bold tracking-tight">
-        {story.headline}
+        <Headline story={story} href={href} />
       </h3>
       <p className="text-ink-muted leading-relaxed">{story.dek}</p>
       <WhyInPaper text={story.whyInPaper} />
@@ -154,16 +224,34 @@ function MajorStory({ story }: { story: StorySnapshot }) {
   );
 }
 
-function StandardStory({ story }: { story: StorySnapshot }) {
+function StandardStory({
+  story,
+  href,
+}: {
+  story: StorySnapshot;
+  href?: string;
+}) {
   return (
     <article className="space-y-2">
       <Kicker story={story} />
       <h3 className="font-display text-lg leading-snug font-bold">
-        {story.headline}
+        <Headline story={story} href={href} />
       </h3>
       <p className="text-ink-muted text-sm leading-relaxed">{story.dek}</p>
       <WhyInPaper text={story.whyInPaper} />
       <SourceLine story={story} />
     </article>
+  );
+}
+
+function Headline({ story, href }: { story: StorySnapshot; href?: string }) {
+  if (!href) return <>{story.headline}</>;
+  return (
+    <Link
+      href={`${href}/${story.clusterId}`}
+      className="hover:text-accent decoration-1 underline-offset-4 hover:underline"
+    >
+      {story.headline}
+    </Link>
   );
 }
