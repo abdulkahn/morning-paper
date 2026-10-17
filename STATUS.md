@@ -11,7 +11,7 @@ _Last updated: 2026-10-17_
 
 ## In progress
 
-- Nothing. Next: **M4** (embeddings, clustering, enrichment, fact ledger).
+- **M4a (in progress)** — Story clustering works end to end with the offline hash embedding (`hash-v1`): `story_clusters` (pgvector centroid), in-memory batch assignment, `npm run cluster`, chained after ingest in the cron. 740 real articles → 664 stories; multi-source stories group correctly. Hash model scores ~81% on 129 labelled pairs (`src/lib/cluster/__fixtures__`). Voyage (`voyage-4-lite`) path is built and unit-tested but **not yet run or calibrated** — needs `VOYAGE_API_KEY`. Promo/coupon posts now filtered at ingestion.
 
 ## Decisions
 
@@ -34,4 +34,4 @@ _Last updated: 2026-10-17_
 
 ## Next action
 
-M4: Voyage embeddings + pgvector, story clustering, LLM enrichment (topics, concepts, facts, briefs) with fixture mode.
+User adds `ANTHROPIC_API_KEY` and `VOYAGE_API_KEY` (.env.local + GitHub secrets). Then: run `npm run cluster` with Voyage, calibrate `THRESHOLDS["voyage-4-lite"]` on the labelled pairs (target ≥ 90%), then M4b LLM enrichment (adjudicator, topics, concepts, fact ledger, briefs).

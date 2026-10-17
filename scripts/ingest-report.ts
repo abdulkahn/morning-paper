@@ -23,7 +23,32 @@ async function main() {
       order by 1 desc limit 5`),
   );
 
-  console.log("Latest runs:");
+  console.log("Largest story clusters (last 72h):");
+  const big = (await db.execute(sql`
+      select sc.id, sc.article_count, sc.source_count, sc.embedding_model
+      from story_clusters sc
+      where sc.last_article_at > now() - interval '72 hours'
+      order by sc.article_count desc, sc.source_count desc limit 8`)) as unknown as {
+    id: string;
+    article_count: number;
+    source_count: number;
+    embedding_model: string;
+  }[];
+  for (const c of big) {
+    const titles = (await db.execute(sql`
+        select a.source_slug, a.title from articles a
+        where a.cluster_id = ${c.id} order by a.published_at limit 6`)) as unknown as {
+      source_slug: string;
+      title: string;
+    }[];
+    console.log(
+      `\n  [${c.article_count} articles, ${c.source_count} sources, ${c.embedding_model}]`,
+    );
+    for (const t of titles)
+      console.log(`    ${t.source_slug.padEnd(18)} ${t.title}`);
+  }
+
+  console.log("\nLatest runs:");
   console.table(
     await db.execute(sql`
       select status, stats->>'collected' as collected, stats->>'inserted' as inserted,

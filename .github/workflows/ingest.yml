@@ -17,6 +17,7 @@ jobs:
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+      VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
     steps:
       - name: Skip when the database secret is missing
         if: env.DATABASE_URL == ''
@@ -32,3 +33,5 @@ jobs:
         run: npm ci
       - if: env.DATABASE_URL != ''
         run: npm run ingest
+      - if: env.DATABASE_URL != ''
+        run: npm run cluster

@@ -1,0 +1,650 @@
+{
+  "description": "Headline pairs from real feeds (2026-10-17), labelled by Claude: same developing story or not. Titles only.",
+  "pairs": [
+    {
+      "a": "Govt reduces petrol price by Rs3.63 per litre, raises high-speed diesel rate by Re0.31",
+      "b": "Govt raises petrol price by Rs1.20 per litre, reduces high-speed diesel rate by Re0.17",
+      "same": false
+    },
+    {
+      "a": "Govt cuts petrol price by Rs3.93 per litre",
+      "b": "Govt reduces petrol price by Rs3.63 per litre, raises high-speed diesel rate by Re0.31",
+      "same": false
+    },
+    {
+      "a": "Govt cuts petrol price by Rs3.93 per litre",
+      "b": "Govt raises petrol price by Rs1.20 per litre, reduces high-speed diesel rate by Re0.17",
+      "same": false
+    },
+    {
+      "a": "Is your boss watching you? The rise of AI surveillance at work - video",
+      "b": "Is your boss watching you? The rise of AI surveillance at work – podcast",
+      "same": true
+    },
+    {
+      "a": "Bangladesh is battling measles. It's a 'real warning' to other nations",
+      "b": "Bangladesh is battling measles. It's a 'real warning' to other nations",
+      "same": true
+    },
+    {
+      "a": "PSG pummel Manchester City while Villa and Liverpool hit six | Football Weekly Extra – video",
+      "b": "PSG pummel Manchester City while Villa and Liverpool hit six: Football Weekly Extra – podcast",
+      "same": true
+    },
+    {
+      "a": "Emotional TV plea for cancer research leads to meeting with PM",
+      "b": "Emotional TV plea for cancer research leads to meeting with PM",
+      "same": true
+    },
+    {
+      "a": "Crawley signs Kent extension after losing England contract",
+      "b": "Crawley signs Kent extension after losing England deal",
+      "same": true
+    },
+    {
+      "a": "Pakistan to assume IMF, World Bank board chairmanship for first time in over 7 decades",
+      "b": "Pakistan to chair IMF, World Bank boards of governors after 74 years",
+      "same": true
+    },
+    {
+      "a": "Judge throws out child sex abuse charges against actor Timothy Busfield",
+      "b": "Child sex abuse charges against actor Timothy Busfield dismissed by judge",
+      "same": true
+    },
+    {
+      "a": "Israeli settlers burn olive trees in West Bank",
+      "b": "Israeli settlers attack Palestinians in West Bank during olive harvest",
+      "same": true
+    },
+    {
+      "a": "An Nvidia insider-turned-VC on why robotics hasn’t hit its ChatGPT moment, yet",
+      "b": "Physical AI is more than robots, says the Nvidia veteran now investing in it",
+      "same": true
+    },
+    {
+      "a": "The Download: failed social media bans, and extending pets’ lives",
+      "b": "Kids are outsmarting social media bans. That’s not a problem we need to solve.",
+      "same": false
+    },
+    {
+      "a": "Pakistan among 10 countries bearing brunt of global hunger crisis, says report",
+      "b": "Pakistan Among 10 Worst-Hit Countries in Global Hunger Crisis",
+      "same": true
+    },
+    {
+      "a": "The Download: reviving frozen pig kidneys and boosting nuclear power",
+      "b": "Pig kidneys that were “frozen” for a year have been brought back to life",
+      "same": false
+    },
+    {
+      "a": "Meta releases Muse Spark Open, a new ‘open-weight’ AI model",
+      "b": "Meta launches an open-weight AI model that runs on Macs",
+      "same": true
+    },
+    {
+      "a": "FIFA orders partial stadium closure for Spain over anti-Muslim chants",
+      "b": "Spain handed partial stadium closure after discriminatory chants v Egypt",
+      "same": true
+    },
+    {
+      "a": "Real demand Tebas resign over Goebbels comparison",
+      "b": "Real Madrid demand La Liga president resign over Goebbels comparison",
+      "same": true
+    },
+    {
+      "a": "Israeli settlers attack Palestinians in West Bank during olive harvest",
+      "b": "Israeli settlers attack olive farmers and Washington Post journalist in West Bank",
+      "same": true
+    },
+    {
+      "a": "Palestinians and US journalist injured by Israeli settlers in West Bank harvest attack",
+      "b": "Israeli settlers attack Palestinians in West Bank during olive harvest",
+      "same": true
+    },
+    {
+      "a": "Israeli settlers beat Palestinians and a U.S. photojournalist in West Bank attacks",
+      "b": "Israeli settlers attack olive farmers and Washington Post journalist in West Bank",
+      "same": true
+    },
+    {
+      "a": "Surfshark Promo Codes: 87% Off | October 2026",
+      "b": "Walmart Promo Codes: 20% Off for October 2026",
+      "same": false
+    },
+    {
+      "a": "Israeli settlers attack Palestinians in West Bank during olive harvest",
+      "b": "Israeli settlers beat Palestinians and a U.S. photojournalist in West Bank attacks",
+      "same": true
+    },
+    {
+      "a": "Lisa Nandy ‘minded to intervene’ in Sky’s £1.6bn purchase of ITV",
+      "b": "Nandy 'minded to intervene' in Sky's £1.6bn takeover of ITV entertainment arm",
+      "same": true
+    },
+    {
+      "a": "At least 33 pupils and teacher killed after school roof collapses in Pakistan",
+      "b": "At least 34 children, teacher killed as school roof collapses in Peshawar",
+      "same": true
+    },
+    {
+      "a": "Peshawar mourns school roof collapse victims",
+      "b": "Families of children killed in Peshawar school roof collapse demand justice",
+      "same": true
+    },
+    {
+      "a": "‘Pakistan among 10 states bearing brunt of hunger crisis’",
+      "b": "Pakistan among 10 countries bearing brunt of global hunger crisis, says report",
+      "same": true
+    },
+    {
+      "a": "Amazon devices chief Panos Panay on the importance of failure and bouncing back from it",
+      "b": "Amazon devices chief Panos Panay sees a future where AI devices replace the need to use apps",
+      "same": false
+    },
+    {
+      "a": "Walmart Promo Codes: 20% Off for October 2026",
+      "b": "Groupon Promo Codes: 60% Off in October 2026",
+      "same": false
+    },
+    {
+      "a": "Same-day test 'saved her life'",
+      "b": "Ten-year-old Willow among children to benefit from pioneering same-day test to spot infections",
+      "same": true
+    },
+    {
+      "a": "Three men jailed for 158 years each for murdering Australian and US surfers in Mexico",
+      "b": "Mexican judge sentences three men to 158 years in prison for murders of Australian and US surfers​",
+      "same": true
+    },
+    {
+      "a": "Arteta told Arsenal job cuts will help create success",
+      "b": "Mikel Arteta defends job cuts at Arsenal to help club ‘evolve and create success’",
+      "same": true
+    },
+    {
+      "a": "Meta launches an open-weight AI model that runs on Macs",
+      "b": "Meta and Apple team up to make Muse AI models run better on Macs",
+      "same": true
+    },
+    {
+      "a": "Israeli settlers burn olive trees in West Bank",
+      "b": "Israeli settlers attack olive farmers and Washington Post journalist in West Bank",
+      "same": true
+    },
+    {
+      "a": "Israeli settlers burn olive trees in West Bank",
+      "b": "Israeli settlers beat Palestinians and a U.S. photojournalist in West Bank attacks",
+      "same": true
+    },
+    {
+      "a": "Surfshark Promo Codes: 87% Off | October 2026",
+      "b": "Groupon Promo Codes: 60% Off in October 2026",
+      "same": false
+    },
+    {
+      "a": "Deepti Sharma and Niki Prasad seal nervy chase of 115 for India",
+      "b": "Niki Prasad on India debut as Mandhana opts to chase against Zimbabwe",
+      "same": true
+    },
+    {
+      "a": "PHC to hear challenge to emergency on 20th",
+      "b": "PHC to hear PTI's plea against emergency, governor's rule in KP on Oct 20",
+      "same": true
+    },
+    {
+      "a": "Palestinians and US journalist injured by Israeli settlers in West Bank harvest attack",
+      "b": "Israeli settlers attack olive farmers and Washington Post journalist in West Bank",
+      "same": true
+    },
+    {
+      "a": "Southgate does not forsee a return to management",
+      "b": "Southgate does not see return to Premier League management",
+      "same": true
+    },
+    {
+      "a": "Sally Rooney books withdrawn in UK over Palestine Action support",
+      "b": "Sally Rooney's books will no longer be sold in U.K. after Palestinian Action support",
+      "same": true
+    },
+    {
+      "a": "‘Pakistan among 10 states bearing brunt of hunger crisis’",
+      "b": "Pakistan Among 10 Worst-Hit Countries in Global Hunger Crisis",
+      "same": true
+    },
+    {
+      "a": "Palestinians and US journalist injured by Israeli settlers in West Bank harvest attack",
+      "b": "Israeli settlers beat Palestinians and a U.S. photojournalist in West Bank attacks",
+      "same": true
+    },
+    {
+      "a": "A week with RTX Spark: everything we’ve learned using Nvidia’s new laptops",
+      "b": "How Windows is being optimized for Nvidia’s RTX Spark laptops",
+      "same": true
+    },
+    {
+      "a": "Walmart Promo Codes: 20% Off for October 2026",
+      "b": "Design Within Reach Promo Codes: 30% Off | October 2026",
+      "same": false
+    },
+    {
+      "a": "Pakistan school roof collapse kills at least 34 children and teacher",
+      "b": "At least 34 children, teacher killed as school roof collapses in Peshawar",
+      "same": true
+    },
+    {
+      "a": "Israeli settlers attack Palestinians in West Bank during olive harvest",
+      "b": "Israeli settlers attack US photographer covering West Bank violence",
+      "same": true
+    },
+    {
+      "a": "The Surface Laptop Ultra delivers on most of Microsoft's promises",
+      "b": "Microsoft Surface Laptop Ultra Review: The First Real AI PC",
+      "same": true
+    },
+    {
+      "a": "Families of children killed in Peshawar school roof collapse demand justice",
+      "b": "At least 34 children, teacher killed as school roof collapses in Peshawar",
+      "same": true
+    },
+    {
+      "a": "PM Shehbaz reaffirms support for Saudi Arabia in meeting with new envoy",
+      "b": "Pakistan stands 'shoulder to shoulder' with Saudi Arabia, vows PM amid Houthi attacks",
+      "same": false
+    },
+    {
+      "a": "Does the Premier League 'Big Six' still exist?",
+      "b": "Manchester City in action, Premier League buildup, and more – matchday live",
+      "same": false
+    },
+    {
+      "a": "Israeli settlers attack olive farmers and Washington Post journalist in West Bank",
+      "b": "Israeli settlers attack US photographer covering West Bank violence",
+      "same": true
+    },
+    {
+      "a": "AI agents accessed Indian computer systems without authorisation: Cybersecurity agency",
+      "b": "Rogue AI agents broke into Indian firms' live systems, government says",
+      "same": true
+    },
+    {
+      "a": "Walmart Promo Codes: 20% Off for October 2026",
+      "b": "ABT Promo Codes & Discounts for October 2026",
+      "same": false
+    },
+    {
+      "a": "HP Coupon Codes and Deals October 2026",
+      "b": "Walmart Promo Codes: 20% Off for October 2026",
+      "same": false
+    },
+    {
+      "a": "How to follow the Premier League on the BBC this weekend",
+      "b": "Manchester City in action, Premier League buildup, and more – matchday live",
+      "same": false
+    },
+    {
+      "a": "HP Coupon Codes and Deals October 2026",
+      "b": "Groupon Promo Codes: 60% Off in October 2026",
+      "same": false
+    },
+    {
+      "a": "Surfshark Promo Codes: 87% Off | October 2026",
+      "b": "Design Within Reach Promo Codes: 30% Off | October 2026",
+      "same": false
+    },
+    {
+      "a": "How to follow the Premier League on the BBC this weekend",
+      "b": "Premier League action, Champions Day and Dubois v Wardley II – follow with us",
+      "same": false
+    },
+    {
+      "a": "Polymarket saw $600 million in election trades after the elections were over",
+      "b": "Over $600 Million in Polymarket Election Trades Took Place After Races Ended",
+      "same": true
+    },
+    {
+      "a": "Pakistan school roof collapse kills at least 34 children and teacher",
+      "b": "Families of children killed in Peshawar school roof collapse demand justice",
+      "same": true
+    },
+    {
+      "a": "In ‘You Can See Everything,’ Elizabeth Holmes meets her equal in comedian Nathan Fielder",
+      "b": "The New Fan’s Guide to the Unreal World of Nathan Fielder",
+      "same": false
+    },
+    {
+      "a": "Civil certificates at union councils: Punjab introduces biometric verification",
+      "b": "Punjab Adds Biometric Checks for Birth, Death and Marriage Records",
+      "same": true
+    },
+    {
+      "a": "Palestinians and US journalist injured by Israeli settlers in West Bank harvest attack",
+      "b": "Israeli settlers burn olive trees in West Bank",
+      "same": true
+    },
+    {
+      "a": "Amazon’s Bee launches two new personal AI devices, starting at $75",
+      "b": "Meet the Two New Amazon Devices That Never Stop Listening to Your Conversations",
+      "same": true
+    },
+    {
+      "a": "Watch: Did Tesla really just unveil a flying car?",
+      "b": "Elon Musk reveals ‘world’s first flying car’ at Tesla event",
+      "same": true
+    },
+    {
+      "a": "TechCrunch Disrupt 2026: Last day",
+      "b": "Pakistan showcases 20 tech firms at TechCrunch Disrupt 2026",
+      "same": false
+    },
+    {
+      "a": "Elon Musk reveals ‘world’s first flying car’ at Tesla event",
+      "b": "A Tesla Flying Car? I Don’t Know, Man",
+      "same": true
+    },
+    {
+      "a": "Walmart Promo Codes: 20% Off for October 2026",
+      "b": "Hotels.com Coupon Codes for October 2026",
+      "same": false
+    },
+    {
+      "a": "Pakistan to chair IMF, WB boards in 2027",
+      "b": "Pakistan to chair IMF, World Bank boards of governors after 74 years",
+      "same": true
+    },
+    {
+      "a": "Hotels.com Coupon Codes for October 2026",
+      "b": "Groupon Promo Codes: 60% Off in October 2026",
+      "same": false
+    },
+    {
+      "a": "Deepti on Niki Prasad: 'It didn't seem at all like she was making her debut'",
+      "b": "Deepti Sharma and Niki Prasad seal nervy chase of 115 for India",
+      "same": true
+    },
+    {
+      "a": "Watch: Did Tesla really just unveil a flying car?",
+      "b": "A Tesla Flying Car? I Don’t Know, Man",
+      "same": true
+    },
+    {
+      "a": "Is Andy Burnham in hot water over Manchester City? – podcast",
+      "b": "PSG pummel Manchester City while Villa and Liverpool hit six: Football Weekly Extra – podcast",
+      "same": false
+    },
+    {
+      "a": "Manchester City in action, Premier League buildup, and more – matchday live",
+      "b": "Premier League: 10 things to look out for this weekend",
+      "same": false
+    },
+    {
+      "a": "Do Manchester City have any grounds to win their appeal?",
+      "b": "Manchester City in action, Premier League buildup, and more – matchday live",
+      "same": false
+    },
+    {
+      "a": "Here’s Exactly How Tesla Made Its New 230-Mph Car ‘Fly’",
+      "b": "The Tesla Roadster 2 Is Here—and It Flies",
+      "same": true
+    },
+    {
+      "a": "Tech market sell-off deepens amid fears over US inflation and AI debt",
+      "b": "The global economy is muddling through against the odds. But a storm is coming | Larry Elliott",
+      "same": false
+    },
+    {
+      "a": "State Bank of Pakistan's reserves rise",
+      "b": "Q1 CA deficit soars 16pc YoY on higher imports",
+      "same": false
+    },
+    {
+      "a": "Hotels.com Coupon Codes for October 2026",
+      "b": "Ancestry Coupons│50% Off│October 2026",
+      "same": false
+    },
+    {
+      "a": "Lionesses breeze past Greece and how to progress the game – Women’s Football Weekly",
+      "b": "The England keeper set to face his dad at a World Cup",
+      "same": false
+    },
+    {
+      "a": "AI-Generated Hot Girls Are Ripping Off Comedians to Boost Their Horny Content",
+      "b": "The bitter local rivalry fuelled by a 22-year wait",
+      "same": false
+    },
+    {
+      "a": "Evacuation orders as fast-moving California wildfire burns homes",
+      "b": "Brush fires set homes ablaze in southern California as it braces for more hot weather",
+      "same": true
+    },
+    {
+      "a": "Albanian protests turn violent: What we know",
+      "b": "India’s Cockroach Janta party leader arrested amid crackdown on protests",
+      "same": false
+    },
+    {
+      "a": "Porsche’s electric Macan Turbo is an automotive existential crisis",
+      "b": "State Bank of Pakistan's reserves rise",
+      "same": false
+    },
+    {
+      "a": "James Coles targets England debut after 'spotlight' of Hundred price-tag",
+      "b": "England bowler Archer signs new Sussex deal",
+      "same": false
+    },
+    {
+      "a": "Does the Premier League 'Big Six' still exist?",
+      "b": "PSG pummel Manchester City while Villa and Liverpool hit six: Football Weekly Extra – podcast",
+      "same": false
+    },
+    {
+      "a": "Southgate does not see return to Premier League management",
+      "b": "Chelsea are the Premier League’s most fun team but is it sustainable?",
+      "same": false
+    },
+    {
+      "a": "US inflation rose to 3.7% in September in blow to Republicans before midterms",
+      "b": "Democrats outraise Republicans despite Musk’s midterm millions",
+      "same": false
+    },
+    {
+      "a": "Replit is no longer working with Anthropic, CEO says",
+      "b": "Replit’s CEO says the future of work is the ‘self-driving company’",
+      "same": false
+    },
+    {
+      "a": "Meta releases Muse Spark Open, a new ‘open-weight’ AI model",
+      "b": "Roundtables: A Conversation With the Creator of AI-Designed Viruses",
+      "same": false
+    },
+    {
+      "a": "AI agents are coming to Rivian’s cars",
+      "b": "AI threatens democracy. But we are not powerless: here’s how to fight back | Carine Fouteau",
+      "same": false
+    },
+    {
+      "a": "Apple’s updated App Store rules go after ‘nudify’ AI apps",
+      "b": "Friends don’t let friends feed their data to AI agents",
+      "same": false
+    },
+    {
+      "a": "Skechers Coupon Codes 20% Off",
+      "b": "ABT Promo Codes & Discounts for October 2026",
+      "same": false
+    },
+    {
+      "a": "Swingin' Schutt sets up ODI series sweep for Australia with 4 for 16",
+      "b": "Kids are outsmarting social media bans. That’s not a problem we need to solve.",
+      "same": false
+    },
+    {
+      "a": "Houthi missile attack on Yemeni presidential palace kills five, minister says",
+      "b": "Democrats Are Gearing Up to Investigate the Trump Administration. It Won’t Be Easy",
+      "same": false
+    },
+    {
+      "a": "'I am a normal human being': Khawaja Asif brushes off online trolling over AI-generated Marilyn Monroe riddle",
+      "b": "India Confirms AI Models Breached Live Systems During Testing",
+      "same": false
+    },
+    {
+      "a": "Pakistan school roof collapse kills at least 34 children and teacher",
+      "b": "Shooter in fatal Bend, Oregon, school shooting was former student there",
+      "same": false
+    },
+    {
+      "a": "One nation, one foreclosure",
+      "b": "Russian air strike on Ukraine's Kherson kills one person, injures 19, governor says",
+      "same": false
+    },
+    {
+      "a": "Call for more food funding due to high living cost",
+      "b": "Short-term inflation surges to 11.38pc due to costly food",
+      "same": false
+    },
+    {
+      "a": "People in the US: what is your personal ‘recession indicator’?",
+      "b": "Premier League action, Champions Day and Dubois v Wardley II – follow with us",
+      "same": false
+    },
+    {
+      "a": "'A bit early' for Rangers to put pressure on Celtic & Hearts - McInnes",
+      "b": "Carrick brushes off Martínez’s failure to apologise publicly to United director Wilcox",
+      "same": false
+    },
+    {
+      "a": "Same-day test 'saved her life'",
+      "b": "Could AI ‘change the stakes’ in the development of bioweapons?",
+      "same": false
+    },
+    {
+      "a": "Deepti on Niki Prasad: 'It didn't seem at all like she was making her debut'",
+      "b": "Arsenal's injured Caldentey out for up to 10 weeks",
+      "same": false
+    },
+    {
+      "a": "Cameron Green in doubt for Gqeberha Test",
+      "b": "Spain handed partial stadium closure after discriminatory chants v Egypt",
+      "same": false
+    },
+    {
+      "a": "Pope pictured for first time since surgery and cancer diagnosis",
+      "b": "Cancer is rising in younger adults, and scientists can't fully explain why",
+      "same": false
+    },
+    {
+      "a": "Democrats outraise Republicans despite Musk’s midterm millions",
+      "b": "Tokenized Tesla surges as Elon Musk unveils SpaceX-powered flying Roadster prototype",
+      "same": false
+    },
+    {
+      "a": "Plex now helps sell movie theater tickets",
+      "b": "When is England's tour of Bangladesh this winter?",
+      "same": false
+    },
+    {
+      "a": "AI Hacks Leave a Mess That AI Companies Aren’t Paying For",
+      "b": "Men Can’t Stop Faking How Much They Know About AI",
+      "same": false
+    },
+    {
+      "a": "'I applied for 200 jobs' - How 'spray and pray' AI job applications can backfire",
+      "b": "AI agents are coming to Rivian’s cars",
+      "same": false
+    },
+    {
+      "a": "A quantum highway just one atom high could transform superconductors",
+      "b": "One nation, one foreclosure",
+      "same": false
+    },
+    {
+      "a": "Sean 'Diddy' Combs moved to low-security facility in Pennsylvania",
+      "b": "Meta’s new terms may allow it to train AI on news sites for free",
+      "same": false
+    },
+    {
+      "a": "Same-day test 'saved her life'",
+      "b": "KZNCU to launch 'thorough internal review' into poor attendance in Durban Test",
+      "same": false
+    },
+    {
+      "a": "My Friend Has No Soul",
+      "b": "Meta’s new terms may allow it to train AI on news sites for free",
+      "same": false
+    },
+    {
+      "a": "Burnham - Rosebank and Jackdaw oil and gas decisions coming 'shortly'",
+      "b": "Two firms ink MoU for Rs20bn gas investment",
+      "same": false
+    },
+    {
+      "a": "Jayawardene steps down as Mumbai Indians head coach",
+      "b": "SA's middle order in a muddle and Conrad wants them to 'get bloody better'",
+      "same": false
+    },
+    {
+      "a": "Iraq says lost USD60bn as Mideast war hits oil exports",
+      "b": "Oil gains on renewed supply fears",
+      "same": false
+    },
+    {
+      "a": "Measures to boost LPG supply presented",
+      "b": "David Squires on … the A-League’s return from the wilderness to face awkward questions",
+      "same": false
+    },
+    {
+      "a": "Brazilian Amazon deforestation falls to lowest on record as pivotal vote looms",
+      "b": "Riyadh, other areas: Saudi-led coalition intercepts missiles, drones",
+      "same": false
+    },
+    {
+      "a": "'I applied for 200 jobs' - How 'spray and pray' AI job applications can backfire",
+      "b": "Mikel Arteta defends job cuts at Arsenal to help club ‘evolve and create success’",
+      "same": false
+    },
+    {
+      "a": "Ranking the Premier League's all-time greatest super subs",
+      "b": "Are De Cuyper and Gross essential? FPL gameweek seven dilemmas",
+      "same": false
+    },
+    {
+      "a": "Key US voters say economy is getting worse ahead of midterms, exclusive poll finds",
+      "b": "All the news about the iPhone Duo",
+      "same": false
+    },
+    {
+      "a": "Punam Raut retires from international cricket",
+      "b": "Tell us: have you used AI to help with online dating?",
+      "same": false
+    },
+    {
+      "a": "Fazl draws ire over K-P governor's rule remarks",
+      "b": "Govt seeks US investment in minerals",
+      "same": false
+    },
+    {
+      "a": "Suspected fly tippers shamed with online photos",
+      "b": "The fight to say 'vagina' on social media",
+      "same": false
+    },
+    {
+      "a": "Short-term inflation surges to 11.38pc due to costly food",
+      "b": "Equities extend overnight recovery rally",
+      "same": false
+    },
+    {
+      "a": "Judge throws out child sex abuse charges against actor Timothy Busfield",
+      "b": "Pakistan rules out unconditional talks with Afghanistan",
+      "same": false
+    },
+    {
+      "a": "Hegseth’s dubious low-T screening may flag up to 25 percent of the Army",
+      "b": "Scientists may have overlooked a hidden Alzheimer's culprit for decades",
+      "same": false
+    },
+    {
+      "a": "Scientists discover a surprising danger in smaller cancer cells",
+      "b": "Scientists reveal why some workout recovery tricks can backfire",
+      "same": false
+    }
+  ]
+}

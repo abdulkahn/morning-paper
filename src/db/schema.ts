@@ -8,12 +8,14 @@ import {
   pgPolicy,
   pgTable,
   primaryKey,
+  integer,
   real,
   smallint,
   text,
   timestamp,
   uniqueIndex,
   uuid,
+  vector,
   type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 import {
@@ -227,9 +229,16 @@ export const articles = pgTable(
     /** Hash of the normalised title, for spotting syndicated copies. */
     contentHash: text("content_hash").notNull(),
     topicHint: text("topic_hint").references(() => topics.slug),
+    embedding: vector("embedding", { dimensions: 1024 }),
+    embeddingModel: text("embedding_model"),
+    clusterId: uuid("cluster_id").references(
+      (): AnyPgColumn => storyClusters.id,
+    ),
+    clusteredAt: timestamp("clustered_at", { withTimezone: true }),
   },
   (t) => [
     uniqueIndex("articles_url_key").on(t.url),
+    index("articles_cluster_idx").on(t.clusterId),
     index("articles_published_idx").on(t.publishedAt),
     index("articles_content_hash_idx").on(t.contentHash),
     check("articles_title_len", sql`char_length(${t.title}) between 1 and 300`),
@@ -280,5 +289,34 @@ export const pipelineRuns = pgTable(
         `status in (${PIPELINE_STATUSES.map((s) => `'${s}'`).join(", ")})`,
       ),
     ),
+  ],
+).enableRLS();
+
+/** One developing story. Articles join by embedding similarity (src/lib/cluster). */
+export const storyClusters = pgTable(
+  "story_clusters",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** Working title: the first article's headline until enrichment writes one. */
+    title: text("title").notNull(),
+    topicSlug: text("topic_slug").references(() => topics.slug),
+    /** Clusters only ever compare against embeddings from the same model. */
+    embeddingModel: text("embedding_model").notNull(),
+    centroid: vector("centroid", { dimensions: 1024 }).notNull(),
+    keyTerms: text("key_terms")
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
+    articleCount: integer("article_count").notNull().default(0),
+    sourceCount: integer("source_count").notNull().default(0),
+    firstSeenAt: timestamp("first_seen_at", { withTimezone: true }).notNull(),
+    lastArticleAt: timestamp("last_article_at", {
+      withTimezone: true,
+    }).notNull(),
+    createdAt,
+    updatedAt,
+  },
+  (t) => [
+    index("story_clusters_active_idx").on(t.embeddingModel, t.lastArticleAt),
   ],
 ).enableRLS();

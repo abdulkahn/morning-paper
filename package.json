@@ -20,7 +20,8 @@
     "db:seed": "tsx --env-file=.env.local scripts/seed-topics.ts",
     "ingest:probe": "tsx scripts/probe-feeds.ts",
     "ingest": "tsx --env-file-if-exists=.env.local worker/ingest.ts",
-    "ingest:report": "tsx --env-file-if-exists=.env.local scripts/ingest-report.ts"
+    "ingest:report": "tsx --env-file-if-exists=.env.local scripts/ingest-report.ts",
+    "cluster": "tsx --env-file-if-exists=.env.local worker/cluster.ts"
   },
   "dependencies": {
     "@sparticuz/chromium": "^153.0.0",
