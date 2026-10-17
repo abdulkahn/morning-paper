@@ -90,8 +90,21 @@ export async function getOrBuildEdition(
     .limit(1);
 
   // ---- Candidate stories ----
+  // Explicit columns: never pull the 1024-d centroid vectors over the wire.
   const clusters = await db
-    .select()
+    .select({
+      id: storyClusters.id,
+      title: storyClusters.title,
+      topicSlug: storyClusters.topicSlug,
+      sourceCount: storyClusters.sourceCount,
+      headline: storyClusters.headline,
+      dek: storyClusters.dek,
+      brief: storyClusters.brief,
+      whyItMatters: storyClusters.whyItMatters,
+      keyPoints: storyClusters.keyPoints,
+      importance: storyClusters.importance,
+      lastArticleAt: storyClusters.lastArticleAt,
+    })
     .from(storyClusters)
     .where(
       and(
