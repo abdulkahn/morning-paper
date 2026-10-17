@@ -1,5 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 
+try {
+  process.loadEnvFile(".env.local");
+} catch {
+  // CI: Supabase-dependent tests skip themselves.
+}
+
 const port = Number(process.env.PORT ?? 3000);
 
 export default defineConfig({
