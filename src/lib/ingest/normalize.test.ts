@@ -106,6 +106,25 @@ describe("normalizeArticle", () => {
     expect("skip" in a ? null : a.description).toBeNull();
   });
 
+  it("skips affiliate coupon posts but not news about prices", () => {
+    expect(
+      normalizeArticle({ ...base, title: "Walmart Promo Codes: 20% Off" }, NOW),
+    ).toEqual({ skip: "promo" });
+    expect(
+      normalizeArticle(
+        { ...base, title: "Ancestry Coupons│50% Off│October 2026" },
+        NOW,
+      ),
+    ).toEqual({ skip: "promo" });
+    expect(
+      "skip" in
+        normalizeArticle(
+          { ...base, title: "Govt cuts petrol price by Rs3.93 per litre" },
+          NOW,
+        ),
+    ).toBe(false);
+  });
+
   it("reports why an item was skipped", () => {
     expect(normalizeArticle({ ...base, url: "mailto:x@y.z" }, NOW)).toEqual({
       skip: "bad_url",

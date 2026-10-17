@@ -15,7 +15,7 @@ export interface NormalizedArticle {
 }
 
 export type SkipReason =
-  "bad_url" | "no_title" | "no_date" | "too_old" | "in_future";
+  "bad_url" | "no_title" | "no_date" | "too_old" | "in_future" | "promo";
 
 export const LIMITS = {
   title: 300,
@@ -117,6 +117,14 @@ export function titleHash(title: string): string {
   return createHash("sha256").update(norm).digest("hex").slice(0, 32);
 }
 
+/** Affiliate coupon/deal posts some feeds mix in with news. */
+const PROMO =
+  /\b(promo codes?|coupon codes?|coupons?|discount codes?|voucher codes?)\b|\b\d{1,3}% off\b/i;
+
+export function isPromo(title: string): boolean {
+  return PROMO.test(title);
+}
+
 export function parseDate(raw: string | undefined | null): Date | null {
   if (!raw) return null;
   const ms = Date.parse(raw);
@@ -151,6 +159,7 @@ export function normalizeArticle(
   if (!url) return { skip: "bad_url" };
   const title = cleanText(raw.title, LIMITS.title);
   if (!title) return { skip: "no_title" };
+  if (isPromo(title)) return { skip: "promo" };
   const publishedAt = parseDate(raw.date);
   if (!publishedAt) return { skip: "no_date" };
   const fresh = freshness(publishedAt, now);
