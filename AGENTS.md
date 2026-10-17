@@ -7,6 +7,8 @@ Read `SPEC.md` (what), `PLAN.md` (order), `STATUS.md` (now) before working.
 
 - One Next.js 16 (App Router, TypeScript, Tailwind 4) app + `worker/` scripts sharing `src/lib/`.
 - Supabase: Postgres + pgvector, Auth (anonymous-first), Storage (PDFs). Drizzle for schema/migrations. RLS on every per-user table.
+- Reader requests use the Supabase client (`src/lib/supabase/server.ts`) so RLS applies. The Drizzle client (`src/db`) connects as the DB owner and bypasses RLS: workers, scripts and seeds only.
+- Schema changes: edit `src/db/schema.ts` → `npm run db:generate` → review SQL → `npm run db:migrate`. New tables need RLS policies **and** explicit GRANTs (this project does not auto-grant).
 - Workers (ingest, build-editions) run in GitHub Actions cron and locally — never long jobs in request handlers.
 - LLM: `@anthropic-ai/sdk`. `claude-opus-5-5` for writing (facts, briefs, Editor's Note); `claude-haiku-5-5` for bulk classification/extraction. Embeddings: Voyage.
 - Every LLM call: structured output validated with Zod, one retry, then a deterministic fallback. `LLM_MODE=fixture` must work offline.
@@ -22,6 +24,8 @@ Read `SPEC.md` (what), `PLAN.md` (order), `STATUS.md` (now) before working.
 - `npm test` — Vitest unit/integration
 - `npm run test:e2e` — Playwright (starts the app itself)
 - `npm run check` — lint + typecheck + format check + unit tests (run before every commit)
+- `npm run env:check` — validate `.env.local` and DB connectivity (no secrets printed)
+- `npm run db:generate` / `db:migrate` / `db:seed` — Drizzle migrations and topic seed
 
 ## Testing requirements
 

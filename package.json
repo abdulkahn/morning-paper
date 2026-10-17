@@ -13,12 +13,20 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "check": "npm run lint && npm run typecheck && npm run format:check && npm test"
+    "check": "npm run lint && npm run typecheck && npm run format:check && npm test",
+    "env:check": "tsx --env-file=.env.local scripts/check-env.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "tsx --env-file=.env.local scripts/seed-topics.ts"
   },
   "dependencies": {
     "@sparticuz/chromium": "^153.0.0",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.118.0",
+    "drizzle-orm": "^0.45.4",
     "next": "16.4.2",
     "playwright-core": "^1.64.1",
+    "postgres": "^3.4.9",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "zod": "^4.6.7"
@@ -29,12 +37,14 @@
     "@types/node": "^24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.11",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5",
     "vitest": "^5.0.5"
   }
