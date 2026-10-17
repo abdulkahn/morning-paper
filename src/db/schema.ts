@@ -309,6 +309,15 @@ export const storyClusters = pgTable(
       .default(sql`'{}'::text[]`),
     articleCount: integer("article_count").notNull().default(0),
     sourceCount: integer("source_count").notNull().default(0),
+    // Written by enrichment (worker/enrich.ts); null until enriched.
+    headline: text("headline"),
+    dek: text("dek"),
+    brief: jsonb("brief").$type<string[]>(),
+    whyItMatters: text("why_it_matters"),
+    keyPoints: jsonb("key_points").$type<string[]>(),
+    importance: smallint("importance"),
+    enrichedAt: timestamp("enriched_at", { withTimezone: true }),
+    enrichedArticleCount: integer("enriched_article_count"),
     firstSeenAt: timestamp("first_seen_at", { withTimezone: true }).notNull(),
     lastArticleAt: timestamp("last_article_at", {
       withTimezone: true,
@@ -318,5 +327,60 @@ export const storyClusters = pgTable(
   },
   (t) => [
     index("story_clusters_active_idx").on(t.embeddingModel, t.lastArticleAt),
+  ],
+).enableRLS();
+
+/** Concepts a reader may or may not know (people, orgs, tech, terms...). */
+export const concepts = pgTable(
+  "concepts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    slug: text("slug").notNull(),
+    name: text("name").notNull(),
+    type: text("type").notNull(),
+    explainer: text("explainer").notNull(),
+    createdAt,
+  },
+  (t) => [uniqueIndex("concepts_slug_key").on(t.slug)],
+).enableRLS();
+
+export const clusterConcepts = pgTable(
+  "cluster_concepts",
+  {
+    clusterId: uuid("cluster_id")
+      .notNull()
+      .references(() => storyClusters.id, { onDelete: "cascade" }),
+    conceptId: uuid("concept_id")
+      .notNull()
+      .references(() => concepts.id, { onDelete: "cascade" }),
+  },
+  (t) => [primaryKey({ columns: [t.clusterId, t.conceptId] })],
+).enableRLS();
+
+/**
+ * Fact ledger: atomic facts per story with when they first appeared. Powers
+ * "Since you last read" (facts newer than the reader's last read) and recall.
+ */
+export const storyFacts = pgTable(
+  "story_facts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clusterId: uuid("cluster_id")
+      .notNull()
+      .references(() => storyClusters.id, { onDelete: "cascade" }),
+    text: text("text").notNull(),
+    importance: smallint("importance").notNull().default(2),
+    firstSeenAt: timestamp("first_seen_at", { withTimezone: true }).notNull(),
+    /** Optional multiple-choice recall question about this fact. */
+    recall: jsonb("recall").$type<{
+      question: string;
+      options: string[];
+      answerIndex: number;
+    }>(),
+    createdAt,
+  },
+  (t) => [
+    index("story_facts_cluster_idx").on(t.clusterId, t.firstSeenAt),
+    check("story_facts_importance", sql`${t.importance} between 1 and 3`),
   ],
 ).enableRLS();
