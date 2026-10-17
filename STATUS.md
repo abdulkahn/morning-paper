@@ -6,10 +6,11 @@ _Last updated: 2026-10-17_
 
 - **M0** — Next.js 16.4 + TypeScript + Tailwind 4 scaffold, ESLint + Prettier, Vitest, Playwright, GitHub Actions CI, Zod env schema, docs. Repo: https://github.com/abdulkahn/morning-paper
 - **M1** — `EditionSnapshot` content model (`src/lib/edition/schema.ts`), sample edition fixture, web paper `/paper/[editionId]`, print layout `/print/[editionId]`, PDF route `/api/pdf/[editionId]`. Local PDF: 2 A4 pages, 3 columns, running header, "Page X of Y" via `@page` margin boxes, ~350 KB locally. Deployed at https://morning-paper-mocha.vercel.app — PDF verified on Vercel (244 KB, ~2.8 s warm) via @sparticuz/chromium.
+- **M2** — Supabase (Postgres 17, pgvector 0.8.2, region ap-southeast-2). Drizzle schema + migrations `0000_readers_and_topics`, `0001_table_grants`: `topics` (17 seeded), `profiles`, `user_topic_base`, `events` (append-only), all with RLS + least-privilege grants. Anonymous sign-in via "Start my paper" → profile row → `/onboarding` placeholder. Session refresh in `src/proxy.ts`. RLS verified by integration tests against the live project.
 
 ## In progress
 
-- Nothing. Next: **M2** (Drizzle schema, migrations, RLS, topics seed, Supabase anonymous auth).
+- Nothing. Next: **M3** (news ingestion worker).
 
 ## Decisions
 
@@ -22,6 +23,8 @@ _Last updated: 2026-10-17_
 
 ## Known issues
 
+- Vercel needs `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` set, then a redeploy, for "Start my paper" to work in production (otherwise it shows a friendly "not configured" message).
+- `e2e/start.spec.ts` creates a real anonymous user per run (no cleanup yet); RLS and start tests skip in CI (no Supabase secrets there).
 - With partial prefetching, an unknown `/paper/[id]` can return HTTP 200 (shell) before `notFound()` streams. Content is correct; revisit when M7 makes editions per-user and request-time.
 - `npm audit` reports high-severity advisories in scaffold dev dependencies; review before deploy hardening.
 - PDF @page header/footer fall back to a sans font on Vercel (no Georgia); use an embedded webfont in M13.
@@ -29,4 +32,4 @@ _Last updated: 2026-10-17_
 
 ## Next action
 
-M2: create a Supabase project (user), add Drizzle schema + migrations + RLS, anonymous auth, topics seed.
+M3: RSS + Guardian ingestion worker, articles/sources/pipeline_runs tables, GitHub Actions cron — start accumulating real news history.

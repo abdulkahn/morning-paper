@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
+// Print output is consumed whole by the PDF renderer, so blocking is fine.
+export const instant = false;
+
 export function generateStaticParams() {
   return STATIC_EDITION_IDS.map((editionId) => ({ editionId }));
 }
