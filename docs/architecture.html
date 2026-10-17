@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Morning Paper · Architecture</title>
+    <style>
+      :root {
+        --ink: #161412;
+        --muted: #5b564e;
+        --rule: #d8d1c3;
+        --accent: #b4161b;
+        --paper: #fbf8f1;
+        --ai: #eef3ff;
+        --ai-b: #7d93c9;
+        --det: #eef7ef;
+        --det-b: #6ea477;
+        --db: #fff6e5;
+        --db-b: #c99a3c;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #fff;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--ink);
+      }
+      .page {
+        width: 1600px;
+        padding: 36px 40px 30px;
+        background: var(--paper);
+      }
+      h1 {
+        font-family: Georgia, serif;
+        font-size: 34px;
+        margin: 0;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 6px 0 24px;
+        font-size: 15px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 210px 40px 300px 40px 330px 40px 520px;
+        align-items: stretch;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .lane {
+        border: 1.5px solid var(--rule);
+        border-radius: 10px;
+        padding: 12px;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .lane h2 {
+        margin: 0 0 2px;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .box {
+        border-radius: 8px;
+        padding: 9px 11px;
+        font-size: 13.5px;
+        line-height: 1.35;
+        border: 1.5px solid var(--rule);
+        background: #fff;
+      }
+      .box b {
+        display: block;
+        font-size: 14.5px;
+        margin-bottom: 2px;
+      }
+      .ai {
+        background: var(--ai);
+        border-color: var(--ai-b);
+      }
+      .det {
+        background: var(--det);
+        border-color: var(--det-b);
+      }
+      .db {
+        background: var(--db);
+        border-color: var(--db-b);
+      }
+      .star {
+        border-color: var(--accent);
+        border-width: 2px;
+      }
+      .arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        color: var(--muted);
+      }
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .legend {
+        display: flex;
+        gap: 22px;
+        margin-top: 22px;
+        font-size: 13px;
+        color: var(--muted);
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .sw {
+        display: inline-block;
+        width: 16px;
+        height: 12px;
+        border-radius: 3px;
+        vertical-align: middle;
+        margin-right: 6px;
+        border: 1.5px solid;
+      }
+      .notes {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        font-size: 13.5px;
+        line-height: 1.45;
+      }
+      .notes div {
+        background: #fff;
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+        padding: 10px 12px;
+      }
+      .notes b {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page" id="diagram">
+      <h1>The Morning Paper — architecture</h1>
+      <p class="sub">
+        A personal newspaper that remembers what you've read and what you
+        already know. One Next.js app, one database, scheduled workers.
+      </p>
+
+      <div class="row">
+        <div class="col">
+          <div class="lane">
+            <h2>Sources</h2>
+            <div class="box">
+              <b>36 RSS feeds</b>BBC, Guardian, Geo, Dawn, Express Tribune,
+              TechCrunch, WIRED…
+            </div>
+            <div class="box">
+              Original URLs and attribution kept; we show our own briefs.
+            </div>
+          </div>
+        </div>
+        <div class="arrow">→</div>
+
+        <div class="col">
+          <div class="lane">
+            <h2>Workers · cron every 2&nbsp;h</h2>
+            <div class="box det">
+              <b>1 · Ingest</b>canonicalise URLs, clean text, dedupe
+            </div>
+            <div class="box ai">
+              <b>2 · Cluster</b>Voyage embeddings + key terms group articles
+              into stories
+            </div>
+            <div class="box ai">
+              <b>3 · Enrich</b>Claude Opus 5.5 (top stories) / Haiku 5.5:
+              headline, brief, key points, <i>facts</i>, concepts, recall
+              questions — Zod-validated, retry, deterministic fallback
+            </div>
+          </div>
+        </div>
+        <div class="arrow">→</div>
+
+        <div class="col">
+          <div class="lane">
+            <h2>Supabase (Postgres · Auth · RLS)</h2>
+            <div class="box db">
+              <b>articles · story_clusters</b>shared news, embeddings
+            </div>
+            <div class="box db star">
+              <b>story_facts — the fact ledger</b>every fact with when it was
+              published and when we learned it
+            </div>
+            <div class="box db">
+              <b>concepts</b>terms with plain-language explainers
+            </div>
+            <div class="box db star">
+              <b>reader memory</b>story_reads (what you read, when) · events ·
+              reader_concepts (what you know) · recall_answers · interest
+              weights
+            </div>
+            <div class="box db">
+              <b>editions</b>one frozen snapshot per reader per day
+            </div>
+          </div>
+        </div>
+        <div class="arrow">⇄</div>
+
+        <div class="col">
+          <div class="lane">
+            <h2>Next.js 16 on Vercel</h2>
+            <div class="grid2">
+              <div class="box">
+                <b>Sign up / log in</b>email + password (confirmed) or anonymous
+              </div>
+              <div class="box">
+                <b>Onboarding</b>headline duels, love / never topics
+              </div>
+            </div>
+            <div class="box det star">
+              <b>Edition builder (deterministic, no per-reader AI)</b>ranking =
+              interest² · importance · freshness · coverage · novelty; follow-up
+              places for stories you read that moved on; explainers only for
+              concepts you don't know; Three Things recall; Editor's Note
+            </div>
+            <div class="grid2">
+              <div class="box star">
+                <b>Today's paper</b>"More on what you read earlier" · Listen to
+                your paper (browser speech)
+              </div>
+              <div class="box star">
+                <b>Story page</b>Since you last read · How this story developed
+                (timeline) · More / Less
+              </div>
+              <div class="box">
+                <b>My Editor</b>what it knows about you · Talk to Your Editor
+                (Haiku parses, code applies)
+              </div>
+              <div class="box">
+                <b>Archive + PDF</b>past papers exactly as published; broadsheet
+                PDF via Chromium
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span
+          ><span
+            class="sw"
+            style="background: var(--ai); border-color: var(--ai-b)"
+          ></span
+          >AI step (shared by all readers, once per story)</span
+        >
+        <span
+          ><span
+            class="sw"
+            style="background: var(--det); border-color: var(--det-b)"
+          ></span
+          >Deterministic, explainable code</span
+        >
+        <span
+          ><span
+            class="sw"
+            style="background: var(--db); border-color: var(--db-b)"
+          ></span
+          >Stored in Supabase</span
+        >
+        <span
+          ><span
+            class="sw"
+            style="background: #fff; border-color: var(--accent)"
+          ></span
+          >The memory features</span
+        >
+      </div>
+
+      <div class="notes">
+        <div>
+          <b>Remembers what you read.</b> Opening a story writes
+          <i>story_reads</i>. Tomorrow, facts published or learned after that
+          moment come back as "Since you last read", in the updates column and
+          on the timeline.
+        </div>
+        <div>
+          <b>Remembers what you know.</b> Concepts you've met are tracked in
+          <i>reader_concepts</i>; explainers appear only for terms that are new
+          to you, and Three Things quizzes you on yesterday's facts.
+        </div>
+        <div>
+          <b>Frozen, honest editions.</b> Each day's paper is built once and
+          saved; web, archive, audio and PDF all render that same snapshot, so a
+          past paper never changes.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

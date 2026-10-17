@@ -43,40 +43,49 @@ flowchart LR
 
   subgraph Worker["GitHub Actions cron · every 2 h"]
     I[ingest<br/>canonicalise · clean · dedupe] --> C[cluster<br/>Voyage embeddings + key terms]
-    C --> E[enrich<br/>Claude Opus 5.5 / Haiku 5.5<br/>structured output → validated]
+    C --> E[enrich<br/>Claude Opus 5.5 / Haiku 5.5<br/>newest articles → validated facts]
   end
 
-  subgraph DB["Supabase Postgres + pgvector (RLS)"]
+  subgraph DB["Supabase · Postgres + pgvector · Auth · RLS"]
     A[(articles)]
     SC[(story_clusters)]
     F[(story_facts<br/>fact ledger)]
     K[(concepts)]
-    R[(reader memory<br/>events · story_reads<br/>reader_concepts · recall_answers)]
-    ED[(editions<br/>frozen snapshots)]
+    R[(reader memory<br/>story_reads · events<br/>reader_concepts · recall_answers)]
+    ED[(editions<br/>frozen daily snapshots)]
   end
 
   subgraph App["Next.js 16 on Vercel"]
+    AU[Sign up / log in<br/>email + password · anonymous]
     O[Onboarding duels]
-    B[Edition builder<br/>ranking · Since You Last Read<br/>explainers · Three Things · Editor's Note]
-    T[Today's paper / story reader]
+    MY[My Editor<br/>Talk to Your Editor]
+    B[Edition builder · deterministic<br/>ranking · follow-up places · explainers<br/>Three Things · Editor's Note]
+    T[Today's paper<br/>More on what you read earlier]
+    S[Story page<br/>How this story developed]
     AR[Archive]
-    P[PDF: /print → Chromium]
+    P[PDF broadsheet<br/>/print → Chromium]
   end
+
+  L[Listen to your paper<br/>browser speech]
 
   RSS --> I
   I --> A
   C --> SC
   E --> SC & F & K
-  O --> R
-  T -- reads · feedback · answers --> R
+  AU --> R
+  O & MY --> R
+  T & S -- reads · feedback · answers --> R
   B -- reads --> SC & F & K & R
   B -- writes once per day --> ED
-  T & AR & P -- render --> ED
+  T & S & AR & P -- render --> ED
+  T --> L
 ```
+
+Image: [docs/architecture.png](docs/architecture.png) · source: [docs/architecture.mmd](docs/architecture.mmd)
 
 **AI vs deterministic code.** AI writes the copy and extracts facts, concepts and recall questions, once per story and shared by all readers. Everything about a specific reader is deterministic and explainable: ranking, interest weights, Since You Last Read (a fact-ledger query), which explainers to show, Three Things selection and the Editor's Note. So no per-reader LLM call is needed, and the editor can't claim something the system didn't learn.
 
-**Since You Last Read, precisely.** Facts are stored per story with the time they first appeared. When you open a story, we record that you read it as of that edition. In a later edition, the story is shown as _continuing_ with only the facts whose `first_seen_at` is after your last read; stories you've read with nothing new are left out.
+**Since You Last Read, precisely.** Facts are stored per story with the time they first appeared. When you open a story, we record that you read it as of that edition. In a later edition, the story is shown as _continuing_ with only the facts published or learned after your last read (so late-arriving reports still count), and up to two places are kept for such follow-ups. Stories you have read with nothing new are left out. The story page shows a timeline of how the story developed, with a marker where you stopped reading.
 
 ## Stack
 
