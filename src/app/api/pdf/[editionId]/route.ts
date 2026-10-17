@@ -30,8 +30,11 @@ export async function GET(
   } catch (error) {
     console.error("[pdf] render failed", { editionId, error });
     // The print page is the fallback: the browser's own Print → Save as PDF.
+    // `detail` is a short error message (no secrets) to diagnose deploys.
+    const detail =
+      error instanceof Error ? error.message.slice(0, 300) : "unknown error";
     return Response.json(
-      { error: "pdf_render_failed", fallback: printPath },
+      { error: "pdf_render_failed", fallback: printPath, detail },
       { status: 503 },
     );
   }
