@@ -1,0 +1,34 @@
+name: Ingest news
+
+on:
+  schedule:
+    # Every 2 hours at :17 (off the top of the hour to avoid queue spikes).
+    - cron: "17 */2 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+    steps:
+      - name: Skip when the database secret is missing
+        if: env.DATABASE_URL == ''
+        run: echo "::notice::DATABASE_URL secret not set; skipping ingestion."
+      - uses: actions/checkout@v4
+        if: env.DATABASE_URL != ''
+      - uses: actions/setup-node@v4
+        if: env.DATABASE_URL != ''
+        with:
+          node-version: 24
+          cache: npm
+      - if: env.DATABASE_URL != ''
+        run: npm ci
+      - if: env.DATABASE_URL != ''
+        run: npm run ingest

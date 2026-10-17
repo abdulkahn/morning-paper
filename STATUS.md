@@ -7,13 +7,15 @@ _Last updated: 2026-10-17_
 - **M0** — Next.js 16.4 + TypeScript + Tailwind 4 scaffold, ESLint + Prettier, Vitest, Playwright, GitHub Actions CI, Zod env schema, docs. Repo: https://github.com/abdulkahn/morning-paper
 - **M1** — `EditionSnapshot` content model (`src/lib/edition/schema.ts`), sample edition fixture, web paper `/paper/[editionId]`, print layout `/print/[editionId]`, PDF route `/api/pdf/[editionId]`. Local PDF: 2 A4 pages, 3 columns, running header, "Page X of Y" via `@page` margin boxes, ~350 KB locally. Deployed at https://morning-paper-mocha.vercel.app — PDF verified on Vercel (244 KB, ~2.8 s warm) via @sparticuz/chromium.
 - **M2** — Supabase (Postgres 17, pgvector 0.8.2, region ap-southeast-2). Drizzle schema + migrations `0000_readers_and_topics`, `0001_table_grants`: `topics` (17 seeded), `profiles`, `user_topic_base`, `events` (append-only), all with RLS + least-privilege grants. Anonymous sign-in via "Start my paper" → profile row → `/onboarding` placeholder. Session refresh in `src/proxy.ts`. RLS verified by integration tests against the live project.
+- **M3** — Ingestion worker (`worker/ingest.ts`, logic in `src/lib/ingest/`): 36 probed RSS feeds (global, tech, 7 AI/robotics, 6 Pakistani, sport, science, crypto) + optional Guardian full-text API. Canonical URLs, HTML/entity cleanup, 72 h freshness window, per-source failure isolation, `pipeline_runs` log. First runs: ~726 fresh articles in ~25 s, 0 failures, re-runs idempotent. Scheduled every 2 h by `.github/workflows/ingest.yml` (needs `DATABASE_URL` repo secret).
 
 ## In progress
 
-- Nothing. Next: **M3** (news ingestion worker).
+- Nothing. Next: **M4** (embeddings, clustering, enrichment, fact ledger).
 
 ## Decisions
 
+- Ingestion stores RSS descriptions only (no page scraping). Article-page excerpts are deferred to M4 and only if fact extraction needs them; Guardian API supplies licensed full text when `GUARDIAN_API_KEY` is set.
 - Stack: Next.js on Vercel · Supabase (Postgres + pgvector, anonymous Auth, Storage) · Drizzle · GitHub Actions workers.
 - LLM: `claude-opus-5-5` writing, `claude-haiku-5-5` bulk; Voyage embeddings. App boots in `LLM_MODE=fixture` with no secrets.
 - PDF: Chromium `page.pdf()` on the print route, with no Paged.js — Chromium's native `@page` margin boxes and CSS columns are enough. `playwright-core` locally, `@sparticuz/chromium` on Vercel. Fallback: `/print/[id]` + browser Print.
@@ -32,4 +34,4 @@ _Last updated: 2026-10-17_
 
 ## Next action
 
-M3: RSS + Guardian ingestion worker, articles/sources/pipeline_runs tables, GitHub Actions cron — start accumulating real news history.
+M4: Voyage embeddings + pgvector, story clustering, LLM enrichment (topics, concepts, facts, briefs) with fixture mode.
