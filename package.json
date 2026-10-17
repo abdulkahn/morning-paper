@@ -24,6 +24,7 @@
     "cluster": "tsx --env-file-if-exists=.env.local worker/cluster.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
     "@sparticuz/chromium": "^153.0.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
