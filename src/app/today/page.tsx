@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { PaperView } from "@/components/paper/paper-view";
 import { ThreeThings } from "@/components/paper/three-things";
 import { getOrBuildEdition } from "@/lib/edition/build";
+import { supabasePublicConfig } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const metadata = { title: "Today’s Paper · The Morning Paper" };
@@ -31,6 +32,8 @@ export default function TodayPage() {
 
 async function Today() {
   await connection();
+  // Without Supabase (e.g. CI) there are no readers: send visitors home.
+  if (!supabasePublicConfig()) redirect("/");
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },

@@ -4,6 +4,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { getDb } from "@/db";
 import { sectionFor, sectionName } from "@/lib/ranking/rank";
+import { supabasePublicConfig } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { Duels, type Duel } from "./duels";
 
@@ -37,6 +38,8 @@ export default function OnboardingPage() {
 
 async function OnboardingFlow() {
   await connection();
+  // Without Supabase (e.g. CI) there are no readers: send visitors home.
+  if (!supabasePublicConfig()) redirect("/");
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },

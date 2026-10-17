@@ -13,6 +13,7 @@ import {
   userTopicBase,
 } from "@/db/schema";
 import { deriveWeights } from "@/lib/ranking/weights";
+import { supabasePublicConfig } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { TOPICS } from "@/lib/topics";
 import { KnownToggle, TalkToEditor } from "./editor-client";
@@ -52,6 +53,8 @@ const pct = (w: number) => `${Math.round(w * 100)}%`;
 
 async function EditorFile() {
   await connection();
+  // Without Supabase (e.g. CI) there are no readers: send visitors home.
+  if (!supabasePublicConfig()) redirect("/");
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
