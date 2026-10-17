@@ -198,8 +198,9 @@ export function fallbackEnrichment(
     topic: topicHint,
     headline: cleanText(lead.title, 140)!,
     dek: cleanText(lead.description ?? lead.title, 280)!,
+    // Same caps as the LLM path: feed descriptions can run to 2,000 chars.
     brief: articles
-      .map((a) => a.description)
+      .map((a) => cleanText(a.description, 900))
       .filter((d): d is string => !!d)
       .slice(0, 2),
     whyItMatters: null,

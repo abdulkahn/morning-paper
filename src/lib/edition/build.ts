@@ -19,6 +19,8 @@ import { editorNote } from "./editor-note";
 import { selectStoryImage } from "./images";
 import {
   editionSnapshotSchema,
+  recallItemSchema,
+  storySnapshotSchema,
   type EditionSnapshot,
   type RecallItem,
   type SectionSnapshot,
@@ -262,11 +264,30 @@ export async function getOrBuildEdition(
     };
   });
 
+  // ---- Safety net: one malformed story must never take down the paper ----
+  const valid = stories
+    .map((story, i) => ({ story, section: ranked[i].section }))
+    .filter(({ story }) => {
+      const check = storySnapshotSchema.safeParse(story);
+      if (!check.success) {
+        console.error("[edition] dropping invalid story", {
+          clusterId: story.clusterId,
+          issues: check.error.issues.map((x) => x.path.join(".")).slice(0, 5),
+        });
+      }
+      return check.success;
+    });
+  if (!valid.length) throw new Error("no valid stories for this edition");
+  // If the lead was dropped, the next story becomes the lead.
+  valid.forEach((v, i) => {
+    if (i === 0) v.story.tier = "lead";
+    else if (v.story.tier === "lead") v.story.tier = "major";
+  });
+
   // ---- Layout: lead + sections in order of first appearance ----
-  const [lead, ...rest] = stories;
+  const [{ story: lead }, ...rest] = valid;
   const sections: SectionSnapshot[] = [];
-  rest.forEach((s, i) => {
-    const slug = ranked[i + 1].section;
+  rest.forEach(({ story: s, section: slug }) => {
     let section = sections.find((x) => x.slug === slug);
     if (!section) {
       section = { slug, title: sectionName(slug), stories: [] };
@@ -306,7 +327,7 @@ export async function getOrBuildEdition(
       });
     }
   }
-  for (const s of stories) {
+  for (const { story: s } of valid) {
     if (recall.length >= 3) break;
     const f = (factsBy.get(s.clusterId) ?? []).find(
       (x) =>
@@ -324,6 +345,10 @@ export async function getOrBuildEdition(
     }
   }
 
+  const safeRecall = recall.filter(
+    (r) => recallItemSchema.safeParse(r).success,
+  );
+
   const number = (previous?.number ?? 0) + 1;
   const snapshot = editionSnapshotSchema.parse({
     id: "pending",
@@ -337,11 +362,11 @@ export async function getOrBuildEdition(
       weights,
       previousWeights: previous?.weights ?? null,
       continuingCount,
-      leadSection: ranked[0]?.section ?? null,
-    }),
+      leadSection: valid[0].section,
+    }).slice(0, 600),
     lead,
     sections,
-    recall,
+    recall: safeRecall,
   } satisfies EditionSnapshot);
 
   const [row] = await db
