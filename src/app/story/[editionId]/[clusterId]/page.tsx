@@ -14,6 +14,8 @@ import { loadEdition } from "@/lib/edition/load";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { ReadTracker, StoryFeedback } from "./story-client";
 import { StoryVisual } from "@/components/paper/story-visual";
+import { StoryTimeline } from "@/components/paper/story-timeline";
+import { loadStoryTimeline } from "@/lib/edition/timeline-load";
 
 export const metadata = { title: "Story · The Morning Paper" };
 
@@ -48,6 +50,13 @@ async function Story({
   if (!edition || edition.userId !== user.id) notFound();
   const story = allStories(edition).find((s) => s.clusterId === clusterId);
   if (!story) notFound();
+  const timeline = edition.isSample
+    ? []
+    : await loadStoryTimeline(
+        editionId,
+        clusterId,
+        story.continuing?.lastReadAt,
+      );
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
@@ -85,6 +94,7 @@ async function Story({
           </section>
         ) : null}
 
+        <StoryTimeline entries={timeline} />
         <KeyPoints story={story} />
         <Explainers story={story} />
 

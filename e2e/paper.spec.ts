@@ -64,3 +64,11 @@ test("print layout renders the same edition", async ({ page }) => {
     page.getByText("Sample edition — illustrative content."),
   ).toBeVisible();
 });
+
+test("the paper can be listened to", async ({ page }) => {
+  await page.goto("/paper/demo");
+  const listen = page.getByTestId("listen");
+  await expect(
+    listen.getByRole("button", { name: /Listen to your paper/ }),
+  ).toBeVisible();
+});

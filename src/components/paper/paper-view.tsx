@@ -12,6 +12,8 @@ import { ContinuingStories } from "./continuing-stories";
 import { EditionAnchor } from "./edition-anchor";
 import { EditorNote, Masthead } from "./masthead";
 import { StoryVisual } from "./story-visual";
+import { ListenButton } from "./listen-button";
+import { listenScript } from "@/lib/edition/listen";
 import {
   Explainers,
   KeyPoints,
@@ -82,22 +84,25 @@ export function PaperView({
       <Masthead
         edition={edition}
         actions={
-          pdfAvailable ? (
-            <a
-              href={`/api/pdf/${encodeURIComponent(edition.id)}`}
-              className="editorial-button"
-            >
-              Download PDF
-            </a>
-          ) : (
-            <button
-              type="button"
-              disabled
-              className="text-ink-muted min-h-11 border border-current/30 px-4 py-2 text-sm"
-            >
-              PDF unavailable
-            </button>
-          )
+          <div className="flex flex-wrap items-start gap-2">
+            <ListenButton parts={listenScript(edition)} />
+            {pdfAvailable ? (
+              <a
+                href={`/api/pdf/${encodeURIComponent(edition.id)}`}
+                className="editorial-button"
+              >
+                Download PDF
+              </a>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="text-ink-muted min-h-11 border border-current/30 px-4 py-2 text-sm"
+              >
+                PDF unavailable
+              </button>
+            )}
+          </div>
         }
       />
 
