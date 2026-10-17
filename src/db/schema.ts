@@ -12,6 +12,7 @@ import {
   smallint,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
   type AnyPgColumn,
 } from "drizzle-orm/pg-core";
@@ -174,5 +175,110 @@ export const events = pgTable(
       to: authenticatedRole,
       withCheck: ownRow(t.userId),
     }),
+  ],
+).enableRLS();
+
+// ---- News pipeline (global, worker-only) ----
+// RLS is enabled with no reader policies and no reader grants, so only the
+// worker connection (table owner) and service_role can touch these tables.
+
+export const sources = pgTable(
+  "sources",
+  {
+    slug: text("slug").primaryKey(),
+    name: text("name").notNull(),
+    kind: text("kind").notNull().$type<"rss" | "guardian_api">(),
+    url: text("url").notNull(),
+    country: text("country").notNull(),
+    topicHint: text("topic_hint").references(() => topics.slug),
+    quality: real("quality").notNull(),
+    enabled: boolean("enabled").notNull().default(true),
+    lastFetchedAt: timestamp("last_fetched_at", { withTimezone: true }),
+    lastError: text("last_error"),
+    createdAt,
+    updatedAt,
+  },
+  (t) => [
+    check("sources_kind_valid", sql`${t.kind} in ('rss', 'guardian_api')`),
+    check("sources_quality_range", sql`${t.quality} between 0 and 1`),
+  ],
+).enableRLS();
+
+export const articles = pgTable(
+  "articles",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    sourceSlug: text("source_slug")
+      .notNull()
+      .references(() => sources.slug),
+    /** Canonical URL (tracking params stripped). Original links point here. */
+    url: text("url").notNull(),
+    title: text("title").notNull(),
+    description: text("description"),
+    /** Full text when the source licenses it (Guardian API); never displayed. */
+    bodyText: text("body_text"),
+    imageUrl: text("image_url"),
+    author: text("author"),
+    publishedAt: timestamp("published_at", { withTimezone: true }).notNull(),
+    fetchedAt: timestamp("fetched_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    language: text("language").notNull().default("en"),
+    /** Hash of the normalised title, for spotting syndicated copies. */
+    contentHash: text("content_hash").notNull(),
+    topicHint: text("topic_hint").references(() => topics.slug),
+  },
+  (t) => [
+    uniqueIndex("articles_url_key").on(t.url),
+    index("articles_published_idx").on(t.publishedAt),
+    index("articles_content_hash_idx").on(t.contentHash),
+    check("articles_title_len", sql`char_length(${t.title}) between 1 and 300`),
+    check(
+      "articles_description_len",
+      sql`${t.description} is null or char_length(${t.description}) <= 2000`,
+    ),
+    check(
+      "articles_body_len",
+      sql`${t.bodyText} is null or char_length(${t.bodyText}) <= 50000`,
+    ),
+  ],
+).enableRLS();
+
+export const PIPELINE_KINDS = ["ingest", "enrich", "editions"] as const;
+export const PIPELINE_STATUSES = [
+  "running",
+  "succeeded",
+  "partial",
+  "failed",
+] as const;
+
+export const pipelineRuns = pgTable(
+  "pipeline_runs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    kind: text("kind").notNull().$type<(typeof PIPELINE_KINDS)[number]>(),
+    status: text("status")
+      .notNull()
+      .default("running")
+      .$type<(typeof PIPELINE_STATUSES)[number]>(),
+    startedAt: timestamp("started_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    finishedAt: timestamp("finished_at", { withTimezone: true }),
+    stats: jsonb("stats").notNull().default({}),
+    errors: jsonb("errors").notNull().default([]),
+  },
+  (t) => [
+    index("pipeline_runs_kind_started_idx").on(t.kind, t.startedAt),
+    check(
+      "pipeline_runs_kind_valid",
+      sql.raw(`kind in (${PIPELINE_KINDS.map((k) => `'${k}'`).join(", ")})`),
+    ),
+    check(
+      "pipeline_runs_status_valid",
+      sql.raw(
+        `status in (${PIPELINE_STATUSES.map((s) => `'${s}'`).join(", ")})`,
+      ),
+    ),
   ],
 ).enableRLS();

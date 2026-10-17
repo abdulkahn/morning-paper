@@ -15,6 +15,20 @@
       "when": 1792221896684,
       "tag": "0001_table_grants",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792222512418,
+      "tag": "0002_news_pipeline",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792222514332,
+      "tag": "0003_news_pipeline_grants",
+      "breakpoints": true
     }
   ]
 }

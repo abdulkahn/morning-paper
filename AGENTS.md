@@ -26,6 +26,7 @@ Read `SPEC.md` (what), `PLAN.md` (order), `STATUS.md` (now) before working.
 - `npm run check` — lint + typecheck + format check + unit tests (run before every commit)
 - `npm run env:check` — validate `.env.local` and DB connectivity (no secrets printed)
 - `npm run db:generate` / `db:migrate` / `db:seed` — Drizzle migrations and topic seed
+- `npm run ingest` / `ingest:report` / `ingest:probe` — run news ingestion, data-quality report, probe feeds
 
 ## Testing requirements
 

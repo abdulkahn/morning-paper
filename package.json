@@ -17,7 +17,10 @@
     "env:check": "tsx --env-file=.env.local scripts/check-env.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:seed": "tsx --env-file=.env.local scripts/seed-topics.ts"
+    "db:seed": "tsx --env-file=.env.local scripts/seed-topics.ts",
+    "ingest:probe": "tsx scripts/probe-feeds.ts",
+    "ingest": "tsx --env-file-if-exists=.env.local worker/ingest.ts",
+    "ingest:report": "tsx --env-file-if-exists=.env.local scripts/ingest-report.ts"
   },
   "dependencies": {
     "@sparticuz/chromium": "^153.0.0",
@@ -29,6 +32,7 @@
     "postgres": "^3.4.9",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "rss-parser": "^3.13.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
