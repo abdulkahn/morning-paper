@@ -7,9 +7,13 @@ import { StoryVisual } from "./story-visual";
 export function ContinuingStories({
   edition,
   storyHref,
+  sidebar = false,
+  editionHref = "",
 }: {
   edition: EditionSnapshot;
   storyHref?: string;
+  sidebar?: boolean;
+  editionHref?: string;
 }) {
   const stories = continuingStories(edition);
   if (!stories.length) return null;
@@ -17,12 +21,18 @@ export function ContinuingStories({
   return (
     <section
       aria-labelledby="continuing-stories-title"
-      className="border-rule mt-12 border-y py-8"
+      className={
+        sidebar ? "continuing-sidebar" : "border-rule mt-12 border-y py-8"
+      }
     >
       <p className="editorial-eyebrow text-accent">Following the story</p>
       <h2
         id="continuing-stories-title"
-        className="font-display mt-3 text-3xl tracking-tight sm:text-4xl"
+        className={
+          sidebar
+            ? "font-display mt-3 text-2xl leading-tight tracking-tight"
+            : "font-display mt-3 text-3xl tracking-tight sm:text-4xl"
+        }
       >
         More on what you read earlier
       </h2>
@@ -31,7 +41,11 @@ export function ContinuingStories({
         changed in this edition.
       </p>
       <ul
-        className={`mt-7 grid gap-8 ${stories.length > 1 ? "lg:grid-cols-2" : "max-w-4xl"}`}
+        className={
+          sidebar
+            ? "mt-5 grid gap-6"
+            : `mt-7 grid gap-8 ${stories.length > 1 ? "lg:grid-cols-2" : "max-w-4xl"}`
+        }
       >
         {stories.map((story) => {
           const update = story.continuing!;
@@ -41,9 +55,13 @@ export function ContinuingStories({
           return (
             <li
               key={story.clusterId}
-              className={`bg-ink/[0.025] grid min-w-0 gap-5 p-5 ${hasImage ? "sm:grid-cols-[140px_minmax(0,1fr)]" : ""}`}
+              className={
+                sidebar
+                  ? "border-rule min-w-0 border-t pt-4"
+                  : `bg-ink/[0.025] grid min-w-0 gap-5 p-5 ${hasImage ? "sm:grid-cols-[140px_minmax(0,1fr)]" : ""}`
+              }
             >
-              {hasImage && (
+              {!sidebar && hasImage && (
                 <div>
                   <StoryVisual story={story} />
                 </div>
@@ -72,7 +90,7 @@ export function ContinuingStories({
                   href={
                     storyHref
                       ? `${storyHref}/${encodeURIComponent(story.clusterId)}`
-                      : `#${encodeURIComponent(storyAnchorId(story.id))}`
+                      : `${editionHref}#${encodeURIComponent(storyAnchorId(story.id))}`
                   }
                   aria-label={`Read update: ${story.headline}`}
                   className="mt-4 inline-flex min-h-11 items-center gap-5 text-sm underline underline-offset-4"

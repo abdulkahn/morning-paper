@@ -306,6 +306,27 @@ input {
   gap: 24px;
   align-content: start;
 }
+.continuing-sidebar {
+  min-width: 0;
+  align-self: start;
+  background: #f6f6f6;
+  border-top: 4px solid var(--accent);
+  padding: 20px;
+}
+.paper-top-grid {
+  display: grid;
+  gap: 24px;
+  margin-top: 28px;
+  align-items: start;
+}
+.paper-top-grid > .news-lead {
+  margin-top: 0;
+}
+@media (min-width: 1024px) {
+  .paper-top-grid {
+    grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr);
+  }
+}
 .news-card {
   border-bottom: 1px solid var(--rule);
   padding-bottom: 20px;
@@ -406,7 +427,6 @@ input {
   .news-home-grid {
     grid-template-columns: 1fr;
   }
-  .news-home-side,
   .news-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;

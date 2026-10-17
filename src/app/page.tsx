@@ -2,6 +2,7 @@ import Link from "next/link";
 import { StartButton } from "./start/start-button";
 import { SAMPLE_EDITION } from "@/fixtures/sample-edition";
 import { StoryVisual } from "@/components/paper/story-visual";
+import { ContinuingStories } from "@/components/paper/continuing-stories";
 import { storyAnchorId } from "@/lib/edition/continuing";
 import type { StorySnapshot } from "@/lib/edition/schema";
 
@@ -53,7 +54,6 @@ export default function Home() {
           <h2 id="sample-top-title" className="news-section-heading">
             Top stories
           </h2>
-          <p className="sample-label">Sample edition · Illustrative content</p>
         </div>
         <div className="news-home-grid">
           <article className="news-home-lead">
@@ -78,14 +78,19 @@ export default function Home() {
               </a>
             </div>
           </article>
-          <div className="news-home-side">
-            {firstSection.stories.slice(0, 2).map((story) => (
-              <SampleCard key={story.id} story={story} />
-            ))}
-          </div>
+          <aside className="news-home-side" aria-label="Your reading updates">
+            <p className="sample-label">
+              Sample edition · Illustrative content
+            </p>
+            <ContinuingStories
+              edition={SAMPLE_EDITION}
+              sidebar
+              editionHref="/paper/demo"
+            />
+          </aside>
         </div>
       </section>
-      {[firstSection, ...remainingSections].map((section, index) => (
+      {[firstSection, ...remainingSections].map((section) => (
         <section
           id={`sample-${section.slug}`}
           aria-labelledby={`sample-heading-${section.slug}`}
@@ -99,11 +104,9 @@ export default function Home() {
             {section.title}
           </h2>
           <div className="news-card-grid">
-            {(index === 0 ? section.stories.slice(2) : section.stories).map(
-              (story) => (
-                <SampleCard key={story.id} story={story} />
-              ),
-            )}
+            {section.stories.map((story) => (
+              <SampleCard key={story.id} story={story} />
+            ))}
           </div>
         </section>
       ))}

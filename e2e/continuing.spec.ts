@@ -1,5 +1,38 @@
 import { expect, test } from "@playwright/test";
 
+test("reading updates occupy the right column beneath the sample label", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  for (const route of ["/", "/paper/demo"]) {
+    await page.goto(route);
+    const sidebar = page.getByRole("complementary", {
+      name: "Your reading updates",
+    });
+    const updates = sidebar.getByRole("region", {
+      name: "More on what you read earlier",
+    });
+    const label = sidebar.getByText("Sample edition · Illustrative content", {
+      exact: true,
+    });
+    await expect(updates).toBeVisible();
+    const lead = await page
+      .locator(route === "/" ? ".news-home-lead" : ".news-lead")
+      .boundingBox();
+    const box = await updates.boundingBox();
+    const labelBox = await label.boundingBox();
+    expect(box!.x).toBeGreaterThanOrEqual(lead!.x + lead!.width);
+    expect(box!.y).toBeGreaterThanOrEqual(labelBox!.y + labelBox!.height);
+  }
+  await page.goto("/");
+  await page
+    .getByRole("complementary", { name: "Your reading updates" })
+    .getByRole("link", { name: /Read update:/ })
+    .click();
+  await expect(page).toHaveURL(/\/paper\/demo#story-eu-ai-rules$/);
+  await expect(page.locator('[data-story-id="eu-ai-rules"]')).toBeInViewport();
+});
+
 test("dedicated updates link to the original story without moving or duplicating full stories", async ({
   page,
 }) => {

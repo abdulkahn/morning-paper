@@ -119,9 +119,25 @@ export function PaperView({
         <EditorNote note={edition.editorNote} />
       </div>
 
-      <LeadStory story={edition.lead} href={storyHref} />
-
-      <ContinuingStories edition={edition} storyHref={storyHref} />
+      <div
+        className={continuingStories(edition).length ? "paper-top-grid" : ""}
+      >
+        <LeadStory story={edition.lead} href={storyHref} />
+        {continuingStories(edition).length > 0 && (
+          <aside aria-label="Your reading updates" className="space-y-4">
+            {edition.isSample && (
+              <p className="sample-label">
+                Sample edition · Illustrative content
+              </p>
+            )}
+            <ContinuingStories
+              edition={edition}
+              storyHref={storyHref}
+              sidebar
+            />
+          </aside>
+        )}
+      </div>
 
       {edition.sections.map((section) => (
         <Section key={section.slug} section={section} href={storyHref} />
