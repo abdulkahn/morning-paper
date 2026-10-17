@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f7f3ea;
+  --ink: #1a1a1a;
+  --ink-muted: #5c5750;
+  --rule: #1a1a1a;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-rule: var(--rule);
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-serif: var(--font-source-serif), Georgia, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #16140f;
+    --ink: #ece6d8;
+    --ink-muted: #a59d8e;
+    --rule: #ece6d8;
+  }
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-source-serif), Georgia, serif;
+}
