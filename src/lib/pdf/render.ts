@@ -42,6 +42,29 @@ export async function renderPdfFromUrl(url: string): Promise<Uint8Array> {
     // Never print an error page: the real print layout must be present.
     await page.waitForSelector(".print-root", { timeout: 15_000 });
     await page.evaluate(() => document.fonts.ready);
+    // Wait (bounded) for photos; drop any that failed so the page never
+    // prints a broken-image box. The story still prints without its photo.
+    await page.evaluate(async () => {
+      const imgs = Array.from(document.images);
+      await Promise.race([
+        Promise.all(
+          imgs.map((img) =>
+            img.complete
+              ? null
+              : new Promise((done) => {
+                  img.addEventListener("load", done, { once: true });
+                  img.addEventListener("error", done, { once: true });
+                }),
+          ),
+        ),
+        new Promise((done) => setTimeout(done, 8000)),
+      ]);
+      for (const img of imgs) {
+        if (!img.complete || img.naturalWidth === 0) {
+          (img.closest("[data-photo]") ?? img).remove();
+        }
+      }
+    });
     const pdf = await page.pdf({
       preferCSSPageSize: true,
       printBackground: true,
