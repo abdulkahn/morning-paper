@@ -21,6 +21,7 @@ function story(
 ): StorySnapshot {
   return {
     clusterId: `cluster-${s.id}`,
+    whyItMatters: null,
     brief: [],
     keyPoints: [],
     whyInPaper: null,
@@ -78,6 +79,7 @@ const sampleEdition: EditionSnapshot = {
   editorNote:
     "Good morning. This is a sample edition showing how your paper will look. Once you've read a few papers, this note will tell you what your editor has learned — which stories you lean into, which you skip, and how today's paper was shaped around that.",
   lead,
+  recall: [],
   sections: [
     {
       slug: "ai",

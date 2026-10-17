@@ -31,6 +31,7 @@ export const storySnapshotSchema = z.object({
   topic: z.string().min(1).max(40),
   headline: z.string().min(1).max(160),
   dek: z.string().min(1).max(280),
+  whyItMatters: z.string().max(400).nullable(),
   brief: z.array(z.string().min(1).max(1200)).max(4),
   keyPoints: z.array(z.string().min(1).max(240)).max(5),
   whyInPaper: z.string().max(160).nullable(),
@@ -41,6 +42,17 @@ export const storySnapshotSchema = z.object({
   readMinutes: z.number().positive().max(10),
 });
 export type StorySnapshot = z.infer<typeof storySnapshotSchema>;
+
+export const recallItemSchema = z.object({
+  factId: z.string().min(1),
+  storyHeadline: z.string().min(1).max(160),
+  question: z.string().min(1).max(240),
+  options: z.array(z.string().min(1).max(120)).length(4),
+  answerIndex: z.number().int().min(0).max(3),
+  /** True when this resurfaces a fact the reader got wrong before. */
+  resurfaced: z.boolean(),
+});
+export type RecallItem = z.infer<typeof recallItemSchema>;
 
 export const sectionSnapshotSchema = z.object({
   slug: z.string().min(1),
@@ -61,6 +73,7 @@ export const editionSnapshotSchema = z
     editorNote: z.string().max(600).nullable(),
     lead: storySnapshotSchema,
     sections: z.array(sectionSnapshotSchema),
+    recall: z.array(recallItemSchema).max(3),
   })
   .refine((e) => e.lead.tier === "lead", {
     message: "lead story must have tier 'lead'",

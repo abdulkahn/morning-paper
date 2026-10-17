@@ -3,6 +3,7 @@ import {
   bigint,
   boolean,
   check,
+  date,
   index,
   jsonb,
   pgPolicy,
@@ -382,5 +383,108 @@ export const storyFacts = pgTable(
   (t) => [
     index("story_facts_cluster_idx").on(t.clusterId, t.firstSeenAt),
     check("story_facts_importance", sql`${t.importance} between 1 and 3`),
+  ],
+).enableRLS();
+
+// ---- Reader memory (per user, RLS: own rows only) ----
+
+/** A frozen daily paper. `snapshot` is an EditionSnapshot; never re-rendered. */
+export const editions = pgTable(
+  "editions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => profiles.userId, { onDelete: "cascade" }),
+    editionDate: date("edition_date").notNull(),
+    number: integer("number").notNull(),
+    /** The moment the paper reflects (news and reading history up to here). */
+    asOf: timestamp("as_of", { withTimezone: true }).notNull(),
+    snapshot: jsonb("snapshot").notNull(),
+    weights: jsonb("weights").$type<Record<string, number>>().notNull(),
+    createdAt,
+  },
+  (t) => [
+    uniqueIndex("editions_user_date_key").on(t.userId, t.editionDate),
+    pgPolicy("read own editions", {
+      for: "select",
+      to: authenticatedRole,
+      using: ownRow(t.userId),
+    }),
+  ],
+).enableRLS();
+
+/** Exposure memory: when a reader last read each developing story. */
+export const storyReads = pgTable(
+  "story_reads",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => profiles.userId, { onDelete: "cascade" }),
+    clusterId: uuid("cluster_id")
+      .notNull()
+      .references(() => storyClusters.id, { onDelete: "cascade" }),
+    lastReadAt: timestamp("last_read_at", { withTimezone: true }).notNull(),
+    readCount: integer("read_count").notNull().default(1),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.clusterId] }),
+    pgPolicy("read own story reads", {
+      for: "select",
+      to: authenticatedRole,
+      using: ownRow(t.userId),
+    }),
+  ],
+).enableRLS();
+
+/** Knowledge memory: how often a reader has met each concept. */
+export const readerConcepts = pgTable(
+  "reader_concepts",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => profiles.userId, { onDelete: "cascade" }),
+    conceptId: uuid("concept_id")
+      .notNull()
+      .references(() => concepts.id, { onDelete: "cascade" }),
+    exposures: integer("exposures").notNull().default(0),
+    known: boolean("known").notNull().default(false),
+    lastSeenAt: timestamp("last_seen_at", { withTimezone: true }).notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.conceptId] }),
+    pgPolicy("read own concepts", {
+      for: "select",
+      to: authenticatedRole,
+      using: ownRow(t.userId),
+    }),
+  ],
+).enableRLS();
+
+/** Three Things answers; wrong answers resurface in later editions. */
+export const recallAnswers = pgTable(
+  "recall_answers",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => profiles.userId, { onDelete: "cascade" }),
+    editionId: uuid("edition_id")
+      .notNull()
+      .references(() => editions.id, { onDelete: "cascade" }),
+    factId: uuid("fact_id")
+      .notNull()
+      .references(() => storyFacts.id, { onDelete: "cascade" }),
+    chosenIndex: smallint("chosen_index").notNull(),
+    correct: boolean("correct").notNull(),
+    createdAt,
+  },
+  (t) => [
+    uniqueIndex("recall_answers_once").on(t.userId, t.editionId, t.factId),
+    pgPolicy("read own answers", {
+      for: "select",
+      to: authenticatedRole,
+      using: ownRow(t.userId),
+    }),
   ],
 ).enableRLS();
