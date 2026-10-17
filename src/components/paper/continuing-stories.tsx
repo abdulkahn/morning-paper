@@ -9,14 +9,17 @@ export function ContinuingStories({
   storyHref,
   sidebar = false,
   editionHref = "",
+  showEmpty = false,
 }: {
   edition: EditionSnapshot;
   storyHref?: string;
   sidebar?: boolean;
   editionHref?: string;
+  /** Show the section with a short note when there are no updates yet. */
+  showEmpty?: boolean;
 }) {
   const stories = continuingStories(edition);
-  if (!stories.length) return null;
+  if (!stories.length && !showEmpty) return null;
 
   return (
     <section
@@ -40,6 +43,15 @@ export function ContinuingStories({
         New developments in stories you&rsquo;ve already read. Here&rsquo;s what
         changed in this edition.
       </p>
+      {stories.length === 0 ? (
+        <p
+          className="border-rule text-ink-muted mt-5 border-t pt-4 text-sm leading-relaxed"
+          data-testid="continuing-empty"
+        >
+          Nothing new yet. Read a few stories today: when any of them moves on,
+          the update will be waiting here in your next paper.
+        </p>
+      ) : null}
       <ul
         className={
           sidebar

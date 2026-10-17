@@ -47,6 +47,10 @@ export function PaperView({
   const archiveHref = context?.archiveHref ?? "/archive";
   const todayHref = context?.todayHref ?? "/today";
   const pdfAvailable = context?.pdfAvailable ?? edition.id === "demo";
+  // Today's paper always shows the updates column (empty until a story the
+  // reader read moves on); archived editions show it only if it had updates.
+  const showUpdates =
+    continuingStories(edition).length > 0 || !context?.archived;
   return (
     <main className="edition-shell mx-auto w-full flex-1 px-5 py-8 sm:px-10">
       <EditionAnchor />
@@ -124,11 +128,9 @@ export function PaperView({
         <EditorNote note={edition.editorNote} />
       </div>
 
-      <div
-        className={continuingStories(edition).length ? "paper-top-grid" : ""}
-      >
+      <div className={showUpdates ? "paper-top-grid" : ""}>
         <LeadStory story={edition.lead} href={storyHref} />
-        {continuingStories(edition).length > 0 && (
+        {showUpdates && (
           <aside aria-label="Your reading updates" className="space-y-4">
             {edition.isSample && (
               <p className="sample-label">
@@ -139,6 +141,7 @@ export function PaperView({
               edition={edition}
               storyHref={storyHref}
               sidebar
+              showEmpty={!context?.archived}
             />
           </aside>
         )}
