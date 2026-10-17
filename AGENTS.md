@@ -27,6 +27,9 @@ Read `SPEC.md` (what), `PLAN.md` (order), `STATUS.md` (now) before working.
 - `npm run env:check` — validate `.env.local` and DB connectivity (no secrets printed)
 - `npm run db:generate` / `db:migrate` / `db:seed` — Drizzle migrations and topic seed
 - `npm run ingest` / `ingest:report` / `ingest:probe` — run news ingestion, data-quality report, probe feeds
+- `npm run edition:build -- "Name" [--rebuild] [--next-day]` — TESTING ONLY: build, rebuild today's, or simulate tomorrow's paper for one named reader (CLI only; the site keeps daily editions frozen)
+- `npm run demo:seed -- "Name"` — simulated reading history for one explicitly named demo reader (wipes that reader's history; never guesses)
+- `npx tsx --env-file=.env.local scripts/compare-readers.ts [--persist]` — two opposite readers through real onboarding + ranking; must share ≤ 3 of 12 stories
 
 ## Testing requirements
 

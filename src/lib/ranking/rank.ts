@@ -31,13 +31,24 @@ export interface Ranked extends Candidate {
   section: string;
 }
 
+// Interest dominates: two readers with different tastes must get materially
+// different papers from the same day's news. Measured with
+// scripts/compare-readers.ts (opposite readers, same news).
 export const WEIGHTS = {
-  interest: 0.4,
-  importance: 0.25,
-  freshness: 0.15,
-  coverage: 0.1,
-  novelty: 0.1,
+  interest: 0.6,
+  importance: 0.2,
+  freshness: 0.1,
+  coverage: 0.05,
+  novelty: 0.05,
 } as const;
+
+/** Topics at or below this weight are treated as dislikes and left out... */
+export const DISLIKE_BELOW = 0.15;
+/** ...unless the story is this important (e.g. a major world event). */
+export const DISLIKE_OVERRIDE_IMPORTANCE = 5;
+/** Explicitly loved topics (onboarding love = 0.85) skip most of the variety
+ * penalty; moderate interests still leave room for other news. */
+const LOVED = 0.8;
 
 /** Reading budget (minutes) → number of stories in the paper. */
 export const STORY_COUNT: Record<number, number> = { 5: 5, 15: 12, 25: 18 };
@@ -72,8 +83,11 @@ export function scoreCandidate(
     0,
     (now.getTime() - c.lastArticleAt.getTime()) / 36e5,
   );
+  const interest = interestFor(c.topic, weights);
   const parts = {
-    interest: interestFor(c.topic, weights),
+    // Squared so a loved topic (0.8 -> 0.64) far outranks a neutral one
+    // (0.3 -> 0.09); the breakdown reports this relevance, not the raw weight.
+    interest: interest * interest,
     importance: Math.min(5, Math.max(1, c.importance)) / 5,
     freshness: Math.pow(0.5, ageHours / 18),
     coverage: Math.min(1, c.sourceCount / 4),
@@ -105,6 +119,11 @@ export function rankEdition(
         !(c.topic && (muted.has(c.topic) || muted.has(sectionFor(c.topic)))),
     )
     .filter((c) => !c.readBefore || c.newFactCount > 0)
+    .filter(
+      (c) =>
+        interestFor(c.topic, weights) > DISLIKE_BELOW ||
+        c.importance >= DISLIKE_OVERRIDE_IMPORTANCE,
+    )
     .map((c) => ({ c, score: scoreCandidate(c, weights, now) }));
 
   const picked: { c: Candidate; score: ScoreBreakdown; adjusted: number }[] =
@@ -115,7 +134,8 @@ export function rankEdition(
     let bestScore = -Infinity;
     pool.forEach((p, i) => {
       const repeats = perSection.get(sectionFor(p.c.topic)) ?? 0;
-      const adjusted = p.score.total * Math.pow(0.85, repeats);
+      const loved = interestFor(p.c.topic, weights) >= LOVED;
+      const adjusted = p.score.total * Math.pow(loved ? 0.97 : 0.85, repeats);
       if (adjusted > bestScore) {
         bestScore = adjusted;
         best = i;

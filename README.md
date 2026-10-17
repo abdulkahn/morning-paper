@@ -26,7 +26,8 @@ Live: https://morning-paper-mocha.vercel.app · Sample paper: `/paper/demo` · P
 - **Story clustering** — Voyage `voyage-4-lite` embeddings + key-term overlap group reports of the same developing story (86.8% on 129 hand-labelled headline pairs, recall 0.98). Offline hash-embedding fallback.
 - **AI enrichment** — one structured-output call per story (Claude Opus 5.5 for the biggest, Haiku 5.5 for the rest): headline, brief, why it matters, key points, concept explainers, atomic timestamped facts for the fact ledger, and a recall question. Output is schema-validated and length-capped; failures fall back to deterministic copy.
 - **Onboarding** — six duels between today's real headlines, a name and a reading length (5 / 15 / 25 minutes).
-- **Personal ranking** — transparent weighted score (interest 0.40, importance 0.25, freshness 0.15, coverage 0.10, novelty 0.10), a reading budget, a diversity penalty and lead / major / standard / brief tiers. Two readers get different front pages from the same news.
+- **Personal ranking** — transparent weighted score where reader interest dominates (interest² × 0.60, importance 0.20, freshness 0.10, coverage 0.05, novelty 0.05), disliked or muted topics left out unless a story is top importance, a reading budget, a variety penalty (relaxed for loved topics) and lead / major / standard / brief tiers. Measured on real news: two opposite readers (AI vs football) share 0 of 12 stories.
+- **Onboarding** — headline duels plus optional "love / never show" topic chips and a free-text note interpreted like Talk to Your Editor.
 - **Learning** — More / Less like this (strong) and opening a story (weak, capped) adjust interest weights for future editions.
 - **Daily edition** — frozen per reader per day; reloading never reorders it.
 - **Archive** — previous editions exactly as received.
@@ -93,7 +94,7 @@ npm run dev
 
 Useful scripts: `npm run env:check -- --ping` (verify keys without printing them), `npm run ingest:report` (data quality), `npm run stories` (inspect enriched stories), `npm run cluster:calibrate` (re-measure clustering).
 
-**Demo history.** `npm run demo:seed` gives the most recent reader a _simulated_ day of reading on real news (yesterday's edition, a few stories read, one More / one Less, one missed recall answer) and then builds today's paper, so Since You Last Read, the Editor's Note and a resurfaced recall question can be shown in one sitting. Only the reader's past behaviour is simulated; every story and fact is real.
+**Demo history.** `npm run demo:seed -- "Reader Name"` gives that explicitly named reader a _simulated_ day of reading on real news (yesterday's edition, a few stories read, one More / one Less, one missed recall answer) and then builds today's paper, so Since You Last Read, the Editor's Note and a resurfaced recall question can be shown in one sitting. Only the reader's past behaviour is simulated; every story and fact is real.
 
 ## Tests
 

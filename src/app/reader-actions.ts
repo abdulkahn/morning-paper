@@ -16,8 +16,11 @@ import {
   storyReads,
   userTopicBase,
 } from "@/db/schema";
+import Anthropic from "@anthropic-ai/sdk";
+import { parseInstruction, planChanges } from "@/lib/editor/talk";
 import { editionSnapshotSchema } from "@/lib/edition/schema";
-import { sectionFor } from "@/lib/ranking/rank";
+import { getEnv } from "@/lib/env";
+import { onboardingWeights } from "@/lib/ranking/onboarding";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { TOPIC_SLUGS } from "@/lib/topics";
 
@@ -49,24 +52,51 @@ const onboardingSchema = z.object({
     .array(
       z.object({ winner: z.enum(TOPIC_SLUGS), loser: z.enum(TOPIC_SLUGS) }),
     )
-    .min(1)
     .max(12),
+  loves: z.array(z.enum(TOPIC_SLUGS)).max(17).default([]),
+  nevers: z.array(z.enum(TOPIC_SLUGS)).max(17).default([]),
+  note: z.string().trim().max(300).optional(),
 });
 
-/** Turns headline duels into base interest weights and opens today's paper. */
+/**
+ * Turns onboarding (headline duels, love / never-show topics and an optional
+ * note in the reader's own words) into base interest weights, then opens
+ * today's paper.
+ */
 export async function finishOnboarding(
-  input: z.infer<typeof onboardingSchema>,
+  input: z.input<typeof onboardingSchema>,
 ) {
   const userId = await requireUser();
-  const { name, minutes, choices } = onboardingSchema.parse(input);
+  const { name, minutes, choices, loves, nevers, note } =
+    onboardingSchema.parse(input);
 
-  const weights = new Map<string, number>();
-  const bump = (topic: string, d: number) =>
-    weights.set(topic, (weights.get(topic) ?? 0.3) + d);
-  for (const { winner, loser } of choices) {
-    bump(winner, 0.25);
-    if (sectionFor(winner) !== winner) bump(sectionFor(winner), 0.1);
-    bump(loser, -0.1);
+  const { weights, muted } = onboardingWeights({
+    choices,
+    loves,
+    nevers: nevers.filter((t) => !loves.includes(t)),
+  });
+
+  // The note goes through the same validated parser as Talk to Your Editor.
+  if (note && note.length >= 2) {
+    const env = getEnv();
+    const client =
+      env.LLM_MODE === "live" && env.ANTHROPIC_API_KEY
+        ? new Anthropic({
+            apiKey: env.ANTHROPIC_API_KEY,
+            maxRetries: 1,
+            timeout: 15_000,
+          })
+        : null;
+    const parsed = await parseInstruction(note, {
+      client,
+      model: env.LLM_BULK_MODEL,
+    });
+    const current = Object.fromEntries(weights);
+    for (const d of planChanges(parsed, current, muted)) {
+      weights.set(d.topic, d.after);
+      if (d.mutedAfter) muted.add(d.topic);
+      else muted.delete(d.topic);
+    }
   }
 
   const db = getDb();
@@ -76,27 +106,32 @@ export async function finishOnboarding(
       .set({
         displayName: name,
         readingMinutes: minutes,
+        readerContext: note || null,
         onboardedAt: new Date(),
       })
       .where(eq(profiles.userId, userId));
     await tx.delete(userTopicBase).where(eq(userTopicBase.userId, userId));
-    if (weights.size) {
+    const topics = new Set([...weights.keys(), ...muted]);
+    if (topics.size) {
       await tx.insert(userTopicBase).values(
-        [...weights].map(([topicSlug, w]) => ({
+        [...topics].map((topicSlug) => ({
           userId,
           topicSlug,
-          baseWeight: Math.min(1, Math.max(0.02, Math.round(w * 100) / 100)),
+          baseWeight: weights.get(topicSlug) ?? 0.02,
+          muted: muted.has(topicSlug),
         })),
       );
     }
-    await tx.insert(events).values(
-      choices.map((c) => ({
-        userId,
-        type: "pair_choice" as const,
-        topicSlug: c.winner,
-        value: { loser: c.loser },
-      })),
-    );
+    if (choices.length) {
+      await tx.insert(events).values(
+        choices.map((c) => ({
+          userId,
+          type: "pair_choice" as const,
+          topicSlug: c.winner,
+          value: { loser: c.loser },
+        })),
+      );
+    }
   });
   redirect("/today");
 }

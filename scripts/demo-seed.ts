@@ -3,9 +3,13 @@
 // in one sitting. All stories and facts are real ingested news; only the
 // reader's past behaviour is simulated. Never presented as live history.
 //
-//   npm run demo:seed                  (most recently onboarded reader)
-//   npm run demo:seed -- <userId> [hoursAgo=20]
-import { and, desc, eq, inArray, isNotNull, ne } from "drizzle-orm";
+//   npm run demo:seed -- "Reader Name" [--hours 20]
+//   npm run demo:seed -- --id <userId> [--hours 20]
+//
+// It WIPES and rewrites that reader's editions and reading history, so it
+// never guesses a target: you must name the demo reader explicitly. Ordinary
+// recommendation testing is never affected by it.
+import { and, desc, eq, inArray, ne } from "drizzle-orm";
 import { closeDb, getDb } from "../src/db";
 import {
   clusterConcepts,
@@ -22,18 +26,32 @@ import { allStories } from "../src/lib/edition/schema";
 
 async function main() {
   const db = getDb();
-  const [argUser, argHours] = process.argv.slice(2);
-  const hoursAgo = Number(argHours ?? 20);
+  const args = process.argv.slice(2);
+  const flag = (f: string) => {
+    const i = args.indexOf(f);
+    return i >= 0 ? args[i + 1] : undefined;
+  };
+  const id = flag("--id");
+  const name = args[0] && !args[0].startsWith("--") ? args[0] : undefined;
+  const hoursAgo = Number(flag("--hours") ?? 20);
+  if (!id && !name) {
+    throw new Error(
+      'demo:seed needs an explicit reader: npm run demo:seed -- "Reader Name" (or --id <userId>). It rewrites that reader\'s history.',
+    );
+  }
 
-  const [reader] = argUser
-    ? await db.select().from(profiles).where(eq(profiles.userId, argUser))
-    : await db
-        .select()
-        .from(profiles)
-        .where(isNotNull(profiles.onboardedAt))
-        .orderBy(desc(profiles.onboardedAt))
-        .limit(1);
-  if (!reader) throw new Error("no onboarded reader found");
+  const matches = await db
+    .select()
+    .from(profiles)
+    .where(id ? eq(profiles.userId, id) : eq(profiles.displayName, name!))
+    .orderBy(desc(profiles.onboardedAt));
+  if (!matches.length) throw new Error(`no reader found for ${id ?? name}`);
+  if (matches.length > 1 && !id) {
+    throw new Error(
+      `${matches.length} readers are called "${name}". Re-run with --id: ${matches.map((m) => m.userId).join(", ")}`,
+    );
+  }
+  const reader = matches[0];
   const userId = reader.userId;
   console.log(
     `seeding simulated history for ${reader.displayName} (${userId})`,

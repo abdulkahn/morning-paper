@@ -86,6 +86,63 @@ describe("rankEdition", () => {
   });
 });
 
+describe("personalisation strength", () => {
+  // A realistic day: a few huge general stories plus niche topics.
+  const topics = [
+    "ai",
+    "robotics",
+    "technology",
+    "football",
+    "cricket",
+    "sport",
+    "world",
+    "pakistan",
+    "health",
+    "business",
+    "politics",
+    "culture",
+  ];
+  const day: Candidate[] = topics.flatMap((t, ti) =>
+    Array.from({ length: 4 }, (_, k) =>
+      c(`${t}-${k}`, t, {
+        importance: (ti + k) % 3 === 0 ? 5 : 3,
+        sourceCount: 1 + ((ti + k) % 5),
+        lastArticleAt: new Date(NOW.getTime() - ((ti * 4 + k) % 20) * 36e5),
+      }),
+    ),
+  );
+
+  it("gives opposite readers mostly different papers", () => {
+    const techie = rankEdition(
+      day,
+      { ai: 0.85, robotics: 0.85, technology: 0.85, sport: 0.02 },
+      new Set(["sport"]),
+      15,
+      NOW,
+    );
+    const fan = rankEdition(
+      day,
+      { football: 0.85, sport: 0.85, ai: 0.02, technology: 0.02 },
+      new Set(["ai", "technology"]),
+      15,
+      NOW,
+    );
+    const shared = techie.filter((r) =>
+      fan.some((f) => f.clusterId === r.clusterId),
+    );
+    expect(shared.length).toBeLessThanOrEqual(3);
+    expect(techie[0].topic).toMatch(/ai|robotics|technology/);
+    expect(fan[0].topic).toMatch(/football|cricket|sport/);
+  });
+
+  it("leaves out disliked topics unless the story is top importance", () => {
+    const out = rankEdition(day, { culture: 0.05 }, new Set(), 25, NOW);
+    for (const r of out.filter((x) => x.topic === "culture")) {
+      expect(r.importance).toBe(5);
+    }
+  });
+});
+
 describe("scores and reasons", () => {
   it("decays freshness and explains continuing stories", () => {
     const fresh = scoreCandidate(c("a", "ai"), {}, NOW);

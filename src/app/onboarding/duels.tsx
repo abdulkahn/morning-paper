@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { finishOnboarding } from "../reader-actions";
-import type { TopicSlug } from "@/lib/topics";
+import { TOPICS, type TopicSlug } from "@/lib/topics";
 
 export interface Duel {
   a: { headline: string; topic: string; section: string };
@@ -22,6 +22,16 @@ export function Duels({ duels }: { duels: Duel[] }) {
   >([]);
   const [name, setName] = useState("");
   const [minutes, setMinutes] = useState<5 | 15 | 25>(15);
+  const [prefs, setPrefs] = useState<Record<string, "love" | "never">>({});
+  const [note, setNote] = useState("");
+  const cycle = (slug: string) =>
+    setPrefs((p) => {
+      const next = { ...p };
+      if (!p[slug]) next[slug] = "love";
+      else if (p[slug] === "love") next[slug] = "never";
+      else delete next[slug];
+      return next;
+    });
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
@@ -85,9 +95,14 @@ export function Duels({ duels }: { duels: Duel[] }) {
             await finishOnboarding({
               name: name.trim() || "Reader",
               minutes,
-              choices: choices.length
-                ? choices
-                : [{ winner: "world", loser: "culture" }],
+              choices,
+              loves: Object.keys(prefs).filter(
+                (k) => prefs[k] === "love",
+              ) as TopicSlug[],
+              nevers: Object.keys(prefs).filter(
+                (k) => prefs[k] === "never",
+              ) as TopicSlug[],
+              note: note.trim() || undefined,
             });
           } catch (err) {
             if (err && typeof err === "object" && "digest" in err) throw err; // redirect
@@ -108,6 +123,51 @@ export function Duels({ duels }: { duels: Duel[] }) {
           className="border-rule bg-paper mt-2 block w-full rounded-md border px-3 py-2"
         />
       </label>
+      <fieldset>
+        <legend className="text-sm font-medium">
+          Tune your paper{" "}
+          <span className="text-ink-muted font-normal">
+            (optional — tap once to love, twice to never show)
+          </span>
+        </legend>
+        <div className="mt-3 flex flex-wrap gap-2" data-testid="topic-chips">
+          {TOPICS.map((t) => {
+            const state = prefs[t.slug];
+            return (
+              <button
+                key={t.slug}
+                type="button"
+                aria-pressed={!!state}
+                aria-label={`${t.name}: ${state === "love" ? "love" : state === "never" ? "never show" : "no preference"}`}
+                onClick={() => cycle(t.slug)}
+                className={`rounded-full border px-3 py-1 text-sm transition-colors ${
+                  state === "love"
+                    ? "border-green-700 bg-green-700 text-white"
+                    : state === "never"
+                      ? "border-accent text-accent line-through"
+                      : "border-rule"
+                }`}
+              >
+                {state === "love" ? "♥ " : ""}
+                {t.name}
+              </button>
+            );
+          })}
+        </div>
+        <label className="mt-4 block">
+          <span className="text-sm">
+            Anything else your editor should know?
+          </span>
+          <input
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            maxLength={300}
+            placeholder="e.g. AI and robotics, Pakistani startups — no celebrity news"
+            aria-label="Anything else your editor should know"
+            className="border-rule bg-paper mt-2 block w-full rounded-md border px-3 py-2"
+          />
+        </label>
+      </fieldset>
       <fieldset>
         <legend className="text-sm font-medium">
           How long is your morning read?
