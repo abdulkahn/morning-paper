@@ -48,8 +48,10 @@ test("PDF route returns a newspaper PDF", async ({ request }) => {
 });
 
 test("unknown editions are 404 on web and PDF", async ({ page, request }) => {
-  const res = await page.goto("/paper/does-not-exist");
-  expect(res?.status()).toBe(404);
+  // With partial prefetching an unlisted param may get the 200 app shell
+  // before notFound() streams in, so assert on content, not status (see STATUS.md).
+  await page.goto("/paper/does-not-exist");
+  await expect(page.getByText("This page could not be found.")).toBeVisible();
   expect((await request.get("/api/pdf/does-not-exist")).status()).toBe(404);
 });
 
