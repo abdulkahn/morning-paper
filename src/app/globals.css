@@ -5,6 +5,7 @@
   --ink: #1a1a1a;
   --ink-muted: #5c5750;
   --rule: #1a1a1a;
+  --accent: #a4161a;
 }
 
 @theme inline {
@@ -12,6 +13,7 @@
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
   --color-rule: var(--rule);
+  --color-accent: var(--accent);
   --font-display: var(--font-playfair), Georgia, serif;
   --font-serif: var(--font-source-serif), Georgia, serif;
 }
@@ -22,6 +24,7 @@
     --ink: #ece6d8;
     --ink-muted: #a59d8e;
     --rule: #ece6d8;
+    --accent: #e5736b;
   }
 }
 
@@ -29,4 +32,58 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-source-serif), Georgia, serif;
+}
+
+/* ---- Print / PDF edition (rendered by /print/[editionId]) ---- */
+
+/* Shrink rem-based utilities so shared components fit newspaper columns. */
+html:has(.print-root) {
+  font-size: 12px;
+}
+
+body:has(.print-root) {
+  background: #fff;
+  color: #111;
+}
+
+.print-root {
+  --paper: #fff;
+  --ink: #111;
+  --ink-muted: #555;
+  --rule: #111;
+  --accent: #a4161a;
+  color: var(--ink);
+  font-size: 9pt;
+  line-height: 1.35;
+  hyphens: auto;
+}
+
+.print-columns {
+  column-count: 3;
+  column-gap: 6mm;
+  column-rule: 0.5pt solid #999;
+}
+
+.print-justify {
+  text-align: justify;
+}
+
+.print-story {
+  break-inside: avoid;
+  margin-bottom: 3mm;
+  padding-bottom: 3mm;
+  border-bottom: 0.5pt solid #ccc;
+}
+
+/* Long stories may flow across columns and pages; short ones stay whole. */
+.print-story[data-tier="major"] {
+  break-inside: auto;
+}
+
+@media screen {
+  .print-root {
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 16mm 14mm;
+  }
 }

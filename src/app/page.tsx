@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-12 sm:px-8">
@@ -16,6 +18,12 @@ export default function Home() {
         <p className="text-ink-muted mt-3">
           One finite edition each morning. Then you&rsquo;re caught up.
         </p>
+        <Link
+          href="/paper/demo"
+          className="border-rule hover:bg-ink hover:text-paper mt-8 inline-block rounded-md border px-4 py-2 text-sm font-medium transition-colors"
+        >
+          See a sample edition
+        </Link>
       </section>
     </main>
   );
