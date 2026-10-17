@@ -307,7 +307,7 @@ export function PrintView({ edition }: { edition: EditionSnapshot }) {
                 <h3 className="np-head">{story.headline}</h3>
                 <p className="np-dek">{story.dek}</p>
                 <p className="np-source">
-                  {sources(story)} · <b>Continued inside ▸</b>
+                  {sources(story)} · <b>Continued inside</b>
                 </p>
               </div>
             </article>
