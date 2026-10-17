@@ -15,7 +15,7 @@ test("new reader gets a personalised paper and can use it", async ({
 }) => {
   // Start anonymously.
   await page.goto("/");
-  await page.getByRole("button", { name: "Start my paper" }).click();
+  await page.getByRole("button", { name: "Start my paper" }).first().click();
   await expect(page).toHaveURL(/\/onboarding$/, { timeout: 20_000 });
 
   // Six headline duels (always pick the first option), then name + length.
@@ -70,9 +70,27 @@ test("new reader gets a personalised paper and can use it", async ({
   });
   await expect(page.getByText("Read the original reporting")).toBeVisible();
   await page.getByRole("button", { name: "More like this" }).click();
-  await expect(page.getByRole("status")).toContainText(/will reflect this/, {
+  await expect(page.getByText(/will reflect this/)).toBeVisible({
     timeout: 20_000,
   });
+
+  // My Editor: the model is visible and can be changed in plain words.
+  await page.goto("/editor");
+  await expect(page.getByTestId("interest-list")).toBeVisible({
+    timeout: 30_000,
+  });
+  await page
+    .getByLabel("Instruction for your editor")
+    .fill("Less politics, more AI research and Pakistani startups.");
+  await page.getByRole("button", { name: "Ask" }).click();
+  const preview = page.getByTestId("editor-preview");
+  await expect(preview).toContainText("→", { timeout: 30_000 });
+  await page.getByRole("button", { name: "Apply to future papers" }).click();
+  await expect(page.getByText(/Your future editions will reflect/)).toBeVisible(
+    {
+      timeout: 20_000,
+    },
+  );
 
   // The paper downloads as a newspaper PDF.
   const pdf = await request.get(`/api/pdf/${editionId}`);

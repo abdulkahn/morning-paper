@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
@@ -53,7 +54,17 @@ async function Today() {
         todayHref: "/today",
         pdfAvailable: true,
       }}
-      extra={<ThreeThings editionId={id} items={snapshot.recall} />}
+      extra={
+        <>
+          <ThreeThings editionId={id} items={snapshot.recall} />
+          <p className="mt-10 text-center text-sm">
+            <Link href="/editor" className="underline underline-offset-4">
+              See what your editor has learned about you, or tell it what you
+              want →
+            </Link>
+          </p>
+        </>
+      }
     />
   );
 }

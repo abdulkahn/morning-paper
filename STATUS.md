@@ -11,7 +11,8 @@ _Last updated: 2026-10-17_
 
 - **M4 (reduced)** — Clustering with Voyage `voyage-4-lite` (86.8% on 129 labelled pairs, recall 0.98; hash fallback ~81%), rate-limit-aware client. AI enrichment (`worker/enrich.ts`): Opus 5.5 for the top 15 stories, Haiku 5.5 for the rest — headline, brief, why it matters, key points, concepts, timestamped facts (fact ledger), recall question; validated + deterministic fallback. Cron: ingest → cluster → enrich.
 - **M5–M10 (reduced scope, see cut list)** — Transparent ranking (`src/lib/ranking`), derived interest weights, frozen per-reader daily editions (`src/lib/edition/build.ts`), onboarding headline duels, `/today`, story reader with More/Less, Since You Last Read from the fact ledger, "New to you" explainers by concept familiarity, Three Things with resurfacing, deterministic Editor's Note, real-edition PDF. `npm run demo:seed` creates clearly simulated reading history on real news. Golden-path Playwright test passes against the live project.
-- **Cut for the deadline:** Talk to Your Editor, LLM clustering adjudicator, implicit dwell/skip tracking, knowledge-graph visualisation, all stretch features, Guardian full text, page excerpts, PDF caching, long failure-test suite.
+- **My Editor + Talk to Your Editor** (`/editor`) — interests with reasons from the event log, a "what you know" list with "I know this", followed stories, and natural-language preference changes: Claude (Haiku 5.5, structured output limited to the 17 topics and three strengths) or a keyword fallback → deterministic before/after diff → Apply shifts base weights for future editions only. Covered by the golden-path test.
+- **Cut for the deadline:** LLM clustering adjudicator, implicit dwell/skip tracking, knowledge-graph visualisation, all stretch features, Guardian full text, page excerpts, PDF caching, long failure-test suite.
 
 ## In progress
 
