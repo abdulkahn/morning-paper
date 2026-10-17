@@ -25,7 +25,8 @@
     "cluster:calibrate": "tsx --env-file-if-exists=.env.local scripts/calibrate-clustering.ts",
     "enrich": "tsx --env-file-if-exists=.env.local worker/enrich.ts",
     "stories": "tsx --env-file-if-exists=.env.local scripts/show-stories.ts",
-    "demo:seed": "tsx --env-file-if-exists=.env.local scripts/demo-seed.ts"
+    "demo:seed": "tsx --env-file-if-exists=.env.local scripts/demo-seed.ts",
+    "editions": "tsx --env-file-if-exists=.env.local scripts/list-editions.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",

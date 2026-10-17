@@ -18,6 +18,8 @@ jobs:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
       VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      LLM_MODE: live
     steps:
       - name: Skip when the database secret is missing
         if: env.DATABASE_URL == ''
@@ -35,3 +37,5 @@ jobs:
         run: npm run ingest
       - if: env.DATABASE_URL != ''
         run: npm run cluster
+      - if: env.DATABASE_URL != ''
+        run: npm run enrich -- --limit 40

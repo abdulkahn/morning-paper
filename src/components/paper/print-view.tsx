@@ -87,18 +87,20 @@ export function PrintView({ edition }: { edition: EditionSnapshot }) {
         </div>
       ) : null}
 
-      {edition.sections.map((section) => (
-        <section key={section.slug} className="mt-4">
-          <h2 className="break-after-avoid border-b-2 border-black pb-1 text-[10pt] font-semibold tracking-[0.04em] uppercase">
-            {section.title}
-          </h2>
-          <div className="print-columns mt-2">
+      {/* All sections flow through one set of columns, like a broadsheet,
+          so short sections don't leave half-empty pages. */}
+      <div className="print-columns mt-4">
+        {edition.sections.map((section) => (
+          <section key={section.slug}>
+            <h2 className="mb-2 break-after-avoid border-b-2 border-black pb-1 text-[10pt] font-semibold tracking-[0.04em] uppercase">
+              {section.title}
+            </h2>
             {section.stories.map((s) => (
               <PrintStory key={s.id} story={s} />
             ))}
-          </div>
-        </section>
-      ))}
+          </section>
+        ))}
+      </div>
 
       <p className="mt-6 border-t-4 border-double border-black pt-2 text-center text-[10pt] italic">
         You&rsquo;re caught up. See you tomorrow morning.
