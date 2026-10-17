@@ -13,6 +13,7 @@ import { allStories } from "@/lib/edition/schema";
 import { loadEdition } from "@/lib/edition/load";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { ReadTracker, StoryFeedback } from "./story-client";
+import { StoryVisual } from "@/components/paper/story-visual";
 
 export const metadata = { title: "Story · The Morning Paper" };
 
@@ -59,10 +60,11 @@ async function Story({
       </Link>
       <article className="mt-6 space-y-5">
         <Kicker story={story} />
-        <h1 className="font-display text-4xl leading-tight font-bold tracking-tight">
+        <h1 className="headline-reveal font-display text-4xl leading-tight font-bold tracking-tight">
           {story.headline}
         </h1>
         <p className="text-ink-muted text-lg leading-relaxed">{story.dek}</p>
+        <StoryVisual story={story} />
         <WhyInPaper text={story.whyInPaper} />
         <SinceYouLastRead story={story} />
 

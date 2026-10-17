@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { StartButton } from "./start/start-button";
 import { SAMPLE_EDITION } from "@/fixtures/sample-edition";
+import { StoryVisual } from "@/components/paper/story-visual";
 
 export default function Home() {
   return (
@@ -11,9 +12,11 @@ export default function Home() {
             A personal morning paper
           </p>
           <h1 id="home-title">
-            Your world.
+            <span className="headline-reveal inline-block">Your world.</span>
             <br />
-            In perspective.
+            <span className="headline-reveal headline-reveal-later inline-block">
+              In perspective.
+            </span>
           </h1>
         </div>
         <div className="home-hero-copy">
@@ -62,6 +65,9 @@ export default function Home() {
               </Link>
             </div>
             <aside className="border-l border-[#cecec6] pl-7">
+              <div className="mb-6">
+                <StoryVisual story={SAMPLE_EDITION.lead} />
+              </div>
               <p className="editorial-eyebrow text-[#64665f]">
                 The editor’s approach
               </p>

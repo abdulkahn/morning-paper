@@ -16,6 +16,7 @@ import {
   userTopicBase,
 } from "@/db/schema";
 import { editorNote } from "./editor-note";
+import { selectStoryImage } from "./images";
 import {
   editionSnapshotSchema,
   type EditionSnapshot,
@@ -170,6 +171,7 @@ export async function getOrBuildEdition(
       clusterId: articles.clusterId,
       name: sources.name,
       url: articles.url,
+      imageUrl: articles.imageUrl,
       publishedAt: articles.publishedAt,
     })
     .from(articles)
@@ -228,6 +230,10 @@ export async function getOrBuildEdition(
       tier: r.tier,
       topic: c.topicSlug ? sectionName(c.topicSlug) : "News",
       headline: c.headline ?? c.title,
+      image: selectStoryImage(
+        c.topicSlug ? sectionName(c.topicSlug) : "News",
+        srcRows.filter((source) => source.clusterId === c.id),
+      ),
       dek: c.dek ?? c.title,
       whyItMatters: c.whyItMatters,
       brief: (c.brief ?? []).slice(0, 2),

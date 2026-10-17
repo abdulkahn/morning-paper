@@ -8,6 +8,7 @@ import type {
 } from "@/lib/edition/schema";
 import { editionStats } from "@/lib/edition/schema";
 import { EditorNote, Masthead } from "./masthead";
+import { StoryVisual } from "./story-visual";
 import {
   Explainers,
   KeyPoints,
@@ -131,7 +132,7 @@ function LeadStory({ story, href }: { story: StorySnapshot; href?: string }) {
     >
       <div className="space-y-4 lg:col-span-2">
         <Kicker story={story} />
-        <h2 className="font-display text-4xl leading-[1.1] font-normal tracking-[-0.045em] sm:text-5xl lg:text-6xl">
+        <h2 className="headline-reveal font-display text-4xl leading-[1.1] font-normal tracking-[-0.045em] sm:text-5xl lg:text-6xl">
           <Headline story={story} href={href} />
         </h2>
         <p className="text-ink-muted text-lg leading-relaxed">{story.dek}</p>
@@ -144,9 +145,12 @@ function LeadStory({ story, href }: { story: StorySnapshot; href?: string }) {
         ))}
         <SourceLine story={story} />
       </div>
-      <div className="bg-ink/[0.025] border-rule space-y-8 self-start border-t p-6 lg:mt-2">
-        <KeyPoints story={story} />
-        <Explainers story={story} />
+      <div className="space-y-6 self-start lg:mt-2">
+        <StoryVisual story={story} />
+        <div className="bg-ink/[0.025] border-rule space-y-8 border-t p-6">
+          <KeyPoints story={story} />
+          <Explainers story={story} />
+        </div>
       </div>
     </article>
   );
@@ -206,6 +210,7 @@ function Section({
 function MajorStory({ story, href }: { story: StorySnapshot; href?: string }) {
   return (
     <article className="space-y-3">
+      <StoryVisual story={story} />
       <Kicker story={story} />
       <h3 className="font-display text-2xl leading-tight font-bold tracking-tight">
         <Headline story={story} href={href} />

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { storyImageSchema } from "./images";
 
 // The frozen snapshot of one edition. Web (/paper) and print (/print → PDF)
 // both render from this shape, so an edition looks the same everywhere and
@@ -30,6 +31,8 @@ export const storySnapshotSchema = z.object({
   tier: storyTierSchema,
   topic: z.string().min(1).max(40),
   headline: z.string().min(1).max(160),
+  /** Optional for older snapshots; chosen once when a new edition is built. */
+  image: storyImageSchema.nullable().optional(),
   dek: z.string().min(1).max(280),
   whyItMatters: z.string().max(400).nullable(),
   brief: z.array(z.string().min(1).max(1200)).max(4),

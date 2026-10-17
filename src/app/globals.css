@@ -1,5 +1,66 @@
 @import "tailwindcss";
 
+.story-visual {
+  min-width: 0;
+}
+.story-visual-frame {
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: #e6e8e1;
+}
+.story-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.story-visual figcaption {
+  margin-top: 8px;
+  font:
+    10px/1.5 Arial,
+    sans-serif;
+  color: #64665f;
+}
+.story-visual figcaption a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.story-visual-unavailable {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+.headline-reveal {
+  animation: headline-enter 700ms ease-out both;
+}
+.headline-reveal-later {
+  animation-delay: 120ms;
+}
+@keyframes headline-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .headline-reveal {
+    animation: none;
+  }
+}
+@media print {
+  .headline-reveal {
+    animation: none;
+  }
+}
+
 :root {
   color-scheme: light;
   --paper: #faf9f6;
