@@ -16,6 +16,7 @@ import { deriveWeights } from "@/lib/ranking/weights";
 import { supabasePublicConfig } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { TOPICS } from "@/lib/topics";
+import { logOut } from "../auth/actions";
 import { KnownToggle, TalkToEditor } from "./editor-client";
 
 export const metadata = { title: "My Editor · The Morning Paper" };
@@ -29,6 +30,14 @@ export default function EditorPage() {
       >
         ← Today&rsquo;s paper
       </Link>
+      <form action={logOut} className="float-right">
+        <button
+          type="submit"
+          className="text-ink-muted hover:text-ink text-sm underline underline-offset-4"
+        >
+          Log out
+        </button>
+      </form>
       <p className="text-ink-muted mt-6 text-xs font-medium tracking-[0.04em] uppercase">
         My Editor
       </p>

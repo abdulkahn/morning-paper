@@ -16,6 +16,9 @@ export function SiteHeader() {
         <nav aria-label="Main navigation" className="site-navigation">
           <Link href="/today">Today</Link>
           <Link href="/archive">Archive</Link>
+          <Link href="/editor">My Editor</Link>
+          <Link href="/login">Log in</Link>
+          <Link href="/signup">Sign up</Link>
           <Link href="/paper/demo" className="site-sample-link">
             Read a sample <span aria-hidden>↗</span>
           </Link>
