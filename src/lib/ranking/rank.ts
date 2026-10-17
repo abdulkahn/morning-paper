@@ -52,6 +52,9 @@ const LOVED = 0.8;
 
 /** Reading budget (minutes) → number of stories in the paper. */
 export const STORY_COUNT: Record<number, number> = { 5: 5, 15: 12, 25: 18 };
+/** Places held for stories the reader read before that have moved on. */
+export const MAX_FOLLOW_UPS = 2;
+const isFollowUp = (c: Candidate) => c.readBefore && c.newFactCount > 0;
 
 const parentOf = new Map<string, string | null>(
   TOPICS.map((t) => [t.slug, t.parent]),
@@ -147,6 +150,27 @@ export function rankEdition(
     picked.push({ ...p, adjusted: bestScore });
   }
 
+  // Updates to stories the reader followed are the point of the paper: make
+  // room for up to MAX_FOLLOW_UPS of them, displacing the weakest picks.
+  const followUps = pool
+    .filter((p) => isFollowUp(p.c))
+    .sort((a, b) => b.score.total - a.score.total)
+    .slice(
+      0,
+      Math.max(
+        0,
+        MAX_FOLLOW_UPS - picked.filter((p) => isFollowUp(p.c)).length,
+      ),
+    );
+  for (const f of followUps) {
+    if (picked.length >= count) {
+      const weakest = picked.findLastIndex((p) => !isFollowUp(p.c));
+      if (weakest < 0) break;
+      picked.splice(weakest, 1);
+    }
+    picked.push({ ...f, adjusted: f.score.total });
+  }
+
   // Lead: highest-ranked story that is genuinely important.
   const leadIndex = Math.max(
     0,
@@ -165,7 +189,7 @@ export function rankEdition(
         ? "lead"
         : i <= 3
           ? "major"
-          : i < briefFrom
+          : i < briefFrom || isFollowUp(p.c)
             ? "standard"
             : "brief",
   }));

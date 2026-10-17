@@ -165,3 +165,47 @@ describe("scores and reasons", () => {
     );
   });
 });
+
+describe("follow-up stories", () => {
+  const followed = c("old", "world", {
+    readBefore: true,
+    newFactCount: 2,
+    importance: 2,
+    lastArticleAt: new Date("2026-10-15T06:00:00Z"),
+  });
+
+  it("keeps an update to a story the reader read, even when it ranks low", () => {
+    const out = rankEdition(
+      [...pool, followed],
+      { ai: 0.9 },
+      new Set(),
+      5,
+      NOW,
+    );
+    expect(out).toHaveLength(5);
+    const story = out.find((r) => r.clusterId === "old");
+    expect(story).toBeDefined();
+    expect(story!.tier).not.toBe("brief");
+  });
+
+  it("holds at most two places for follow-ups", () => {
+    const many = ["f1", "f2", "f3"].map((id) =>
+      c(id, "world", { readBefore: true, newFactCount: 1, importance: 1 }),
+    );
+    const out = rankEdition([...pool, ...many], {}, new Set(), 5, NOW);
+    expect(out.filter((r) => r.readBefore)).toHaveLength(2);
+  });
+
+  it("still drops read stories with nothing new and muted follow-ups", () => {
+    const stale = c("stale", "world", { readBefore: true, newFactCount: 0 });
+    const out = rankEdition(
+      [...pool, stale, followed],
+      {},
+      new Set(["world"]),
+      5,
+      NOW,
+    );
+    expect(out.map((r) => r.clusterId)).not.toContain("stale");
+    expect(out.map((r) => r.clusterId)).not.toContain("old");
+  });
+});

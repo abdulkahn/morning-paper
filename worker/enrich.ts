@@ -3,7 +3,7 @@
 //   npm run enrich            (top 60)
 //   npm run enrich -- --limit 10
 import Anthropic from "@anthropic-ai/sdk";
-import { asc, eq, inArray, sql } from "drizzle-orm";
+import { desc, eq, inArray, sql } from "drizzle-orm";
 import { closeDb, getDb } from "../src/db";
 import {
   articles,
@@ -66,8 +66,10 @@ async function main() {
       .from(articles)
       .innerJoin(sources, eq(sources.slug, articles.sourceSlug))
       .where(eq(articles.clusterId, c.id))
-      .orderBy(asc(articles.publishedAt))
-      .limit(8);
+      // The newest 8, so a growing story's latest developments become facts.
+      .orderBy(desc(articles.publishedAt))
+      .limit(8)
+      .then((r) => r.reverse());
     if (!rows.length) return;
     const known = await db
       .select({ text: storyFacts.text })

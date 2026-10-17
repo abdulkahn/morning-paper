@@ -17,6 +17,7 @@ import {
 } from "@/db/schema";
 import { editorNote } from "./editor-note";
 import { selectStoryImage } from "./images";
+import { newFactsSince } from "./since";
 import {
   editionSnapshotSchema,
   recallItemSchema,
@@ -144,9 +145,7 @@ export async function getOrBuildEdition(
 
   const candidates: Candidate[] = clusters.map((c) => {
     const readAt = lastRead.get(c.id);
-    const newFacts = readAt
-      ? (factsBy.get(c.id) ?? []).filter((f) => f.firstSeenAt > readAt)
-      : [];
+    const newFacts = newFactsSince(factsBy.get(c.id) ?? [], readAt, asOf);
     return {
       clusterId: c.id,
       topic: c.topicSlug,
@@ -212,9 +211,7 @@ export async function getOrBuildEdition(
     const c = byId.get(r.clusterId)!;
     const readAt = lastRead.get(c.id);
     const clusterFacts = factsBy.get(c.id) ?? [];
-    const newFacts = readAt
-      ? clusterFacts.filter((f) => f.firstSeenAt > readAt)
-      : [];
+    const newFacts = newFactsSince(clusterFacts, readAt, asOf);
     if (readAt && newFacts.length) continuingCount++;
 
     const seenSources = new Map<string, string>();
