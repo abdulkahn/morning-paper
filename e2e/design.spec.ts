@@ -1,5 +1,33 @@
 import { expect, test } from "@playwright/test";
 
+test("newsroom section navigation and story cards open the right content", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const sections = page.getByRole("navigation", { name: "Sample sections" });
+  await sections.getByRole("link", { name: "Pakistan", exact: true }).click();
+  await expect(
+    page.getByRole("region", { name: "Pakistan", exact: true }),
+  ).toBeInViewport();
+  await page
+    .getByRole("link", {
+      name: "Karachi logistics startup raises the year's largest seed round",
+      exact: true,
+    })
+    .click();
+  await expect(page).toHaveURL(/\/paper\/demo#story-pk-startup-round$/);
+  await expect(
+    page.locator('[data-story-id="pk-startup-round"]'),
+  ).toBeInViewport();
+  await page
+    .getByRole("navigation", { name: "Edition sections" })
+    .getByRole("link", { name: "Your updates" })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "More on what you read earlier" }),
+  ).toBeInViewport();
+});
+
 test("editorial navigation and sample are reachable by keyboard", async ({
   page,
 }) => {

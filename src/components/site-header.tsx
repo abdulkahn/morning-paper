@@ -10,7 +10,8 @@ export function SiteHeader() {
           className="site-wordmark"
           aria-label="The Morning Paper home"
         >
-          The Morning Paper<span aria-hidden>.</span>
+          <span className="site-brand-top">THE MORNING</span>
+          <span className="site-brand-paper">PAPER</span>
         </Link>
         <nav aria-label="Main navigation" className="site-navigation">
           <Link href="/today">Today</Link>

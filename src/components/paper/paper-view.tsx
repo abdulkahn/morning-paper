@@ -7,6 +7,9 @@ import type {
   StorySnapshot,
 } from "@/lib/edition/schema";
 import { editionStats } from "@/lib/edition/schema";
+import { continuingStories, storyAnchorId } from "@/lib/edition/continuing";
+import { ContinuingStories } from "./continuing-stories";
+import { EditionAnchor } from "./edition-anchor";
 import { EditorNote, Masthead } from "./masthead";
 import { StoryVisual } from "./story-visual";
 import {
@@ -44,6 +47,7 @@ export function PaperView({
   const pdfAvailable = context?.pdfAvailable ?? edition.id === "demo";
   return (
     <main className="edition-shell mx-auto w-full flex-1 px-5 py-8 sm:px-10">
+      <EditionAnchor />
       <nav
         aria-label="Edition navigation"
         className="text-ink-muted mb-4 flex flex-wrap gap-x-6 gap-y-3 text-sm"
@@ -97,11 +101,27 @@ export function PaperView({
         }
       />
 
-      <div className="border-rule mt-6 max-w-3xl border-l pl-5">
+      <nav aria-label="Edition sections" className="edition-sections">
+        <a href={`#${encodeURIComponent(storyAnchorId(edition.lead.id))}`}>
+          Top story
+        </a>
+        {continuingStories(edition).length > 0 && (
+          <a href="#continuing-stories-title">Your updates</a>
+        )}
+        {edition.sections.map((section) => (
+          <a key={section.slug} href={`#section-${section.slug}`}>
+            {section.title}
+          </a>
+        ))}
+      </nav>
+
+      <div className="border-rule mt-5 border-l-4 pl-4">
         <EditorNote note={edition.editorNote} />
       </div>
 
       <LeadStory story={edition.lead} href={storyHref} />
+
+      <ContinuingStories edition={edition} storyHref={storyHref} />
 
       {edition.sections.map((section) => (
         <Section key={section.slug} section={section} href={storyHref} />
@@ -127,12 +147,14 @@ export function PaperView({
 function LeadStory({ story, href }: { story: StorySnapshot; href?: string }) {
   return (
     <article
+      id={storyAnchorId(story.id)}
+      tabIndex={-1}
       aria-label="Lead story"
-      className="border-rule mt-10 grid gap-10 border-t pt-9 lg:grid-cols-3 lg:gap-14"
+      className="news-lead border-rule mt-7 grid scroll-mt-8 gap-6 border-t pt-6 lg:grid-cols-2"
     >
-      <div className="space-y-4 lg:col-span-2">
+      <div className="news-lead-copy space-y-4">
         <Kicker story={story} />
-        <h2 className="headline-reveal font-display text-4xl leading-[1.1] font-normal tracking-[-0.045em] sm:text-5xl lg:text-6xl">
+        <h2 className="headline-reveal font-display text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
           <Headline story={story} href={href} />
         </h2>
         <p className="text-ink-muted text-lg leading-relaxed">{story.dek}</p>
@@ -145,7 +167,7 @@ function LeadStory({ story, href }: { story: StorySnapshot; href?: string }) {
         ))}
         <SourceLine story={story} />
       </div>
-      <div className="space-y-6 self-start lg:mt-2">
+      <div className="news-lead-media space-y-6 self-start">
         <StoryVisual story={story} />
         <div className="bg-ink/[0.025] border-rule space-y-8 border-t p-6">
           <KeyPoints story={story} />
@@ -177,11 +199,13 @@ function Section({
         {section.stories.map((story) => (
           <div
             key={story.id}
+            id={storyAnchorId(story.id)}
+            tabIndex={-1}
             data-story-id={story.id}
             className={
               story.tier === "standard"
-                ? "min-w-0 md:col-span-2"
-                : "min-w-0 md:col-span-3"
+                ? "min-w-0 scroll-mt-8 md:col-span-2"
+                : "min-w-0 scroll-mt-8 md:col-span-3"
             }
           >
             {story.tier === "major" ? (
@@ -195,6 +219,7 @@ function Section({
                   <Headline story={story} href={href} />
                 </h3>
                 <p className="text-ink-muted">{story.dek}</p>
+                <SinceYouLastRead story={story} />
                 <SourceLine story={story} />
               </article>
             ) : (
@@ -238,12 +263,14 @@ function StandardStory({
 }) {
   return (
     <article className="space-y-2">
+      <StoryVisual story={story} />
       <Kicker story={story} />
       <h3 className="font-display text-lg leading-snug font-bold">
         <Headline story={story} href={href} />
       </h3>
       <p className="text-ink-muted text-sm leading-relaxed">{story.dek}</p>
       <WhyInPaper text={story.whyInPaper} />
+      <SinceYouLastRead story={story} />
       <SourceLine story={story} />
     </article>
   );

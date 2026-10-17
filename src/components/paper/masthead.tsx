@@ -16,7 +16,7 @@ export function Masthead({
         <span>{formatEditionDate(edition.date)}</span>
         <span>Edition No. {edition.number}</span>
       </div>
-      <h1 className="font-display mt-5 text-5xl leading-none font-normal tracking-[-0.055em] sm:text-7xl">
+      <h1 className="font-display mt-3 text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
         The Morning Paper
       </h1>
       <p className="text-ink-muted mt-3 text-sm">
@@ -46,7 +46,7 @@ export function EditorNote({ note }: { note: string | null }) {
       <p className="text-ink-muted text-xs font-medium tracking-[0.04em] uppercase">
         From your editor
       </p>
-      <p className="mt-2 font-serif text-lg leading-relaxed">{note}</p>
+      <p className="editor-note-copy mt-2 text-sm leading-relaxed">{note}</p>
     </section>
   );
 }

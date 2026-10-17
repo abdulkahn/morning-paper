@@ -113,7 +113,9 @@ test.describe("local archive visual development", () => {
       await expect(
         page.getByRole("article", { name: "Lead story" }).getByRole("heading"),
       ).toHaveText(entry.lead);
-      const sections = page.getByRole("main").locator(":scope > section");
+      const sections = page
+        .getByRole("main")
+        .locator(':scope > section[aria-labelledby^="section-"]');
       await expect(sections.first().getByRole("heading").first()).toHaveText(
         entry.firstSection,
       );

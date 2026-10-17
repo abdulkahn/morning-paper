@@ -1,5 +1,5 @@
 import { SAMPLE_EDITION } from "./sample-edition";
-import { editionSnapshotSchema } from "@/lib/edition/schema";
+import { allStories, editionSnapshotSchema } from "@/lib/edition/schema";
 import type { SavedEdition, SavedEditionReader } from "@/lib/edition/archive";
 
 // Local visual development ONLY. The preview route refuses production access.
@@ -14,6 +14,10 @@ older.lead.topic = "Energy";
 older.lead.dek =
   "An illustrative saved edition for testing the archive layout.";
 older.sections.reverse();
+// Also exercise a saved edition with no continuing-story updates.
+allStories(older).forEach((story) => {
+  story.continuing = null;
+});
 
 const yesterday = structuredClone(SAMPLE_EDITION);
 yesterday.id = "preview-oct-16";
