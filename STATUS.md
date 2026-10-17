@@ -9,9 +9,13 @@ _Last updated: 2026-10-17_
 - **M2** — Supabase (Postgres 17, pgvector 0.8.2, region ap-southeast-2). Drizzle schema + migrations `0000_readers_and_topics`, `0001_table_grants`: `topics` (17 seeded), `profiles`, `user_topic_base`, `events` (append-only), all with RLS + least-privilege grants. Anonymous sign-in via "Start my paper" → profile row → `/onboarding` placeholder. Session refresh in `src/proxy.ts`. RLS verified by integration tests against the live project.
 - **M3** — Ingestion worker (`worker/ingest.ts`, logic in `src/lib/ingest/`): 36 probed RSS feeds (global, tech, 7 AI/robotics, 6 Pakistani, sport, science, crypto) + optional Guardian full-text API. Canonical URLs, HTML/entity cleanup, 72 h freshness window, per-source failure isolation, `pipeline_runs` log. First runs: ~726 fresh articles in ~25 s, 0 failures, re-runs idempotent. Scheduled every 2 h by `.github/workflows/ingest.yml` (needs `DATABASE_URL` repo secret).
 
+- **M4 (reduced)** — Clustering with Voyage `voyage-4-lite` (86.8% on 129 labelled pairs, recall 0.98; hash fallback ~81%), rate-limit-aware client. AI enrichment (`worker/enrich.ts`): Opus 5.5 for the top 15 stories, Haiku 5.5 for the rest — headline, brief, why it matters, key points, concepts, timestamped facts (fact ledger), recall question; validated + deterministic fallback. Cron: ingest → cluster → enrich.
+- **M5–M10 (reduced scope, see cut list)** — Transparent ranking (`src/lib/ranking`), derived interest weights, frozen per-reader daily editions (`src/lib/edition/build.ts`), onboarding headline duels, `/today`, story reader with More/Less, Since You Last Read from the fact ledger, "New to you" explainers by concept familiarity, Three Things with resurfacing, deterministic Editor's Note, real-edition PDF. `npm run demo:seed` creates clearly simulated reading history on real news. Golden-path Playwright test passes against the live project.
+- **Cut for the deadline:** Talk to Your Editor, LLM clustering adjudicator, implicit dwell/skip tracking, knowledge-graph visualisation, all stretch features, Guardian full text, page excerpts, PDF caching, long failure-test suite.
+
 ## In progress
 
-- **M4a (in progress)** — Story clustering works end to end with the offline hash embedding (`hash-v1`): `story_clusters` (pgvector centroid), in-memory batch assignment, `npm run cluster`, chained after ingest in the cron. 740 real articles → 664 stories; multi-source stories group correctly. Hash model scores ~81% on 129 labelled pairs (`src/lib/cluster/__fixtures__`). Voyage (`voyage-4-lite`) path is built and unit-tested but **not yet run or calibrated** — needs `VOYAGE_API_KEY`. Promo/coupon posts now filtered at ingestion.
+- Deploy verification on Vercel (DATABASE_URL added by user), README + architecture diagram, demo rehearsal.
 
 ## Decisions
 
@@ -34,7 +38,7 @@ _Last updated: 2026-10-17_
 
 ## Next action
 
-User adds `ANTHROPIC_API_KEY` and `VOYAGE_API_KEY` (.env.local + GitHub secrets). Then: run `npm run cluster` with Voyage, calibrate `THRESHOLDS["voyage-4-lite"]` on the labelled pairs (target ≥ 90%), then M4b LLM enrichment (adjudicator, topics, concepts, fact ledger, briefs).
+Verify the live site end to end (start → onboarding → today → story → PDF), run `npm run demo:seed` for the demo reader, record the Loom.
 
 ## Archive — requested M11 (PLAN.md M12)
 
