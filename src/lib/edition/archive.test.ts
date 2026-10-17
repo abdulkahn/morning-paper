@@ -7,11 +7,33 @@ import {
   archiveSummary,
   readArchive,
   readArchivedEdition,
+  currentEditionIdForDate,
   type SavedEditionReader,
 } from "./archive";
 import { allStories, editionStats } from "./schema";
+import { editionDateInTimeZone } from "./format";
 
 describe("saved edition archive", () => {
+  it("never marks yesterday's latest saved edition as today's paper", () => {
+    const rows = [{ id: "yesterday", edition_date: "2026-10-16" }];
+    expect(currentEditionIdForDate(rows, "2026-10-17")).toBeNull();
+    expect(
+      currentEditionIdForDate(
+        [...rows, { id: "today", edition_date: "2026-10-17" }],
+        "2026-10-17",
+      ),
+    ).toBe("today");
+    expect(currentEditionIdForDate([], "2026-10-17")).toBeNull();
+  });
+
+  it("uses reader-local dates across midnight, including a deterministic timezone fallback", () => {
+    const now = new Date("2026-10-16T21:00:00Z");
+    expect(editionDateInTimeZone(now, "Asia/Karachi")).toBe("2026-10-17");
+    expect(editionDateInTimeZone(now, "America/Los_Angeles")).toBe(
+      "2026-10-16",
+    );
+    expect(editionDateInTimeZone(now, "invalid-zone")).toBe("2026-10-16");
+  });
   it("sorts editions newest first without changing nested snapshot content", async () => {
     const before = JSON.stringify(ARCHIVE_PREVIEW_EDITIONS);
     const result = await readArchive(archivePreviewReader);

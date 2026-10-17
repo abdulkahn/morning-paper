@@ -37,6 +37,14 @@ export interface SavedEditionReader {
   read(id: string): Promise<unknown>;
 }
 
+/** The latest saved paper may be yesterday's; only an actual date match is today. */
+export function currentEditionIdForDate(
+  editions: readonly { id: string; edition_date: string }[],
+  today: string,
+): string | null {
+  return editions.find((edition) => edition.edition_date === today)?.id ?? null;
+}
+
 export async function readArchive(
   reader: SavedEditionReader | null,
 ): Promise<ArchiveResult> {

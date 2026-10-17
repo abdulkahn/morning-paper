@@ -3,18 +3,45 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   readArchive,
   readArchivedEdition,
+  currentEditionIdForDate,
   type SavedEditionReader,
 } from "./archive";
+import { editionDateInTimeZone } from "./format";
+
+async function readerSession() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+  if (!user) {
+    if (authError && authError.name !== "AuthSessionMissingError")
+      throw new Error("Reader session unavailable");
+    return null;
+  }
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("timezone")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (error) throw new Error("Reader timezone unavailable");
+  return {
+    supabase,
+    today: editionDateInTimeZone(new Date(), profile?.timezone ?? "UTC"),
+  };
+}
 
 // Reader-scoped access to saved editions through Supabase, so RLS ("read own
 // editions") authorises both listing and direct-id reads. Never rebuilds.
 function savedEditionReader(): SavedEditionReader {
   return {
     async list() {
-      const supabase = await createSupabaseServerClient();
+      const session = await readerSession();
+      if (!session) return { editions: [], currentEditionId: null };
+      const { supabase, today } = session;
       const { data, error } = await supabase
         .from("editions")
-        .select("id, snapshot")
+        .select("id, snapshot, edition_date")
         .order("edition_date", { ascending: false });
       if (error) throw new Error(error.message);
       return {
@@ -25,25 +52,27 @@ function savedEditionReader(): SavedEditionReader {
           // verified. UUID secrecy alone is not an access-control boundary.
           pdfAvailable: false,
         })),
-        currentEditionId: data[0]?.id ?? null,
+        currentEditionId: currentEditionIdForDate(data, today),
       };
     },
     async read(id) {
-      const supabase = await createSupabaseServerClient();
+      const session = await readerSession();
+      if (!session) return null;
+      const { supabase, today } = session;
       const { data, error } = await supabase
         .from("editions")
-        .select("id, snapshot")
-        .order("edition_date", { ascending: false });
+        .select("id, snapshot, edition_date")
+        .eq("id", id)
+        .maybeSingle();
       if (error) throw new Error(error.message);
-      const index = data.findIndex((r) => r.id === id);
-      if (index < 0) return null;
+      if (!data) return null;
       return {
         edition: {
-          snapshot: data[index].snapshot,
+          snapshot: data.snapshot,
           title: null,
           pdfAvailable: false,
         },
-        isCurrent: index === 0,
+        isCurrent: data.edition_date === today,
       };
     },
   };

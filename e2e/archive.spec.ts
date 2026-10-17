@@ -18,11 +18,12 @@ test("archive navigation works without a reader's saved editions", async ({
   ).toBeVisible();
   await expect(page.getByRole("link", { name: /Open Edition/ })).toHaveCount(0);
   await page.getByRole("link", { name: "Return to Today’s Paper" }).click();
-  await expect(page).toHaveURL(/\/paper$/);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Today’s Paper",
-  );
-  await page.getByRole("link", { name: "Back to Archive" }).click();
+  // The existing /today flow sends a signed-out visitor home to start a paper.
+  await expect(page).toHaveURL(/\/$/);
+  await page
+    .getByRole("navigation", { name: "Main navigation" })
+    .getByRole("link", { name: "Archive", exact: true })
+    .click();
   await expect(page).toHaveURL(/\/archive$/);
 });
 
@@ -70,11 +71,9 @@ test.describe("local archive visual development", () => {
     await expect(editions).toHaveCount(3);
     await expect(editions.nth(0)).toContainText("Current edition");
     await expect(editions.nth(1)).toContainText(
-      "The chips behind a changing world",
+      "Semiconductor policy changes the outlook for AI researchers",
     );
-    await expect(editions.nth(1)).toContainText(
-      "12 stories · 6 sources · 13 min",
-    );
+    await expect(editions.nth(1)).toContainText("12 stories · 13 min read");
     await expect(
       editions.nth(1).getByRole("button", { name: /PDF unavailable/ }),
     ).toBeDisabled();

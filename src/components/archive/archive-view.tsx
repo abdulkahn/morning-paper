@@ -3,12 +3,11 @@ import type { ReactNode } from "react";
 import { archiveSummary, type ArchiveResult } from "@/lib/edition/archive";
 import { formatEditionDate } from "@/lib/edition/format";
 
-export const archiveAction =
-  "border-rule hover:bg-ink hover:text-paper focus-visible:outline-accent inline-flex min-h-11 items-center justify-center border px-5 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4";
+export const archiveAction = "editorial-button";
 
 export function ArchiveFrame({
   children,
-  todayHref = "/paper",
+  todayHref = "/today",
   title = "Your archive",
   eyebrow = "The collected editions",
   description = "A record of your mornings. Every edition, just as you received it.",
@@ -20,15 +19,13 @@ export function ArchiveFrame({
   description?: string;
 }) {
   return (
-    <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
-      <header className="border-rule border-b-4 border-double pb-5">
+    <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
+      <header className="border-rule border-b pb-9 sm:pb-12">
         <nav
           aria-label="Paper navigation"
           className="text-ink-muted flex flex-wrap justify-between gap-4 text-sm"
         >
-          <Link href="/" className="hover:text-ink">
-            The Morning Paper
-          </Link>
+          <span className="editorial-eyebrow">{eyebrow}</span>
           <Link
             href={todayHref}
             className="hover:text-ink underline underline-offset-4"
@@ -36,19 +33,18 @@ export function ArchiveFrame({
             Today&rsquo;s Paper <span aria-hidden>↗</span>
           </Link>
         </nav>
-        <p className="text-accent mt-12 text-xs font-semibold tracking-[0.2em] uppercase">
-          {eyebrow}
-        </p>
-        <h1 className="font-display mt-3 text-5xl leading-none font-bold tracking-tight sm:text-7xl">
-          {title}
-        </h1>
-        <p className="text-ink-muted mt-5 max-w-xl text-lg leading-relaxed">
-          {description}
-        </p>
+        <div className="mt-9 grid items-end gap-5 sm:mt-12 sm:grid-cols-[1.2fr_1fr] sm:gap-12">
+          <h1 className="font-display text-5xl leading-none font-normal tracking-[-0.055em] sm:text-7xl">
+            {title}
+          </h1>
+          <p className="text-ink-muted max-w-md text-base leading-relaxed">
+            {description}
+          </p>
+        </div>
       </header>
       {children}
-      <footer className="border-rule text-ink-muted mt-16 border-t pt-5 pb-8 text-sm italic">
-        A little perspective, kept for later.
+      <footer className="border-rule text-ink-muted mt-16 border-t pt-5 pb-8 text-xs">
+        The Morning Paper · Kept as published.
       </footer>
     </main>
   );
@@ -56,7 +52,7 @@ export function ArchiveFrame({
 
 export function ArchiveState({
   kind,
-  todayHref = "/paper",
+  todayHref = "/today",
   archiveHref = "/archive",
 }: {
   kind: "empty" | "unavailable" | "error" | "missing" | "today";
@@ -89,12 +85,12 @@ export function ArchiveState({
   return (
     <section
       aria-label={kind === "error" ? "Archive error" : "Archive status"}
-      className="border-rule/25 my-12 border-y py-12 sm:py-16"
+      className="my-8 py-8 sm:py-12"
     >
       <p className="text-ink-muted text-xs tracking-[0.16em] uppercase">
         {kind === "missing" ? "Edition not found" : "The Morning Paper"}
       </p>
-      <h2 className="font-display mt-4 max-w-xl text-3xl leading-tight font-bold sm:text-4xl">
+      <h2 className="font-display mt-4 max-w-xl text-3xl leading-tight font-normal tracking-tight sm:text-4xl">
         {title}
       </h2>
       <p className="text-ink-muted mt-4 max-w-lg leading-relaxed">
@@ -128,7 +124,7 @@ export function ArchiveState({
 export function ArchiveContent({
   result,
   archiveHref = "/archive",
-  todayHref = "/paper",
+  todayHref = "/today",
 }: {
   result: ArchiveResult;
   archiveHref?: string;
@@ -168,20 +164,20 @@ export function ArchiveContent({
             timeZone: "UTC",
           });
           return (
-            <li key={snapshot.id} className="border-rule/30 border-b">
+            <li key={snapshot.id} className="border-rule border-b">
               <article
                 aria-labelledby={`edition-${snapshot.id}`}
-                className="grid gap-6 py-8 sm:grid-cols-[7rem_1fr] sm:gap-10 sm:py-10"
+                className="grid items-start gap-5 py-7 sm:grid-cols-[5rem_1fr] sm:gap-8 lg:grid-cols-[5rem_1fr_auto] lg:py-8"
               >
                 <time
                   dateTime={snapshot.date}
                   aria-label={formatEditionDate(snapshot.date)}
                   className="flex items-baseline gap-2 sm:block"
                 >
-                  <span className="text-accent text-sm font-semibold tracking-[0.15em] uppercase">
+                  <span className="text-ink-muted text-xs tracking-[0.12em] uppercase">
                     {month}
                   </span>{" "}
-                  <span className="font-display text-5xl leading-none tracking-tight sm:mt-2 sm:block sm:text-6xl">
+                  <span className="font-display text-4xl leading-none tracking-tight sm:mt-2 sm:block sm:text-5xl">
                     {date.getUTCDate().toString().padStart(2, "0")}
                   </span>{" "}
                   <span className="text-ink-muted text-sm sm:mt-3 sm:block">
@@ -190,63 +186,57 @@ export function ArchiveContent({
                 </time>
                 <div className="min-w-0">
                   <p className="text-ink-muted flex flex-wrap items-center gap-3 text-xs tracking-[0.06em] uppercase">
-                    <span>Edition No. {snapshot.number}</span>
                     <span
-                      className={current ? "text-accent font-semibold" : ""}
+                      className={
+                        current ? "bg-ink/5 text-ink rounded-sm px-2 py-1" : ""
+                      }
                     >
                       {current ? "Current edition" : "Archived edition"}
                     </span>
                   </p>
                   <h2
                     id={`edition-${snapshot.id}`}
-                    className="font-display mt-3 max-w-2xl text-2xl leading-tight font-bold tracking-tight break-words sm:text-3xl"
+                    className="font-display mt-3 max-w-2xl text-2xl leading-tight font-normal tracking-[-0.03em] break-words sm:text-3xl"
                   >
-                    {stats.title}
-                  </h2>
-                  <p className="text-ink-muted mt-3 max-w-2xl leading-relaxed">
-                    <span className="text-ink font-medium">
-                      Leading your paper:
-                    </span>{" "}
                     {stats.leadHeadline}
-                  </p>
+                  </h2>
                   <p className="text-ink-muted mt-4 text-sm">
-                    {stats.stories} stories · {stats.sources} sources ·{" "}
-                    {stats.readingMinutes} min
+                    {stats.stories} stories · {stats.readingMinutes} min read
                   </p>
-                  <div className="mt-6 flex flex-wrap items-center gap-3">
-                    <Link
-                      href={`${archiveHref}/${encodeURIComponent(snapshot.id)}`}
-                      className={archiveAction}
+                </div>
+                <div className="flex flex-wrap items-center gap-3 sm:col-start-2 lg:col-start-3 lg:mt-8 lg:max-w-44 lg:justify-end">
+                  <Link
+                    href={`${archiveHref}/${encodeURIComponent(snapshot.id)}`}
+                    className={archiveAction}
+                  >
+                    Open Edition{" "}
+                    <span aria-hidden className="ml-4">
+                      →
+                    </span>
+                  </Link>
+                  {entry.pdfAvailable ? (
+                    <a
+                      href={`/api/pdf/${encodeURIComponent(snapshot.id)}`}
+                      className="text-ink-muted hover:text-ink inline-flex min-h-11 items-center px-3 text-xs underline underline-offset-4"
                     >
-                      Open Edition{" "}
-                      <span aria-hidden className="ml-4">
-                        →
+                      PDF{" "}
+                      <span className="sr-only">
+                        for {formatEditionDate(snapshot.date)}
                       </span>
-                    </Link>
-                    {entry.pdfAvailable ? (
-                      <a
-                        href={`/api/pdf/${encodeURIComponent(snapshot.id)}`}
-                        className={archiveAction}
-                      >
-                        PDF{" "}
-                        <span className="sr-only">
-                          for {formatEditionDate(snapshot.date)}
-                        </span>
-                      </a>
-                    ) : (
-                      <button
-                        type="button"
-                        disabled
-                        className="text-ink-muted min-h-11 border border-current/30 px-5 py-2 text-sm disabled:cursor-not-allowed"
-                      >
-                        PDF unavailable
-                        <span className="sr-only">
-                          {" "}
-                          for {formatEditionDate(snapshot.date)}
-                        </span>
-                      </button>
-                    )}
-                  </div>
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled
+                      className="text-ink-muted min-h-11 px-3 py-2 text-xs disabled:cursor-not-allowed"
+                    >
+                      PDF unavailable
+                      <span className="sr-only">
+                        {" "}
+                        for {formatEditionDate(snapshot.date)}
+                      </span>
+                    </button>
+                  )}
                 </div>
               </article>
             </li>

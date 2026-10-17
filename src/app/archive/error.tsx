@@ -26,7 +26,7 @@ export default function ArchiveError({ reset }: { reset: () => void }) {
         <Link href="/archive" className="py-3 underline underline-offset-4">
           Back to Archive
         </Link>
-        <Link href="/paper" className="py-3 underline underline-offset-4">
+        <Link href="/today" className="py-3 underline underline-offset-4">
           Today&rsquo;s Paper
         </Link>
       </div>

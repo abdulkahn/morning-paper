@@ -39,13 +39,13 @@ export function PaperView({
 }) {
   const stats = editionStats(edition);
   const archiveHref = context?.archiveHref ?? "/archive";
-  const todayHref = context?.todayHref ?? "/paper";
+  const todayHref = context?.todayHref ?? "/today";
   const pdfAvailable = context?.pdfAvailable ?? edition.id === "demo";
   return (
-    <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
+    <main className="edition-shell mx-auto w-full flex-1 px-5 py-8 sm:px-10">
       <nav
         aria-label="Edition navigation"
-        className="text-ink-muted mb-6 flex flex-wrap gap-x-6 gap-y-3 text-sm"
+        className="text-ink-muted mb-4 flex flex-wrap gap-x-6 gap-y-3 text-sm"
       >
         <Link
           href={archiveHref}
@@ -63,7 +63,7 @@ export function PaperView({
       {context?.archived && (
         <aside
           aria-label="Historical edition"
-          className="border-rule bg-ink/5 mb-6 border-y px-4 py-4"
+          className="border-rule bg-ink/5 mb-8 border-l-2 px-5 py-4"
         >
           <p className="text-accent text-xs font-semibold tracking-[0.12em] uppercase">
             Archived edition
@@ -80,7 +80,7 @@ export function PaperView({
           pdfAvailable ? (
             <a
               href={`/api/pdf/${encodeURIComponent(edition.id)}`}
-              className="border-rule hover:bg-ink hover:text-paper rounded-md border px-4 py-2 text-sm font-medium transition-colors"
+              className="editorial-button"
             >
               Download PDF
             </a>
@@ -96,7 +96,7 @@ export function PaperView({
         }
       />
 
-      <div className="mt-8 max-w-3xl">
+      <div className="border-rule mt-6 max-w-3xl border-l pl-5">
         <EditorNote note={edition.editorNote} />
       </div>
 
@@ -108,7 +108,7 @@ export function PaperView({
 
       {extra}
 
-      <footer className="border-rule mt-16 border-t-4 border-double pt-8 pb-16 text-center">
+      <footer className="border-rule mt-16 border-t pt-10 pb-12 text-center">
         <p className="font-display text-3xl font-bold">
           You&rsquo;re caught up.
         </p>
@@ -127,11 +127,11 @@ function LeadStory({ story, href }: { story: StorySnapshot; href?: string }) {
   return (
     <article
       aria-label="Lead story"
-      className="border-rule mt-8 grid gap-8 border-t pt-8 lg:grid-cols-3"
+      className="border-rule mt-10 grid gap-10 border-t pt-9 lg:grid-cols-3 lg:gap-14"
     >
       <div className="space-y-4 lg:col-span-2">
         <Kicker story={story} />
-        <h2 className="font-display text-4xl leading-tight font-bold tracking-tight sm:text-5xl">
+        <h2 className="font-display text-4xl leading-[1.1] font-normal tracking-[-0.045em] sm:text-5xl lg:text-6xl">
           <Headline story={story} href={href} />
         </h2>
         <p className="text-ink-muted text-lg leading-relaxed">{story.dek}</p>
@@ -144,7 +144,7 @@ function LeadStory({ story, href }: { story: StorySnapshot; href?: string }) {
         ))}
         <SourceLine story={story} />
       </div>
-      <div className="border-rule space-y-8 lg:border-l lg:pl-8">
+      <div className="bg-ink/[0.025] border-rule space-y-8 self-start border-t p-6 lg:mt-2">
         <KeyPoints story={story} />
         <Explainers story={story} />
       </div>

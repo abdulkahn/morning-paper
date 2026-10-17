@@ -12,11 +12,7 @@ export function StartButton() {
   );
   return (
     <form action={action} className="flex flex-col items-center gap-2">
-      <button
-        type="submit"
-        disabled={pending}
-        className="bg-ink text-paper rounded-md px-6 py-3 text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className="editorial-button">
         {pending ? "Opening your paper…" : "Start my paper"}
       </button>
       {state.error && !pending ? (

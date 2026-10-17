@@ -1,21 +1,22 @@
-# Previous editions archive
+# Previous editions archive — reduced scope
 
-The user's requested **M11 — Previous Editions Archive** corresponds to **M12** in PLAN.md. This change covers the archive only; Three Things recall (PLAN M11) is untouched.
+The user calls this M11; PLAN.md currently calls Archive M12. The reduced archive scope in the user's request takes precedence over the older, larger description. Existing recall and backend features belong to the other agent and are preserved.
 
-## Current integration boundary
+## Reconciliation
 
-At the start of this archive change the edition loader only served the public sample `demo`, with no persisted edition schema or reader queries. During verification Claude began adding edition persistence and a reader-scoped Supabase archive adapter in the shared working tree. The archive preserves that adapter; schema, migrations, AI and worker changes remain outside this archive commit. Reconcile the adapter against the contract below before claiming production acceptance. `/paper` provides an archive navigation landing; Claude's new `/today` route should become the canonical current-paper destination when its backend is ready.
+Reviewed main at 130965c against the original archive commit 1df979e. Newer work affected e2e/golden-path.spec.ts and src/lib/edition/build.ts; neither was overwritten. Reused the existing archive routes, snapshot validation, reader-scoped adapter, presentation, and local previews.
 
-Implement the `SavedEditionReader` interface in `src/lib/edition/archive.ts` and supply it in the two functions in `src/lib/edition/archive-load.ts`. Claude's concurrent adapter already attempts this; verify its applied migrations, grants, authentication, current-edition identity and PDFs. Use `createSupabaseServerClient()` per request so RLS authorizes both listing and direct ID retrieval. Do not use `src/db` or service-role credentials. This archive change introduces no schema/table names or alternate archive store.
+The archive now shows only date, lead headline, story count, reading time, current/historical status, Open Edition, and supported PDF capability. Removed duplicate editorial titles and source-count display. The common web design uses a restrained light canvas, serif headlines, sans-serif navigation, thin rules, and black actions inspired by https://www.harvey.ai/. Print retains its own typography and hides web navigation.
 
-- `list()` returns `{ editions: [{ snapshot, title, pdfAvailable }], currentEditionId }`. Only fully built saved editions belong here. `snapshot` is the existing `EditionSnapshot` JSON, assembled from the original saved renderings in their stored order. `title` is an optional saved editorial title; null uses the snapshot reader name. `currentEditionId` is an explicit reader-local current pointer, not a server-date guess. Return `editions: []` for a genuinely empty archive. Large archives can add pagination to this contract when persistence exists.
-- `read(id)` returns `{ edition: { snapshot, title, pdfAvailable }, isCurrent }`, or null when missing/not owned. It must enforce ownership without revealing another reader's existence. A direct ID must never invoke ranking, preference reads, generation, enrichment, or current source content.
-- Query failures become a friendly failed-to-load state. Invalid snapshot JSON fails validation; it is never rebuilt or silently replaced. The module performs no caching across users.
-- Set `pdfAvailable` true only if the existing `/api/pdf/[editionId]` route can serve this exact reader-authorized ID. The original `demo` PDF is verified. Claude's concurrent loader adds stored UUID lookup but historical PDF authorization has not been verified, so the archive adapter keeps its buttons disabled. No PDF architecture or authenticated Chromium behavior is changed here.
-- Production links open `/archive/[editionId]`; `/paper` resolves the current pointer into that same renderer. Both use the existing PaperView and preserve all nested ordering. PaperView no longer groups stories by tier, which would reorder mixed-tier saved stories.
+## Data and navigation
 
-## Local visual development
+- `/archive` lists persisted editions through the session-bound Supabase client and RLS. `/archive/[editionId]` reads just the requested saved row. No owner connection, ranking, current preferences, generation, AI, or news queries are used to reconstruct history.
+- The existing SavedEditionReader contract remains: list returns `{ editions: [{ snapshot, title, pdfAvailable }], currentEditionId }`; read returns `{ edition, isCurrent }` or null. Snapshot JSON is validated, with nested section/story order preserved. Errors never substitute fixture history.
+- Today's marker uses the saved edition_date and the reader profile timezone. A latest edition from yesterday stays archived. Invalid stored timezones fall back to UTC. Timezone is used only for this label, never to regenerate snapshots.
+- `/today` owns the existing current-paper flow. `/paper` is a compatibility redirect. Archive and historical views link to `/today`.
+- Historical PDF actions remain disabled until the existing PDF route's reader authorization is verified. The original `/api/pdf/demo` remains available. No PDF architecture changes or fake downloads.
+- `/archive/preview` and its state/edition routes remain clearly labelled local fixtures, inaccessible outside development. They use the same presentation and validation code, with no additional archive storage.
 
-`npm run dev` → `/archive/preview`: clearly labelled synthetic current edition plus two historical snapshots. `/archive/preview/preview-oct-16` deliberately mixes story tiers to test order preservation. `/archive/preview/preview-oct-15` uses different section order. Empty, error, loading and unavailable previews live at `/archive/preview/{empty,error,loading,unavailable}`. These routes return not-found outside development, regardless of query strings. Fixtures never become production reader history.
+## Verification boundary
 
-Production `/archive` cannot honestly demonstrate two real historical editions until the backend stores them. Local browser and unit tests exercise the same archive validation/presentation functions using fixtures; they are not evidence of live database persistence or RLS. A concurrent adapter error was observed during development after Claude replaced the unavailable adapter; no migration or database write was performed by this archive task. Keep PDF capability false until the exact saved ID can be served with reader authorization; an unguessable UUID alone is not authorization.
+Unit tests cover saved ordering, corrupt/missing data, reader-local dates, and a stale latest edition. Browser tests cover two historical samples, navigation, reload stability, mobile widths, keyboard access, and PDF/print regression. These local fixtures are not proof of live multi-reader RLS or real historical-PDF authorization. Those live checks remain for backend integration.

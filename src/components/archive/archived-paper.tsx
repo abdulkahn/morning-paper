@@ -6,7 +6,7 @@ import type { ArchivedEditionResult } from "@/lib/edition/archive";
 export function ArchivedPaper({
   result,
   archiveHref = "/archive",
-  todayHref = "/paper",
+  todayHref = "/today",
 }: {
   result: ArchivedEditionResult;
   archiveHref?: string;

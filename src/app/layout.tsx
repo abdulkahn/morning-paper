@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Source_Serif_4 } from "next/font/google";
+import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
 const display = Playfair_Display({
@@ -24,7 +25,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${display.variable} ${text.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <a href="#page-content" className="skip-link">
+          Skip to content
+        </a>
+        <SiteHeader />
+        <div
+          id="page-content"
+          className="site-page flex flex-1 flex-col"
+          tabIndex={-1}
+        >
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
