@@ -17,8 +17,11 @@ export interface Thresholds {
 /** Calibrated per embedding model on labelled pairs (see assign.test.ts). */
 export const THRESHOLDS: Record<string, Thresholds> = {
   [HASH_MODEL]: { join: 0.4, joinOverlap: 0, review: 0.3 },
-  // Placeholder until calibrated against the same labelled set (M4a).
-  "voyage-4-lite": { join: 0.75, joinOverlap: 1, review: 0.6 },
+  // Calibrated 2026-10-17: same-story pairs sit at 0.65–0.95, but related
+  // different stories reach 0.95 too (e.g. successive fuel-price revisions).
+  // Best rule-adjudicator setting: 86.8% (p 0.76, r 0.98). M4b widens the
+  // adjudicated band once the LLM adjudicator can fix the precision.
+  "voyage-4-lite": { join: 0.775, joinOverlap: 0, review: 0.7 },
 };
 
 export interface ArticleSignal {
@@ -70,9 +73,9 @@ export function decide(
   return { action: "new" };
 }
 
-/** Deterministic adjudicator used until the LLM one exists: needs a shared key term. */
+/** Deterministic adjudicator used until the LLM one exists: needs two shared key terms. */
 export function ruleAdjudicate(
   review: Extract<Decision, { action: "review" }>,
 ): boolean {
-  return review.shared >= 1;
+  return review.shared >= 2;
 }

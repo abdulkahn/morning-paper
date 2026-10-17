@@ -4,647 +4,1034 @@
     {
       "a": "Govt reduces petrol price by Rs3.63 per litre, raises high-speed diesel rate by Re0.31",
       "b": "Govt raises petrol price by Rs1.20 per litre, reduces high-speed diesel rate by Re0.17",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.9549
+      }
     },
     {
       "a": "Govt cuts petrol price by Rs3.93 per litre",
       "b": "Govt reduces petrol price by Rs3.63 per litre, raises high-speed diesel rate by Re0.31",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.9423
+      }
     },
     {
       "a": "Govt cuts petrol price by Rs3.93 per litre",
       "b": "Govt raises petrol price by Rs1.20 per litre, reduces high-speed diesel rate by Re0.17",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.9117
+      }
     },
     {
       "a": "Is your boss watching you? The rise of AI surveillance at work - video",
       "b": "Is your boss watching you? The rise of AI surveillance at work – podcast",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9463
+      }
     },
     {
       "a": "Bangladesh is battling measles. It's a 'real warning' to other nations",
       "b": "Bangladesh is battling measles. It's a 'real warning' to other nations",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 1
+      }
     },
     {
       "a": "PSG pummel Manchester City while Villa and Liverpool hit six | Football Weekly Extra – video",
       "b": "PSG pummel Manchester City while Villa and Liverpool hit six: Football Weekly Extra – podcast",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8961
+      }
     },
     {
       "a": "Emotional TV plea for cancer research leads to meeting with PM",
       "b": "Emotional TV plea for cancer research leads to meeting with PM",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 1
+      }
     },
     {
       "a": "Crawley signs Kent extension after losing England contract",
       "b": "Crawley signs Kent extension after losing England deal",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9043
+      }
     },
     {
       "a": "Pakistan to assume IMF, World Bank board chairmanship for first time in over 7 decades",
       "b": "Pakistan to chair IMF, World Bank boards of governors after 74 years",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9703
+      }
     },
     {
       "a": "Judge throws out child sex abuse charges against actor Timothy Busfield",
       "b": "Child sex abuse charges against actor Timothy Busfield dismissed by judge",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8145
+      }
     },
     {
       "a": "Israeli settlers burn olive trees in West Bank",
       "b": "Israeli settlers attack Palestinians in West Bank during olive harvest",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.949
+      }
     },
     {
       "a": "An Nvidia insider-turned-VC on why robotics hasn’t hit its ChatGPT moment, yet",
       "b": "Physical AI is more than robots, says the Nvidia veteran now investing in it",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9296
+      }
     },
     {
       "a": "The Download: failed social media bans, and extending pets’ lives",
       "b": "Kids are outsmarting social media bans. That’s not a problem we need to solve.",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.7573
+      }
     },
     {
       "a": "Pakistan among 10 countries bearing brunt of global hunger crisis, says report",
       "b": "Pakistan Among 10 Worst-Hit Countries in Global Hunger Crisis",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8352
+      }
     },
     {
       "a": "The Download: reviving frozen pig kidneys and boosting nuclear power",
       "b": "Pig kidneys that were “frozen” for a year have been brought back to life",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.7893
+      }
     },
     {
       "a": "Meta releases Muse Spark Open, a new ‘open-weight’ AI model",
       "b": "Meta launches an open-weight AI model that runs on Macs",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8453
+      }
     },
     {
       "a": "FIFA orders partial stadium closure for Spain over anti-Muslim chants",
       "b": "Spain handed partial stadium closure after discriminatory chants v Egypt",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.917
+      }
     },
     {
       "a": "Real demand Tebas resign over Goebbels comparison",
       "b": "Real Madrid demand La Liga president resign over Goebbels comparison",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8628
+      }
     },
     {
       "a": "Israeli settlers attack Palestinians in West Bank during olive harvest",
       "b": "Israeli settlers attack olive farmers and Washington Post journalist in West Bank",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8436
+      }
     },
     {
       "a": "Palestinians and US journalist injured by Israeli settlers in West Bank harvest attack",
       "b": "Israeli settlers attack Palestinians in West Bank during olive harvest",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8729
+      }
     },
     {
       "a": "Israeli settlers beat Palestinians and a U.S. photojournalist in West Bank attacks",
       "b": "Israeli settlers attack olive farmers and Washington Post journalist in West Bank",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8992
+      }
     },
     {
       "a": "Surfshark Promo Codes: 87% Off | October 2026",
       "b": "Walmart Promo Codes: 20% Off for October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8224
+      }
     },
     {
       "a": "Israeli settlers attack Palestinians in West Bank during olive harvest",
       "b": "Israeli settlers beat Palestinians and a U.S. photojournalist in West Bank attacks",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.843
+      }
     },
     {
       "a": "Lisa Nandy ‘minded to intervene’ in Sky’s £1.6bn purchase of ITV",
       "b": "Nandy 'minded to intervene' in Sky's £1.6bn takeover of ITV entertainment arm",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8831
+      }
     },
     {
       "a": "At least 33 pupils and teacher killed after school roof collapses in Pakistan",
       "b": "At least 34 children, teacher killed as school roof collapses in Peshawar",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8757
+      }
     },
     {
       "a": "Peshawar mourns school roof collapse victims",
       "b": "Families of children killed in Peshawar school roof collapse demand justice",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8236
+      }
     },
     {
       "a": "‘Pakistan among 10 states bearing brunt of hunger crisis’",
       "b": "Pakistan among 10 countries bearing brunt of global hunger crisis, says report",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.7881
+      }
     },
     {
       "a": "Amazon devices chief Panos Panay on the importance of failure and bouncing back from it",
       "b": "Amazon devices chief Panos Panay sees a future where AI devices replace the need to use apps",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.6572
+      }
     },
     {
       "a": "Walmart Promo Codes: 20% Off for October 2026",
       "b": "Groupon Promo Codes: 60% Off in October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8663
+      }
     },
     {
       "a": "Same-day test 'saved her life'",
       "b": "Ten-year-old Willow among children to benefit from pioneering same-day test to spot infections",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8342
+      }
     },
     {
       "a": "Three men jailed for 158 years each for murdering Australian and US surfers in Mexico",
       "b": "Mexican judge sentences three men to 158 years in prison for murders of Australian and US surfers​",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.913
+      }
     },
     {
       "a": "Arteta told Arsenal job cuts will help create success",
       "b": "Mikel Arteta defends job cuts at Arsenal to help club ‘evolve and create success’",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8165
+      }
     },
     {
       "a": "Meta launches an open-weight AI model that runs on Macs",
       "b": "Meta and Apple team up to make Muse AI models run better on Macs",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9055
+      }
     },
     {
       "a": "Israeli settlers burn olive trees in West Bank",
       "b": "Israeli settlers attack olive farmers and Washington Post journalist in West Bank",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8049
+      }
     },
     {
       "a": "Israeli settlers burn olive trees in West Bank",
       "b": "Israeli settlers beat Palestinians and a U.S. photojournalist in West Bank attacks",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.799
+      }
     },
     {
       "a": "Surfshark Promo Codes: 87% Off | October 2026",
       "b": "Groupon Promo Codes: 60% Off in October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8337
+      }
     },
     {
       "a": "Deepti Sharma and Niki Prasad seal nervy chase of 115 for India",
       "b": "Niki Prasad on India debut as Mandhana opts to chase against Zimbabwe",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.706
+      }
     },
     {
       "a": "PHC to hear challenge to emergency on 20th",
       "b": "PHC to hear PTI's plea against emergency, governor's rule in KP on Oct 20",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.7553
+      }
     },
     {
       "a": "Palestinians and US journalist injured by Israeli settlers in West Bank harvest attack",
       "b": "Israeli settlers attack olive farmers and Washington Post journalist in West Bank",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8471
+      }
     },
     {
       "a": "Southgate does not forsee a return to management",
       "b": "Southgate does not see return to Premier League management",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9221
+      }
     },
     {
       "a": "Sally Rooney books withdrawn in UK over Palestine Action support",
       "b": "Sally Rooney's books will no longer be sold in U.K. after Palestinian Action support",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8509
+      }
     },
     {
       "a": "‘Pakistan among 10 states bearing brunt of hunger crisis’",
       "b": "Pakistan Among 10 Worst-Hit Countries in Global Hunger Crisis",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9093
+      }
     },
     {
       "a": "Palestinians and US journalist injured by Israeli settlers in West Bank harvest attack",
       "b": "Israeli settlers beat Palestinians and a U.S. photojournalist in West Bank attacks",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9046
+      }
     },
     {
       "a": "A week with RTX Spark: everything we’ve learned using Nvidia’s new laptops",
       "b": "How Windows is being optimized for Nvidia’s RTX Spark laptops",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8471
+      }
     },
     {
       "a": "Walmart Promo Codes: 20% Off for October 2026",
       "b": "Design Within Reach Promo Codes: 30% Off | October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8292
+      }
     },
     {
       "a": "Pakistan school roof collapse kills at least 34 children and teacher",
       "b": "At least 34 children, teacher killed as school roof collapses in Peshawar",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9124
+      }
     },
     {
       "a": "Israeli settlers attack Palestinians in West Bank during olive harvest",
       "b": "Israeli settlers attack US photographer covering West Bank violence",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.6477
+      }
     },
     {
       "a": "The Surface Laptop Ultra delivers on most of Microsoft's promises",
       "b": "Microsoft Surface Laptop Ultra Review: The First Real AI PC",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8487
+      }
     },
     {
       "a": "Families of children killed in Peshawar school roof collapse demand justice",
       "b": "At least 34 children, teacher killed as school roof collapses in Peshawar",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8121
+      }
     },
     {
       "a": "PM Shehbaz reaffirms support for Saudi Arabia in meeting with new envoy",
       "b": "Pakistan stands 'shoulder to shoulder' with Saudi Arabia, vows PM amid Houthi attacks",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8533
+      }
     },
     {
       "a": "Does the Premier League 'Big Six' still exist?",
       "b": "Manchester City in action, Premier League buildup, and more – matchday live",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.5918
+      }
     },
     {
       "a": "Israeli settlers attack olive farmers and Washington Post journalist in West Bank",
       "b": "Israeli settlers attack US photographer covering West Bank violence",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.7999
+      }
     },
     {
       "a": "AI agents accessed Indian computer systems without authorisation: Cybersecurity agency",
       "b": "Rogue AI agents broke into Indian firms' live systems, government says",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9031
+      }
     },
     {
       "a": "Walmart Promo Codes: 20% Off for October 2026",
       "b": "ABT Promo Codes & Discounts for October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8576
+      }
     },
     {
       "a": "HP Coupon Codes and Deals October 2026",
       "b": "Walmart Promo Codes: 20% Off for October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8144
+      }
     },
     {
       "a": "How to follow the Premier League on the BBC this weekend",
       "b": "Manchester City in action, Premier League buildup, and more – matchday live",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.6426
+      }
     },
     {
       "a": "HP Coupon Codes and Deals October 2026",
       "b": "Groupon Promo Codes: 60% Off in October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8313
+      }
     },
     {
       "a": "Surfshark Promo Codes: 87% Off | October 2026",
       "b": "Design Within Reach Promo Codes: 30% Off | October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8088
+      }
     },
     {
       "a": "How to follow the Premier League on the BBC this weekend",
       "b": "Premier League action, Champions Day and Dubois v Wardley II – follow with us",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.7644
+      }
     },
     {
       "a": "Polymarket saw $600 million in election trades after the elections were over",
       "b": "Over $600 Million in Polymarket Election Trades Took Place After Races Ended",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8345
+      }
     },
     {
       "a": "Pakistan school roof collapse kills at least 34 children and teacher",
       "b": "Families of children killed in Peshawar school roof collapse demand justice",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.7971
+      }
     },
     {
       "a": "In ‘You Can See Everything,’ Elizabeth Holmes meets her equal in comedian Nathan Fielder",
       "b": "The New Fan’s Guide to the Unreal World of Nathan Fielder",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8455
+      }
     },
     {
       "a": "Civil certificates at union councils: Punjab introduces biometric verification",
       "b": "Punjab Adds Biometric Checks for Birth, Death and Marriage Records",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8689
+      }
     },
     {
       "a": "Palestinians and US journalist injured by Israeli settlers in West Bank harvest attack",
       "b": "Israeli settlers burn olive trees in West Bank",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8694
+      }
     },
     {
       "a": "Amazon’s Bee launches two new personal AI devices, starting at $75",
       "b": "Meet the Two New Amazon Devices That Never Stop Listening to Your Conversations",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.9027
+      }
     },
     {
       "a": "Watch: Did Tesla really just unveil a flying car?",
       "b": "Elon Musk reveals ‘world’s first flying car’ at Tesla event",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8474
+      }
     },
     {
       "a": "TechCrunch Disrupt 2026: Last day",
       "b": "Pakistan showcases 20 tech firms at TechCrunch Disrupt 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.6881
+      }
     },
     {
       "a": "Elon Musk reveals ‘world’s first flying car’ at Tesla event",
       "b": "A Tesla Flying Car? I Don’t Know, Man",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.7792
+      }
     },
     {
       "a": "Walmart Promo Codes: 20% Off for October 2026",
       "b": "Hotels.com Coupon Codes for October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.7844
+      }
     },
     {
       "a": "Pakistan to chair IMF, WB boards in 2027",
       "b": "Pakistan to chair IMF, World Bank boards of governors after 74 years",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8417
+      }
     },
     {
       "a": "Hotels.com Coupon Codes for October 2026",
       "b": "Groupon Promo Codes: 60% Off in October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.8509
+      }
     },
     {
       "a": "Deepti on Niki Prasad: 'It didn't seem at all like she was making her debut'",
       "b": "Deepti Sharma and Niki Prasad seal nervy chase of 115 for India",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.7575
+      }
     },
     {
       "a": "Watch: Did Tesla really just unveil a flying car?",
       "b": "A Tesla Flying Car? I Don’t Know, Man",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8029
+      }
     },
     {
       "a": "Is Andy Burnham in hot water over Manchester City? – podcast",
       "b": "PSG pummel Manchester City while Villa and Liverpool hit six: Football Weekly Extra – podcast",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.5293
+      }
     },
     {
       "a": "Manchester City in action, Premier League buildup, and more – matchday live",
       "b": "Premier League: 10 things to look out for this weekend",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.7039
+      }
     },
     {
       "a": "Do Manchester City have any grounds to win their appeal?",
       "b": "Manchester City in action, Premier League buildup, and more – matchday live",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.5088
+      }
     },
     {
       "a": "Here’s Exactly How Tesla Made Its New 230-Mph Car ‘Fly’",
       "b": "The Tesla Roadster 2 Is Here—and It Flies",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8564
+      }
     },
     {
       "a": "Tech market sell-off deepens amid fears over US inflation and AI debt",
       "b": "The global economy is muddling through against the odds. But a storm is coming | Larry Elliott",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.5022
+      }
     },
     {
       "a": "State Bank of Pakistan's reserves rise",
       "b": "Q1 CA deficit soars 16pc YoY on higher imports",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.6443
+      }
     },
     {
       "a": "Hotels.com Coupon Codes for October 2026",
       "b": "Ancestry Coupons│50% Off│October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.7255
+      }
     },
     {
       "a": "Lionesses breeze past Greece and how to progress the game – Women’s Football Weekly",
       "b": "The England keeper set to face his dad at a World Cup",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3876
+      }
     },
     {
       "a": "AI-Generated Hot Girls Are Ripping Off Comedians to Boost Their Horny Content",
       "b": "The bitter local rivalry fuelled by a 22-year wait",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.2313
+      }
     },
     {
       "a": "Evacuation orders as fast-moving California wildfire burns homes",
       "b": "Brush fires set homes ablaze in southern California as it braces for more hot weather",
-      "same": true
+      "same": true,
+      "sims": {
+        "voyage-4-lite": 0.8394
+      }
     },
     {
       "a": "Albanian protests turn violent: What we know",
       "b": "India’s Cockroach Janta party leader arrested amid crackdown on protests",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.4681
+      }
     },
     {
       "a": "Porsche’s electric Macan Turbo is an automotive existential crisis",
       "b": "State Bank of Pakistan's reserves rise",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3014
+      }
     },
     {
       "a": "James Coles targets England debut after 'spotlight' of Hundred price-tag",
       "b": "England bowler Archer signs new Sussex deal",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.6273
+      }
     },
     {
       "a": "Does the Premier League 'Big Six' still exist?",
       "b": "PSG pummel Manchester City while Villa and Liverpool hit six: Football Weekly Extra – podcast",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.5665
+      }
     },
     {
       "a": "Southgate does not see return to Premier League management",
       "b": "Chelsea are the Premier League’s most fun team but is it sustainable?",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.4198
+      }
     },
     {
       "a": "US inflation rose to 3.7% in September in blow to Republicans before midterms",
       "b": "Democrats outraise Republicans despite Musk’s midterm millions",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.4387
+      }
     },
     {
       "a": "Replit is no longer working with Anthropic, CEO says",
       "b": "Replit’s CEO says the future of work is the ‘self-driving company’",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.6261
+      }
     },
     {
       "a": "Meta releases Muse Spark Open, a new ‘open-weight’ AI model",
       "b": "Roundtables: A Conversation With the Creator of AI-Designed Viruses",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.4922
+      }
     },
     {
       "a": "AI agents are coming to Rivian’s cars",
       "b": "AI threatens democracy. But we are not powerless: here’s how to fight back | Carine Fouteau",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.4022
+      }
     },
     {
       "a": "Apple’s updated App Store rules go after ‘nudify’ AI apps",
       "b": "Friends don’t let friends feed their data to AI agents",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.5958
+      }
     },
     {
       "a": "Skechers Coupon Codes 20% Off",
       "b": "ABT Promo Codes & Discounts for October 2026",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.7105
+      }
     },
     {
       "a": "Swingin' Schutt sets up ODI series sweep for Australia with 4 for 16",
       "b": "Kids are outsmarting social media bans. That’s not a problem we need to solve.",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.2651
+      }
     },
     {
       "a": "Houthi missile attack on Yemeni presidential palace kills five, minister says",
       "b": "Democrats Are Gearing Up to Investigate the Trump Administration. It Won’t Be Easy",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3214
+      }
     },
     {
       "a": "'I am a normal human being': Khawaja Asif brushes off online trolling over AI-generated Marilyn Monroe riddle",
       "b": "India Confirms AI Models Breached Live Systems During Testing",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3501
+      }
     },
     {
       "a": "Pakistan school roof collapse kills at least 34 children and teacher",
       "b": "Shooter in fatal Bend, Oregon, school shooting was former student there",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.5038
+      }
     },
     {
       "a": "One nation, one foreclosure",
       "b": "Russian air strike on Ukraine's Kherson kills one person, injures 19, governor says",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.2407
+      }
     },
     {
       "a": "Call for more food funding due to high living cost",
       "b": "Short-term inflation surges to 11.38pc due to costly food",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3218
+      }
     },
     {
       "a": "People in the US: what is your personal ‘recession indicator’?",
       "b": "Premier League action, Champions Day and Dubois v Wardley II – follow with us",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.1924
+      }
     },
     {
       "a": "'A bit early' for Rangers to put pressure on Celtic & Hearts - McInnes",
       "b": "Carrick brushes off Martínez’s failure to apologise publicly to United director Wilcox",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3651
+      }
     },
     {
       "a": "Same-day test 'saved her life'",
       "b": "Could AI ‘change the stakes’ in the development of bioweapons?",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.41
+      }
     },
     {
       "a": "Deepti on Niki Prasad: 'It didn't seem at all like she was making her debut'",
       "b": "Arsenal's injured Caldentey out for up to 10 weeks",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.377
+      }
     },
     {
       "a": "Cameron Green in doubt for Gqeberha Test",
       "b": "Spain handed partial stadium closure after discriminatory chants v Egypt",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3731
+      }
     },
     {
       "a": "Pope pictured for first time since surgery and cancer diagnosis",
       "b": "Cancer is rising in younger adults, and scientists can't fully explain why",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.4328
+      }
     },
     {
       "a": "Democrats outraise Republicans despite Musk’s midterm millions",
       "b": "Tokenized Tesla surges as Elon Musk unveils SpaceX-powered flying Roadster prototype",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3735
+      }
     },
     {
       "a": "Plex now helps sell movie theater tickets",
       "b": "When is England's tour of Bangladesh this winter?",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3029
+      }
     },
     {
       "a": "AI Hacks Leave a Mess That AI Companies Aren’t Paying For",
       "b": "Men Can’t Stop Faking How Much They Know About AI",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.5917
+      }
     },
     {
       "a": "'I applied for 200 jobs' - How 'spray and pray' AI job applications can backfire",
       "b": "AI agents are coming to Rivian’s cars",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.4634
+      }
     },
     {
       "a": "A quantum highway just one atom high could transform superconductors",
       "b": "One nation, one foreclosure",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.2749
+      }
     },
     {
       "a": "Sean 'Diddy' Combs moved to low-security facility in Pennsylvania",
       "b": "Meta’s new terms may allow it to train AI on news sites for free",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.1884
+      }
     },
     {
       "a": "Same-day test 'saved her life'",
       "b": "KZNCU to launch 'thorough internal review' into poor attendance in Durban Test",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.344
+      }
     },
     {
       "a": "My Friend Has No Soul",
       "b": "Meta’s new terms may allow it to train AI on news sites for free",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3437
+      }
     },
     {
       "a": "Burnham - Rosebank and Jackdaw oil and gas decisions coming 'shortly'",
       "b": "Two firms ink MoU for Rs20bn gas investment",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3619
+      }
     },
     {
       "a": "Jayawardene steps down as Mumbai Indians head coach",
       "b": "SA's middle order in a muddle and Conrad wants them to 'get bloody better'",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.4711
+      }
     },
     {
       "a": "Iraq says lost USD60bn as Mideast war hits oil exports",
       "b": "Oil gains on renewed supply fears",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.5763
+      }
     },
     {
       "a": "Measures to boost LPG supply presented",
       "b": "David Squires on … the A-League’s return from the wilderness to face awkward questions",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.2042
+      }
     },
     {
       "a": "Brazilian Amazon deforestation falls to lowest on record as pivotal vote looms",
       "b": "Riyadh, other areas: Saudi-led coalition intercepts missiles, drones",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.2116
+      }
     },
     {
       "a": "'I applied for 200 jobs' - How 'spray and pray' AI job applications can backfire",
       "b": "Mikel Arteta defends job cuts at Arsenal to help club ‘evolve and create success’",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3542
+      }
     },
     {
       "a": "Ranking the Premier League's all-time greatest super subs",
       "b": "Are De Cuyper and Gross essential? FPL gameweek seven dilemmas",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.643
+      }
     },
     {
       "a": "Key US voters say economy is getting worse ahead of midterms, exclusive poll finds",
       "b": "All the news about the iPhone Duo",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.1749
+      }
     },
     {
       "a": "Punam Raut retires from international cricket",
       "b": "Tell us: have you used AI to help with online dating?",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.153
+      }
     },
     {
       "a": "Fazl draws ire over K-P governor's rule remarks",
       "b": "Govt seeks US investment in minerals",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.4478
+      }
     },
     {
       "a": "Suspected fly tippers shamed with online photos",
       "b": "The fight to say 'vagina' on social media",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.56
+      }
     },
     {
       "a": "Short-term inflation surges to 11.38pc due to costly food",
       "b": "Equities extend overnight recovery rally",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3536
+      }
     },
     {
       "a": "Judge throws out child sex abuse charges against actor Timothy Busfield",
       "b": "Pakistan rules out unconditional talks with Afghanistan",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.1417
+      }
     },
     {
       "a": "Hegseth’s dubious low-T screening may flag up to 25 percent of the Army",
       "b": "Scientists may have overlooked a hidden Alzheimer's culprit for decades",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3549
+      }
     },
     {
       "a": "Scientists discover a surprising danger in smaller cancer cells",
       "b": "Scientists reveal why some workout recovery tricks can backfire",
-      "same": false
+      "same": false,
+      "sims": {
+        "voyage-4-lite": 0.3677
+      }
     }
   ]
 }

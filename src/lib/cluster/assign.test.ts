@@ -51,23 +51,42 @@ describe("decide", () => {
   });
 });
 
-// Regression guard for the offline fallback model on real labelled headlines.
-// Voyage + LLM adjudication are expected to do better (M4a/M4b).
-describe("hash-model clustering on labelled pairs", () => {
-  it("stays at or above 78% accuracy", () => {
-    let correct = 0;
-    for (const p of fixture.pairs) {
-      const sim = cosine(hashEmbedding(p.a), hashEmbedding(p.b));
-      const d = decide(
-        { contentHash: "none", keyTerms: keyTerms(p.a) },
-        [candidate(p.b, sim)],
-        t,
-      );
-      const predicted =
-        d.action === "join" || (d.action === "review" && ruleAdjudicate(d));
-      if (predicted === p.same) correct++;
-    }
-    const accuracy = correct / fixture.pairs.length;
-    expect(accuracy).toBeGreaterThanOrEqual(0.78);
+// Regression guards on real labelled headlines. Hash similarities are computed
+// live; Voyage similarities were cached by `npm run cluster:calibrate`.
+function accuracy(
+  model: string,
+  sim: (p: (typeof fixture.pairs)[number]) => number,
+) {
+  let correct = 0;
+  for (const p of fixture.pairs) {
+    const d = decide(
+      { contentHash: "none", keyTerms: keyTerms(p.a) },
+      [candidate(p.b, sim(p))],
+      THRESHOLDS[model],
+    );
+    const predicted =
+      d.action === "join" || (d.action === "review" && ruleAdjudicate(d));
+    if (predicted === p.same) correct++;
+  }
+  return correct / fixture.pairs.length;
+}
+
+describe("clustering accuracy on labelled pairs (rule adjudicator)", () => {
+  it("hash fallback stays at or above 78%", () => {
+    const acc = accuracy(HASH_MODEL, (p) =>
+      cosine(hashEmbedding(p.a), hashEmbedding(p.b)),
+    );
+    expect(acc).toBeGreaterThanOrEqual(0.78);
+  });
+
+  it("voyage-4-lite stays at or above 85%", () => {
+    const acc = accuracy("voyage-4-lite", (p) => {
+      const s = (p as { sims?: Record<string, number> }).sims?.[
+        "voyage-4-lite"
+      ];
+      if (s === undefined) throw new Error("run npm run cluster:calibrate");
+      return s;
+    });
+    expect(acc).toBeGreaterThanOrEqual(0.85);
   });
 });

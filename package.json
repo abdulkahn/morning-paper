@@ -21,7 +21,8 @@
     "ingest:probe": "tsx scripts/probe-feeds.ts",
     "ingest": "tsx --env-file-if-exists=.env.local worker/ingest.ts",
     "ingest:report": "tsx --env-file-if-exists=.env.local scripts/ingest-report.ts",
-    "cluster": "tsx --env-file-if-exists=.env.local worker/cluster.ts"
+    "cluster": "tsx --env-file-if-exists=.env.local worker/cluster.ts",
+    "cluster:calibrate": "tsx --env-file-if-exists=.env.local scripts/calibrate-clustering.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",

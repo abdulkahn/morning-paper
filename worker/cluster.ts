@@ -24,7 +24,7 @@ const vectorLiteral = (v: number[]) =>
 async function main() {
   const env = getEnv();
   const db = getDb();
-  const embedder = getEmbedder(env.VOYAGE_API_KEY);
+  const embedder = getEmbedder(env.VOYAGE_API_KEY, { log: console.log });
   const thresholds = THRESHOLDS[embedder.model];
   const started = Date.now();
 
@@ -37,6 +37,21 @@ async function main() {
     .returning({ id: pipelineRuns.id });
 
   try {
+    // 0. `--rebuild`: drop clusters built with another embedding model so the
+    //    recent articles are re-clustered with the current one.
+    if (process.argv.includes("--rebuild")) {
+      await db.transaction(async (tx) => {
+        await tx.execute(sql`
+          update articles set cluster_id = null, clustered_at = null
+          where cluster_id in (select id from story_clusters where embedding_model <> ${embedder.model})`);
+        const dropped = await tx.execute(sql`
+          delete from story_clusters where embedding_model <> ${embedder.model} returning id`);
+        console.log(
+          `rebuild: dropped ${dropped.length} clusters from other models`,
+        );
+      });
+    }
+
     // 1. Unclustered recent articles.
     const pending = await db
       .select({
